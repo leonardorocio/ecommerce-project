@@ -1,0 +1,68 @@
+package com.ecommerce.hardware.controller;
+
+import com.ecommerce.hardware.models.User;
+import com.ecommerce.hardware.request.OrderRequestBody;
+import com.ecommerce.hardware.request.PasswordRequestBody;
+import com.ecommerce.hardware.request.UserPostRequestBody;
+import com.ecommerce.hardware.request.UserPutRequestBody;
+import com.ecommerce.hardware.services.UserService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/users")
+@RequiredArgsConstructor
+@Log4j2
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @GetMapping
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userService.getUsers());
+    }
+
+    @PostMapping
+    public ResponseEntity<User> createUser(@RequestBody @Valid UserPostRequestBody userPostRequestBody) {
+        return new ResponseEntity<>(userService.createUser(userPostRequestBody), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.getUserById(id));
+    }
+
+    @PatchMapping
+    public ResponseEntity<User> updateUser(@RequestBody @Valid UserPutRequestBody userPutRequestBody) {
+        return ResponseEntity.ok(userService.updateUser(userPutRequestBody));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.deleteUser(id));
+    }
+
+    @PatchMapping("/order")
+    public ResponseEntity<User> addProductForUserOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
+        return ResponseEntity.ok(userService.addProductForUserOrder(orderRequestBody));
+    }
+
+    @PatchMapping("/order/edit")
+    public ResponseEntity<User> deleteProductFromUserOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
+        return ResponseEntity.ok(userService.deleteProductFromUserOrder(orderRequestBody));
+    }
+
+    @PatchMapping("/change_password")
+    public ResponseEntity<String> changeUserPassword(@RequestBody PasswordRequestBody passwordRequestBody) {
+        userService.updateUserPassword(passwordRequestBody);
+        return ResponseEntity.ok("User password changed successfully");
+    }
+}
