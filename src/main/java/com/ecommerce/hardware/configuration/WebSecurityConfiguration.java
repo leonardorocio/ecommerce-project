@@ -8,13 +8,11 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
+
 
 @Configuration
 @EnableWebSecurity
@@ -24,7 +22,8 @@ public class WebSecurityConfiguration {
     private CustomAuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
+                                                   RememberMeServices rememberMeServices) throws Exception {
         httpSecurity
                 .httpBasic(Customizer.withDefaults())
                 .authorizeHttpRequests(
@@ -48,7 +47,9 @@ public class WebSecurityConfiguration {
                             }
                         }
                 )
-                .logout((logout) -> logout.permitAll());
+                .rememberMe()
+                .key("GaticaBulicas")
+                .tokenValiditySeconds(86400);
         return httpSecurity.build();
     }
 
@@ -57,9 +58,9 @@ public class WebSecurityConfiguration {
         auth.authenticationProvider(authenticationProvider);
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
 }
