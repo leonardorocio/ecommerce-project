@@ -1,5 +1,6 @@
 package com.ecommerce.hardware.services;
 
+import com.ecommerce.hardware.exceptions.BadRequestException;
 import com.ecommerce.hardware.models.Product;
 import com.ecommerce.hardware.models.User;
 import com.ecommerce.hardware.repository.UserRepository;
@@ -27,6 +28,8 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
     private ProductService productService;
 
     public List<User> getUsers() {
@@ -41,13 +44,13 @@ public class UserService {
                 .email(userPostRequestBody.getEmail())
                 .name(userPostRequestBody.getName())
                 .date(userPostRequestBody.getDate())
-                .password(new BCryptPasswordEncoder().encode(userPostRequestBody.getPassword()))
+                .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
                 .build();
         return userRepository.save(newUser);
     }
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("No id found"));
+        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("No id found"));
     }
 
     public User updateUser(UserPutRequestBody userPutRequestBody) {
@@ -80,7 +83,7 @@ public class UserService {
 
     public void updateUserPassword(PasswordRequestBody passwordRequestBody) {
         User user = getUserById(passwordRequestBody.getId());
-        user.setPassword(new BCryptPasswordEncoder().encode(passwordRequestBody.getPassword()));
+        user.setPassword(passwordEncoder.encode(passwordRequestBody.getPassword()));
         userRepository.save(user);
     }
 }

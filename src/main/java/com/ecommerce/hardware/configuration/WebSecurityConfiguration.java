@@ -1,17 +1,19 @@
 package com.ecommerce.hardware.configuration;
 
+import com.ecommerce.hardware.services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -19,48 +21,53 @@ import org.springframework.security.web.authentication.RememberMeServices;
 public class WebSecurityConfiguration {
 
     @Autowired
-    private CustomAuthenticationProvider authenticationProvider;
+    private JWTAuthEntryPoint authEntryPoint;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
-                                                   RememberMeServices rememberMeServices) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .httpBasic(Customizer.withDefaults())
-                .authorizeHttpRequests(
-                        (requests) -> {
-                            try {
-                                requests
-                                        .requestMatchers(HttpMethod.GET, "/products")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.GET, "/comments/products/**")
-                                        .permitAll()
-                                        .requestMatchers(HttpMethod.POST, "/users")
-                                        .permitAll()
-                                        .anyRequest()
-                                        .authenticated()
-                                        .and()
-                                        .httpBasic()
-                                        .and()
-                                        .csrf().disable();
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        }
-                )
-                .rememberMe()
-                .key("GaticaBulicas")
-                .tokenValiditySeconds(86400);
+                .csrf().disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint)
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers("/users/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .httpBasic()
+                .and()
+                .authenticationProvider(authenticationProvider())
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
-    @Autowired
-    public void setAuthenticationProvider(AuthenticationManagerBuilder auth) throws Exception {
-        auth.authenticationProvider(authenticationProvider);
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
+
+    @Bean
+    public JWTAuthenticationFilter jwtAuthenticationFilter() {
+        return new JWTAuthenticationFilter();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
 }

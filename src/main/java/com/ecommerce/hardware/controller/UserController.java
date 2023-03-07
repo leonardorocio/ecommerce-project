@@ -1,10 +1,10 @@
 package com.ecommerce.hardware.controller;
 
+import com.ecommerce.hardware.configuration.JWTGenerator;
 import com.ecommerce.hardware.models.User;
-import com.ecommerce.hardware.request.OrderRequestBody;
-import com.ecommerce.hardware.request.PasswordRequestBody;
-import com.ecommerce.hardware.request.UserPostRequestBody;
-import com.ecommerce.hardware.request.UserPutRequestBody;
+import com.ecommerce.hardware.repository.UserRepository;
+import com.ecommerce.hardware.request.*;
+import com.ecommerce.hardware.services.CustomUserDetailsService;
 import com.ecommerce.hardware.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +12,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +26,20 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class UserController {
+    private final UserRepository userRepository;
+
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JWTGenerator jwtGenerator;
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {
@@ -64,5 +80,16 @@ public class UserController {
     public ResponseEntity<String> changeUserPassword(@RequestBody PasswordRequestBody passwordRequestBody) {
         userService.updateUserPassword(passwordRequestBody);
         return ResponseEntity.ok("User password changed successfully");
+    }
+
+    @PostMapping("/login")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public ResponseEntity<AuthRequestBody> login(@RequestBody PasswordRequestBody passwordRequestBody) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(passwordRequestBody.getEmail(),
+                passwordRequestBody.getPassword()));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(passwordRequestBody.getEmail());
+        String token = jwtGenerator.generateToken(userDetails);
+        return ResponseEntity.ok(new AuthRequestBody(token));
     }
 }

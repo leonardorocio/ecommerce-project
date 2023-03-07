@@ -1,5 +1,6 @@
 package com.ecommerce.hardware.services;
 
+import com.ecommerce.hardware.exceptions.BadRequestException;
 import com.ecommerce.hardware.mapper.CommentMapper;
 import com.ecommerce.hardware.models.Comment;
 import com.ecommerce.hardware.models.Product;
@@ -25,19 +26,19 @@ public class CommentService {
 
     public Comment getCommentById(Integer id) {
         return commentRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("No such comment for this id")
+                () -> new BadRequestException("No such comment for this id")
         );
     }
 
     public List<Comment> getCommentsByUser(Integer id) {
         return commentRepository.getCommentsByUser(id).orElseThrow(
-                () -> new IllegalArgumentException("No comments from this user")
+                () -> new BadRequestException("No comments from this user")
         );
     }
 
     public List<Comment> getCommentsByProduct(Integer id) {
         return commentRepository.getCommentsByProduct(id).orElseThrow(
-                () -> new IllegalArgumentException("There's no comments on this product")
+                () -> new BadRequestException("There's no comments on this product")
         );
     }
 
