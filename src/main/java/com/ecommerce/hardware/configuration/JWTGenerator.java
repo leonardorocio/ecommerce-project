@@ -1,10 +1,15 @@
 package com.ecommerce.hardware.configuration;
 
+import com.ecommerce.hardware.handler.RestExceptionHandler;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,8 +23,17 @@ import java.util.function.Function;
 
 
 @Component
+@Log4j2
 public class JWTGenerator {
 
+    @Value("${jwt.expiration}")
+    public long JWT_EXPIRATION;
+
+    @Autowired
+    private RestExceptionHandler restExceptionHandler;
+
+    @Value("${jwt.secret}")
+    public String JWT_SECRET;
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
     }
@@ -66,9 +80,10 @@ public class JWTGenerator {
         return claims;
     }
 
+
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SecurityConstants.JWT_SECRET).parseClaimsJws(token);
+            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect");
@@ -76,7 +91,7 @@ public class JWTGenerator {
     }
 
     private Key getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SecurityConstants.JWT_SECRET);
+        byte[] keyBytes = Decoders.BASE64.decode(JWT_SECRET);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }

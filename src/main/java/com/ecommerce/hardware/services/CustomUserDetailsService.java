@@ -1,5 +1,6 @@
 package com.ecommerce.hardware.services;
 
+import com.ecommerce.hardware.exceptions.BadRequestException;
 import com.ecommerce.hardware.models.User;
 import com.ecommerce.hardware.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
@@ -21,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new BadRequestException("User not found"));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), new ArrayList<>());
     }
 }

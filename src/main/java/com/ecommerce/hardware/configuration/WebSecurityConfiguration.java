@@ -14,6 +14,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 
 @Configuration
@@ -29,6 +35,9 @@ public class WebSecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .addFilterBefore(exceptionHandlingFilter(), LogoutFilter.class)
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .csrf().disable()
                 .exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint)
@@ -48,8 +57,24 @@ public class WebSecurityConfiguration {
     }
 
     @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+            CorsConfiguration configuration = new CorsConfiguration();
+            configuration.addAllowedOrigin("*");
+            configuration.addAllowedHeader("*");
+            configuration.addAllowedMethod("*");
+            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+            source.registerCorsConfiguration("/**", configuration);
+            return source;
+    }
+
+    @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ExceptionHandlingFilter exceptionHandlingFilter() {
+        return new ExceptionHandlingFilter();
     }
 
     @Bean

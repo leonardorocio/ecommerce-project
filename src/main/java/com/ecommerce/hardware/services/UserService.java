@@ -38,7 +38,7 @@ public class UserService {
 
     public User createUser(UserPostRequestBody userPostRequestBody) {
         if (userRepository.existsByEmail(userPostRequestBody.getEmail())) {
-            throw new ValidationException("This email already exists");
+            throw new BadRequestException("This email already exists");
         }
         User newUser = User.builder()
                 .email(userPostRequestBody.getEmail())
@@ -61,10 +61,9 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User deleteUser(Integer id) {
+    public void deleteUser(Integer id) {
         User user = getUserById(id);
         userRepository.delete(user);
-        return user;
     }
 
     public User addProductForUserOrder(OrderRequestBody orderRequestBody) {
@@ -77,7 +76,12 @@ public class UserService {
     public User deleteProductFromUserOrder(OrderRequestBody orderRequestBody) {
         User user = getUserById(orderRequestBody.getUser_id());
         Product order = productService.getProductById(orderRequestBody.getProduct_id());
-        user.getProductList().remove(order);
+        if (user.getProductList().contains(order)) {
+            user.getProductList().remove(order);
+        } else {
+            throw new BadRequestException("This user's order does not contain this product");
+        }
+
         return userRepository.save(user);
     }
 
