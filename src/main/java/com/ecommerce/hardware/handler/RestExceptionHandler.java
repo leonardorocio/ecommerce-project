@@ -2,6 +2,7 @@ package com.ecommerce.hardware.handler;
 
 import com.ecommerce.hardware.exceptions.BadRequestException;
 import com.ecommerce.hardware.exceptions.BadRequestExceptionDetails;
+import com.ecommerce.hardware.exceptions.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -45,11 +46,24 @@ public class RestExceptionHandler {
         return new ResponseEntity<>(
                 BadRequestExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .status(HttpStatus.BAD_REQUEST.value())
                         .title("Invalid argument for this action")
                         .details(MAE.getMessage())
                         .developerMessage(MAE.getClass().getName())
                         .build(), HttpStatus.BAD_REQUEST
+        );
+    }
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<BadRequestExceptionDetails> handlerResourceNotFoundException(ResourceNotFoundException RNFE) {
+        return new ResponseEntity<>(
+                BadRequestExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .title("Resource not found.")
+                        .details(RNFE.getMessage())
+                        .developerMessage(RNFE.getClass().getName())
+                        .build(), HttpStatus.NOT_FOUND
         );
     }
 }

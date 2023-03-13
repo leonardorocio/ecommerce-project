@@ -20,13 +20,13 @@ public class ProductPostRequestBody {
     String name;
 
     @NotNull
+    @NotBlank
     String description;
 
     @NotNull
-    @NotBlank
     double price;
 
-    int stock;
+    int stock = 1;
 
-    double discount;
+    double discount = 1.0;
 }

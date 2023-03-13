@@ -26,11 +26,14 @@ public class User  {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(name="user_id")
     private Integer user_id;
 
+    @NotNull
+    @NotBlank
     private String password;
 
+    @NotNull
+    @NotBlank
     private String name;
 
     @Column(unique = true)

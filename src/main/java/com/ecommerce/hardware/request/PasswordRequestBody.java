@@ -1,5 +1,7 @@
 package com.ecommerce.hardware.request;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +12,13 @@ import lombok.NoArgsConstructor;
 public class PasswordRequestBody {
 
     Integer id;
+
+    @NotNull
+    @NotBlank
     String email;
+
+    @NotNull
+    @NotBlank
     String password;
 
     public PasswordRequestBody(String email, String password) {

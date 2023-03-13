@@ -2,6 +2,7 @@ package com.ecommerce.hardware.services;
 
 
 import com.ecommerce.hardware.exceptions.BadRequestException;
+import com.ecommerce.hardware.exceptions.ResourceNotFoundException;
 import com.ecommerce.hardware.mapper.ProductMapper;
 import com.ecommerce.hardware.models.Product;
 import com.ecommerce.hardware.repository.ProductRepository;
@@ -28,12 +29,12 @@ public class ProductService {
     public List<Product> getProductsWithDiscount() {
 
         return productRepository.findByDiscountSorted().orElseThrow(
-                () -> new BadRequestException("No products on the database")
+                () -> new ResourceNotFoundException("No products on the database")
         );
     }
 
     public Product getProductById(Integer id) {
-        return productRepository.findById(id).orElseThrow(() -> new BadRequestException("No such product"));
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such product"));
     }
 
     public Product createProduct(ProductPostRequestBody productPostRequestBody) {

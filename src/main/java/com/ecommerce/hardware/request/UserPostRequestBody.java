@@ -26,13 +26,12 @@ public class UserPostRequestBody {
     @Column(unique = true)
     String email;
 
-    @NotNull
     Date date;
 
-    @NotNull
     String cep;
 
     @NotNull
+    @NotBlank
     String password;
 
 }

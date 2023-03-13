@@ -26,6 +26,7 @@ public class Comment {
     private String text;
 
     @NotNull
+    @NotBlank
     private Integer rating;
 
     @ManyToOne

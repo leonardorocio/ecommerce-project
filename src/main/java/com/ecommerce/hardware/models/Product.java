@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,9 +26,11 @@ public class Product {
     private Integer product_id;
 
     @NotNull
+    @NotBlank
     private String name;
 
     @NotNull
+    @NotBlank
     private String description;
 
     @NotNull
@@ -36,7 +39,7 @@ public class Product {
     @NotNull
     private int stock;
 
-    @Column(columnDefinition = "integer default 1.0")
+    @Column(columnDefinition = "float default 1.0")
     private double discount = 1.0;
 
     @JsonIgnore
