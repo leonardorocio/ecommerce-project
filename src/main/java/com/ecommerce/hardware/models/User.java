@@ -29,7 +29,6 @@ public class User  {
     @Column(name="user_id")
     private Integer user_id;
 
-    @JsonIgnore
     private String password;
 
     private String name;
@@ -53,4 +52,8 @@ public class User  {
     @JsonIgnore
     private List<Comment> comments;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String getPassword() {
+        return password;
+    }
 }

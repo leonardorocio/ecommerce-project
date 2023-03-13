@@ -5,6 +5,7 @@ import com.ecommerce.hardware.exceptions.BadRequestExceptionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -36,6 +37,19 @@ public class RestExceptionHandler {
                         .details(authException.getMessage())
                         .developerMessage(authException.getClass().getName())
                         .build(), HttpStatus.UNAUTHORIZED
+        );
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<BadRequestExceptionDetails> handlerNotValidArgException(MethodArgumentNotValidException MAE) {
+        return new ResponseEntity<>(
+                BadRequestExceptionDetails.builder()
+                        .timestamp(LocalDateTime.now())
+                        .status(HttpStatus.UNAUTHORIZED.value())
+                        .title("Invalid argument for this action")
+                        .details(MAE.getMessage())
+                        .developerMessage(MAE.getClass().getName())
+                        .build(), HttpStatus.BAD_REQUEST
         );
     }
 }

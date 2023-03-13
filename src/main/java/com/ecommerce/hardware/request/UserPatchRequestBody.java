@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class UserPutRequestBody {
+public class UserPatchRequestBody {
 
     Integer user_id;
 

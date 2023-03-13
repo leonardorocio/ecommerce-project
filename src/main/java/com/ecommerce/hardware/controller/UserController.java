@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody @Valid UserPostRequestBody userPostRequestBody) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody UserPostRequestBody userPostRequestBody) {
         return new ResponseEntity<>(userService.createUser(userPostRequestBody), HttpStatus.CREATED);
     }
 
@@ -57,8 +56,8 @@ public class UserController {
     }
 
     @PatchMapping
-    public ResponseEntity<User> updateUser(@RequestBody @Valid UserPutRequestBody userPutRequestBody) {
-        return ResponseEntity.ok(userService.updateUser(userPutRequestBody));
+    public ResponseEntity<User> updateUser(@RequestBody @Valid UserPatchRequestBody userPatchRequestBody) {
+        return ResponseEntity.ok(userService.updateUser(userPatchRequestBody));
     }
 
     @DeleteMapping("/{id}")

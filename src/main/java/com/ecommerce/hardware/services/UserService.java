@@ -8,13 +8,11 @@ import com.ecommerce.hardware.request.OrderRequestBody;
 import com.ecommerce.hardware.request.PasswordRequestBody;
 import com.ecommerce.hardware.request.UserPostRequestBody;
 
-import com.ecommerce.hardware.request.UserPutRequestBody;
-import jakarta.validation.ValidationException;
+import com.ecommerce.hardware.request.UserPatchRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,6 +38,9 @@ public class UserService {
         if (userRepository.existsByEmail(userPostRequestBody.getEmail())) {
             throw new BadRequestException("This email already exists");
         }
+        if (userPostRequestBody.getPassword() == null) {
+            throw new BadRequestException("Password cannot be null");
+        }
         User newUser = User.builder()
                 .email(userPostRequestBody.getEmail())
                 .name(userPostRequestBody.getName())
@@ -53,11 +54,11 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new BadRequestException("No id found"));
     }
 
-    public User updateUser(UserPutRequestBody userPutRequestBody) {
-        User user = getUserById(userPutRequestBody.getUser_id());
-        user.setCep(userPutRequestBody.getCep());
-        user.setName(userPutRequestBody.getName());
-        user.setDate(userPutRequestBody.getDate());
+    public User updateUser(UserPatchRequestBody userPatchRequestBody) {
+        User user = getUserById(userPatchRequestBody.getUser_id());
+        user.setCep(userPatchRequestBody.getCep());
+        user.setName(userPatchRequestBody.getName());
+        user.setDate(userPatchRequestBody.getDate());
         return userRepository.save(user);
     }
 
@@ -87,7 +88,11 @@ public class UserService {
 
     public void updateUserPassword(PasswordRequestBody passwordRequestBody) {
         User user = getUserById(passwordRequestBody.getId());
-        user.setPassword(passwordEncoder.encode(passwordRequestBody.getPassword()));
+        if (passwordRequestBody.getEmail().equals(user.getEmail())) {
+            user.setPassword(passwordEncoder.encode(passwordRequestBody.getPassword()));
+        } else {
+            throw new BadRequestException("Email does not correspond to the id");
+        }
         userRepository.save(user);
     }
 }

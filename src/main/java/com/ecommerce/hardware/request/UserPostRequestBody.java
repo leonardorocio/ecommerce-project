@@ -1,6 +1,10 @@
 package com.ecommerce.hardware.request;
 
 
+import com.fasterxml.jackson.annotation.JsonFilter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Access;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.UniqueConstraint;
@@ -30,4 +34,5 @@ public class UserPostRequestBody {
 
     @NotNull
     String password;
+
 }
