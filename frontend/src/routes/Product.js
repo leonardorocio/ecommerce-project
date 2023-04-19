@@ -1,18 +1,18 @@
 import React, { useEffect } from "react";
 import NavbarComponent from "./Navbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 
 function Product(props) {
-    const { state } = useLocation();
-
+    const { productIndex } = useParams();
+    const product = JSON.parse(localStorage.getItem("products"))[productIndex];
     return (
         <div>
             <NavbarComponent></NavbarComponent>
 
             <div className="showProduct">
-                {state.product.price}
-                {state.product.name}
-                {state.product.description}
+                {product.price}
+                {product.name}
+                {product.description}
             </div>
         </div>
     )

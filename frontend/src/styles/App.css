@@ -47,6 +47,11 @@
   width: 30%;
 }
 
+.product a {
+  text-decoration: none;
+  color: black;
+}
+
 .searchBar {
   width: 100%;
 }

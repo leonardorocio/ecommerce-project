@@ -32,10 +32,9 @@ function SignUp(props) {
   }
 
   function handleSubmit(event) {
+    event.preventDefault();
     const confirmPassword = document.getElementById("passwordConfirm").value;
-    console.log(password + " " + confirmPassword);
     if (password !== confirmPassword) {
-      console.log("ue");
       Swal.fire({
         title: "Senhas não são iguais",
         showConfirmButton: true,
@@ -47,15 +46,23 @@ function SignUp(props) {
           email: email,
           password: password,
         })
-        .then((response) => {
-          console.log("Teste");
-          localStorage.setItem("JWT", response.data.accessToken);
-          navigate("/login");
+        .then(() => {
+          Swal.fire({
+            title: "Cadastro concluído com sucesso",
+            text: "Indo para o Login",
+            timerProgressBar: true,
+            timer: 1000,
+          })
+          .then(() => {
+            navigate("/login");
+          });
         })
         .catch((error) => {
-          console.log(error);
+          console.log(error.response.data.title);
+          Swal.fire({
+            title: error.response.data.title,
+          });
         });
-      event.preventDefault();
     }
   }
 
@@ -95,6 +102,7 @@ function SignUp(props) {
                 name="password"
                 id="password"
                 placeholder="********"
+                required={true}
                 onChange={handleChangePassword}
               />
             </InputGroup>
@@ -107,6 +115,7 @@ function SignUp(props) {
                 name="passwordConfirm"
                 id="passwordConfirm"
                 placeholder="********"
+                required={true}
               />
             </InputGroup>
           </FormGroup>

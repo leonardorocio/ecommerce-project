@@ -26,6 +26,7 @@ function LoginForm(props) {
   }
 
   function handleSubmit(event) {
+    event.preventDefault();
     axios
       .post("http://localhost:8080/auth/login", {
         email: email,
@@ -38,7 +39,7 @@ function LoginForm(props) {
       .catch((error) => {
         console.log(error);
       });
-    event.preventDefault();
+    
   }
 
   return (

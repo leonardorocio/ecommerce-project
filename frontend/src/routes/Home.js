@@ -1,30 +1,42 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import NavbarComponent from "./Navbar";
-import {
-  Input,
-  InputGroup,
-  InputGroupText,
-} from "reactstrap";
+import { Input, InputGroup, InputGroupText } from "reactstrap";
 import Swal from "sweetalert2";
 import { Link, Route, useNavigate } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import Product from "./Product";
 
-function Home() {
+export default function Home() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const navigate = useNavigate();
 
   const jwt = localStorage.getItem("JWT");
 
-  const fetchProducts = async () => {
-    const productsData = await axios.get("http://localhost:8080/products", {
+  const fetchProducts = () => {
+    axios
+    .get("http://localhost:8080/products", {
       headers: {
         Authorization: `Bearer ${jwt}`,
       },
+    })
+    .then((response) => {
+      localStorage.setItem("products", JSON.stringify(response.data));
+      setProducts(response.data);
+    })
+    .catch((error) => {
+      if (error.response.status === 401) {
+        Swal.fire({
+          title: "Usuário não autenticado. Indo para Login",
+          showConfirmButton: true,
+          timer: 3000,
+          timerProgressBar: true,
+        }).then((result) => {
+          navigate("/");
+        });
+      }
     });
-    setProducts(productsData.data);
   };
 
   const fetchCategories = () => {
@@ -43,19 +55,17 @@ function Home() {
             title: "Usuário não autenticado. Indo para Login",
             showConfirmButton: true,
             timer: 3000,
-            timerProgressBar: true
-          })
-          .then((result) => {
+            timerProgressBar: true,
+          }).then((result) => {
             navigate("/");
-          })
+          });
         }
-        
       });
   };
 
   useEffect(() => {
-    fetchCategories()
-    fetchProducts()
+    fetchCategories();
+    fetchProducts();
   }, []);
 
   const categoryList = categories.map((category) => {
@@ -67,14 +77,16 @@ function Home() {
     );
   });
 
-  const productList = products.map((product) => {
-    /*global event*/
-    /*eslint no-restricted-globals: 0*/
-    const stateObj = { product: product };
-    history.pushState(stateObj, "product", "/product");
+  const productList = products.map((product, index) => {
     return (
       <li className="product" key={product.product_id}>
-        <Link to="/product" state={{product: product}}>
+        <Link
+          to={{
+            pathname: `/product/${index}`,
+          }}
+
+          // style={{textDecoration: 'none'}}
+        >
           <ProductCard product={product}></ProductCard>
         </Link>
       </li>
@@ -106,4 +118,4 @@ function Home() {
   );
 }
 
-export default Home;
+// export default Home;
