@@ -69,10 +69,10 @@ class SpringBootHardwareEcommerceApplicationTests {
 		Random randomGenerator = new Random();
 		int randomInt = randomGenerator.nextInt();
 		User user = User.builder()
-				.user_id(randomInt)
+				.userId(randomInt)
 				.email("gato.boulos" + randomInt + "@gmail.com")
 				.name("Gata Bulicas")
-				.date(new Date())
+				.birthDate(new Date())
 				.cep("89233740")
 				.build();
 
@@ -89,7 +89,7 @@ class SpringBootHardwareEcommerceApplicationTests {
 	void updateUser() throws Exception {
 		User updatedUser = User.builder()
 				.cep("89235890")
-				.date(new Date())
+				.birthDate(new Date())
 				.name("Bartico Liberal")
 				.build();
 
@@ -151,7 +151,7 @@ class SpringBootHardwareEcommerceApplicationTests {
 				.stock(1)
 				.price(1)
 				.description("Uma gatica reclamona")
-				.product_id(99)
+				.productId(99)
 				.build();
 		mockMvc.perform(post("/products")
 						.contentType(MediaType.APPLICATION_JSON_VALUE)

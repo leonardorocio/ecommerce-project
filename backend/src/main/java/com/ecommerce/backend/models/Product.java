@@ -21,7 +21,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer product_id;
+    private int productId;
 
     @NotNull
     @NotBlank
@@ -41,14 +41,14 @@ public class Product {
     private double discount = 1.0;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "productList", cascade = CascadeType.ALL)
-    private List<User> userList;
+    @ManyToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<OrderDetails> orderDetails;
 
-    @OneToMany(mappedBy = "product_rated", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productRated", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     @ManyToOne
-    @JoinColumn(name = "product_category", referencedColumnName = "id")
+    @JoinColumn(name = "productCategory")
     private ProductCategory productCategory;
 
     private String imageURL;

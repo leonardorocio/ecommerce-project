@@ -19,7 +19,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int commentId;
 
     @NotNull
     @NotBlank
@@ -30,12 +30,12 @@ public class Comment {
     private Integer rating;
 
     @ManyToOne
-    @JoinColumn(name = "product_id")
+    @JoinColumn(name = "productId")
     @JsonIgnore
-    private Product product_rated;
+    private Product productRated;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "userId")
     @JsonIgnore
-    private User user_owner;
+    private User userOwner;
 }

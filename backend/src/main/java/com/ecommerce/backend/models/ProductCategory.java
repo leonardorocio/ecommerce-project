@@ -14,12 +14,11 @@ public class ProductCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int categoryId;
 
     @NotNull
     @NotBlank
     @Column(unique = true)
     private String name;
-
 
 }

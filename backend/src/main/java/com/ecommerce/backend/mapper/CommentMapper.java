@@ -23,10 +23,10 @@ public class CommentMapper {
             User userOwner = userService.getUserById(commentPostRequestBody.getUser_owner());
             Product productRated = productService.getProductById(commentPostRequestBody.getProduct_rated());
             Comment comment = Comment.builder()
-                    .product_rated(productRated)
+                    .productRated(productRated)
                     .text(commentPostRequestBody.getText())
                     .rating(commentPostRequestBody.getRating())
-                    .user_owner(userOwner)
+                    .userOwner(userOwner)
                     .build();
             return comment;
         }

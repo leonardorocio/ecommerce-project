@@ -22,7 +22,7 @@ public class UserMapper {
             User user = User.builder()
                     .email(userPostRequestBody.getEmail())
                     .name(userPostRequestBody.getName())
-                    .date(userPostRequestBody.getDate())
+                    .birthDate(userPostRequestBody.getDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
                     .cep(userPostRequestBody.getCep())
                     .build();
@@ -35,7 +35,7 @@ public class UserMapper {
         User user = User.builder()
                 .name(userPatchRequestBody.getName())
                 .cep(userPatchRequestBody.getCep())
-                .date(userPatchRequestBody.getDate())
+                .birthDate(userPatchRequestBody.getDate())
                 .build();
         return user;
     }

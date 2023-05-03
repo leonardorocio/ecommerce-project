@@ -25,7 +25,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Integer user_id;
+    private int userId;
 
     @NotNull
     @NotBlank
@@ -39,19 +39,15 @@ public class User {
     @Email
     private String email;
 
-    private Date date;
+    private Date birthDate;
 
     private String cep;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "orders",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> productList;
+    @OneToMany(mappedBy = "customer")
+    @JsonIgnore
+    private List<Order> userOrders;
 
-    @OneToMany(mappedBy = "user_owner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Comment> comments;
 
@@ -60,6 +56,4 @@ public class User {
         return password;
     }
 
-    // TODO: Add roles for users
-    // TODO: Implement refresh token mecanism
 }
