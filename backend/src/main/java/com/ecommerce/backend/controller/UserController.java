@@ -24,19 +24,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-
-    @Autowired
     private UserService userService;
-
-    @Autowired
-    private JWTGenerator jwtGenerator;
 
     @GetMapping
     public ResponseEntity<List<User>> getUsers() {

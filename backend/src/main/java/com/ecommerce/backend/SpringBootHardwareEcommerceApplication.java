@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.ecommerce.backend.services")
 @ComponentScan(basePackages = "com.ecommerce.backend.mapper")
-//@EnableAutoConfiguration(exclude = {ErrorMvcAutoConfiguration.class })
 public class SpringBootHardwareEcommerceApplication {
 
 	public static void main(String[] args) {

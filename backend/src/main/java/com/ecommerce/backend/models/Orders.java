@@ -1,5 +1,6 @@
 package com.ecommerce.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,5 +34,6 @@ public class Orders {
     private List<OrderDetails> orderDetailsId;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Shipment shipment;
 }

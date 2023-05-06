@@ -65,7 +65,6 @@ public class ProductService {
     }
 
     public List<Product> searchProduct(String name) {
-        log.info(name);
         return productRepository.searchProduct(name).orElseThrow(
                 () -> new ResourceNotFoundException("No products related to this name"));
     }

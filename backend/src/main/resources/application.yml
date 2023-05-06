@@ -22,7 +22,6 @@ server:
     whitelabel:
       enabled: false
 
-
 jwt:
   secret: '"2A472D4A614E645267556B58703273357638792F423F4528482B4D6250655368"'
   expiration: '700000'

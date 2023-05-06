@@ -24,13 +24,13 @@ public class OrderDetailsController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderDetails> getOrdersDetails(@PathVariable int id) {
+    public ResponseEntity<OrderDetails> getOrdersDetailsById(@PathVariable int id) {
         return ResponseEntity.ok(orderDetailsService.getOrderDetailsById(id));
     }
 
     @PostMapping
     public ResponseEntity<OrderDetails> postOrderDetails(@RequestBody @Valid OrderDetailsRequestBody orderDetailsRequestBody) {
-        return ResponseEntity.ok(orderDetailsService.postOrderDetails(orderDetailsRequestBody));
+        return new ResponseEntity<>(orderDetailsService.postOrderDetails(orderDetailsRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
@@ -39,8 +39,8 @@ public class OrderDetailsController {
         return new ResponseEntity<String>("Order details deleted successfully", HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping("/{id}")
-    public ResponseEntity<OrderDetails> updateOrderDetails(@RequestBody @Valid OrderDetailsRequestBody orderDetailsRequestBody,
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderDetails> updateOrderDetails(@Valid @RequestBody OrderDetailsRequestBody orderDetailsRequestBody,
                                                            @PathVariable int id) {
         return ResponseEntity.ok(orderDetailsService.updateOrderDetails(orderDetailsRequestBody, id));
     }

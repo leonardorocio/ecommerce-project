@@ -1,5 +1,6 @@
 package com.ecommerce.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,8 +21,11 @@ public class Shipment {
     private boolean delivered;
 
     @Column
+    private double shippingPrice;
+
+    @Column
     private Date expectedDeliveryDate;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
     private Orders orders;
 }

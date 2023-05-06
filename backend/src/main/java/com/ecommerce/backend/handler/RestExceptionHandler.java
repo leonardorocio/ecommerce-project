@@ -31,7 +31,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
-
             ExceptionDetails exceptionDetails = ExceptionDetails.builder()
                     .timestamp(LocalDateTime.now())
                     .status(statusCode.value())
