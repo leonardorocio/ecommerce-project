@@ -5,6 +5,7 @@ import com.ecommerce.backend.payload.AuthRequestBody;
 import com.ecommerce.backend.payload.PasswordRequestBody;
 import com.ecommerce.backend.services.CustomUserDetailsService;
 import com.ecommerce.backend.services.RefreshTokenService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    public ResponseEntity<AuthRequestBody> login(@RequestBody PasswordRequestBody passwordRequestBody) {
+    public ResponseEntity<AuthRequestBody> login(@RequestBody @Valid PasswordRequestBody passwordRequestBody) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(passwordRequestBody.getEmail(),
                         passwordRequestBody.getPassword()));

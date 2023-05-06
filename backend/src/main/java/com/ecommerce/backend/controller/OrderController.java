@@ -3,6 +3,7 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,12 +30,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Orders> postOrder(@RequestBody OrderRequestBody orderRequestBody) {
+    public ResponseEntity<Orders> postOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
         return ResponseEntity.ok(orderService.postOrder(orderRequestBody));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Orders> updateOrder(@RequestBody OrderRequestBody orderRequestBody,
+    public ResponseEntity<Orders> updateOrder(@RequestBody @Valid OrderRequestBody orderRequestBody,
                                               @PathVariable int id) {
         return ResponseEntity.ok(orderService.updateOrder(orderRequestBody, id));
     }

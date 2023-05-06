@@ -64,18 +64,8 @@ public class UserController {
         return new ResponseEntity<String>("Usuário deletado com sucesso", HttpStatus.NO_CONTENT);
     }
 
-//    @PatchMapping("/order")
-//    public ResponseEntity<User> addProductForUserOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
-//        return ResponseEntity.ok(userService.addProductForUserOrder(orderRequestBody));
-//    }
-//
-//    @PatchMapping("/order/edit")
-//    public ResponseEntity<User> deleteProductFromUserOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
-//        return ResponseEntity.ok(userService.deleteProductFromUserOrder(orderRequestBody));
-//    }
-
     @PatchMapping("/change_password/{id}")
-    public ResponseEntity<String> changeUserPassword(@RequestBody PasswordRequestBody passwordRequestBody,
+    public ResponseEntity<String> changeUserPassword(@RequestBody @Valid PasswordRequestBody passwordRequestBody,
                                                      @PathVariable Integer id) {
         userService.updateUserPassword(passwordRequestBody, id);
         return ResponseEntity.ok("User password changed successfully");

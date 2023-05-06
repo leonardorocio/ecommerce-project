@@ -1,16 +1,20 @@
 package com.ecommerce.backend.handler;
 
-import com.ecommerce.backend.exceptions.BadRequestException;
-import com.ecommerce.backend.exceptions.BadRequestExceptionDetails;
-import com.ecommerce.backend.exceptions.RefreshTokenException;
-import com.ecommerce.backend.exceptions.ResourceNotFoundException;
+import com.ecommerce.backend.exceptions.*;
+
+import java.lang.reflect.Field;
+import java.util.List;
+
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,6 +24,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,8 +32,14 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers, HttpStatusCode statusCode, WebRequest request) {
 
-
-        return super.handleExceptionInternal(ex, body, headers, statusCode, request);
+            ExceptionDetails exceptionDetails = ExceptionDetails.builder()
+                    .timestamp(LocalDateTime.now())
+                    .status(statusCode.value())
+                    .title(ex.getCause().getMessage())
+                    .details(ex.getMessage())
+                    .developerMessage(ex.getClass().getName())
+                    .build();
+            return new ResponseEntity<>(exceptionDetails, statusCode);
     }
 
     @ExceptionHandler(BadRequestException.class)
@@ -57,15 +68,20 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<BadRequestExceptionDetails> handlerNotValidArgException(MethodArgumentNotValidException MAE) {
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+        List<FieldError> fieldErrors = ex.getBindingResult().getFieldErrors();
+        String fields = fieldErrors.stream().map(FieldError::getField).collect(Collectors.joining(","));
+        String fieldsMessage = fieldErrors.stream().map(FieldError::getDefaultMessage).collect(Collectors.joining(","));
         return new ResponseEntity<>(
-                BadRequestExceptionDetails.builder()
+                ValidationDetails.builder()
                         .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.BAD_REQUEST.value())
-                        .title("Invalid argument for this action")
-                        .details(MAE.getMessage())
-                        .developerMessage(MAE.getClass().getName())
+                        .fields(fields)
+                        .fieldsMessage(fieldsMessage)
+                        .details(ex.getMessage())
+                        .title("Invalid Fields")
+                        .developerMessage(ex.getClass().getName())
+                        .status(status.value())
                         .build(), HttpStatus.BAD_REQUEST
         );
     }
@@ -95,4 +111,5 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .build(), HttpStatus.UNAUTHORIZED
         );
     }
+
 }

@@ -6,6 +6,7 @@ import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
 import com.ecommerce.backend.payload.ProductPriceRequestBody;
 import com.ecommerce.backend.services.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,12 +39,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody ProductPostRequestBody productPostRequestBody) {
+    public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductPostRequestBody productPostRequestBody) {
         return new ResponseEntity<>(productService.createProduct(productPostRequestBody), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<Product> updateProduct(@RequestBody ProductPostRequestBody productPostRequestBody,
+    public ResponseEntity<Product> updateProduct(@RequestBody @Valid ProductPostRequestBody productPostRequestBody,
                                                  @PathVariable Integer id) {
         return ResponseEntity.ok(productService.updateProduct(productPostRequestBody, id));
     }
@@ -66,7 +67,7 @@ public class ProductController {
     }
 
     @PatchMapping(path = "/{id}")
-    public ResponseEntity<Product> setProductPrice(@RequestBody ProductPriceRequestBody productPriceRequestBody,
+    public ResponseEntity<Product> setProductPrice(@RequestBody @Valid ProductPriceRequestBody productPriceRequestBody,
                                                    @PathVariable Integer id) {
         return ResponseEntity.ok(productService.setProductPrice(productPriceRequestBody, id));
     }

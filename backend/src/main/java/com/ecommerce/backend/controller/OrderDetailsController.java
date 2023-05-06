@@ -4,6 +4,8 @@ import com.ecommerce.backend.models.OrderDetails;
 import com.ecommerce.backend.payload.OrderDetailsRequestBody;
 import com.ecommerce.backend.services.OrderDetailsService;
 import java.util.List;
+
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,7 @@ public class OrderDetailsController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDetails> postOrderDetails(@RequestBody OrderDetailsRequestBody orderDetailsRequestBody) {
+    public ResponseEntity<OrderDetails> postOrderDetails(@RequestBody @Valid OrderDetailsRequestBody orderDetailsRequestBody) {
         return ResponseEntity.ok(orderDetailsService.postOrderDetails(orderDetailsRequestBody));
     }
 
@@ -38,7 +40,7 @@ public class OrderDetailsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<OrderDetails> updateOrderDetails(@RequestBody OrderDetailsRequestBody orderDetailsRequestBody,
+    public ResponseEntity<OrderDetails> updateOrderDetails(@RequestBody @Valid OrderDetailsRequestBody orderDetailsRequestBody,
                                                            @PathVariable int id) {
         return ResponseEntity.ok(orderDetailsService.updateOrderDetails(orderDetailsRequestBody, id));
     }

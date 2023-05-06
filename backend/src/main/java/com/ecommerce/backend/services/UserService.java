@@ -63,24 +63,6 @@ public class UserService {
         userRepository.delete(user);
     }
 
-//    public User addProductForUserOrder(OrderRequestBody orderRequestBody) {
-//        User user = getUserById(orderRequestBody.getUser_id());
-//        Product order = productService.getProductById(orderRequestBody.getProduct_id());
-//        user.getProductList().add(order);
-//        return userRepository.save(user);
-//    }
-//
-//    public User deleteProductFromUserOrder(OrderRequestBody orderRequestBody) {
-//        User user = getUserById(orderRequestBody.getUser_id());
-//        Product order = productService.getProductById(orderRequestBody.getProduct_id());
-//        if (user.getProductList().contains(order)) {
-//            user.getProductList().remove(order);
-//        } else {
-//            throw new BadRequestException("This user's order does not contain this product");
-//        }
-//
-//        return userRepository.save(user);
-//    }
 
     public void updateUserPassword(PasswordRequestBody passwordRequestBody, Integer id) {
         User user = getUserById(id);

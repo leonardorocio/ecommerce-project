@@ -4,6 +4,7 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.models.Comment;
 import com.ecommerce.backend.payload.CommentPostRequestBody;
 import com.ecommerce.backend.services.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<Comment> postComment(@RequestBody CommentPostRequestBody commentPostRequestBody) {
+    public ResponseEntity<Comment> postComment(@RequestBody @Valid CommentPostRequestBody commentPostRequestBody) {
         return new ResponseEntity<>(commentService.createComment(commentPostRequestBody), HttpStatus.CREATED);
     }
 
@@ -42,7 +43,7 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> updateComment(@RequestBody CommentPostRequestBody commentPostRequestBody,
+    public ResponseEntity<Comment> updateComment(@RequestBody @Valid CommentPostRequestBody commentPostRequestBody,
                                                  @PathVariable Integer id) {
         return ResponseEntity.ok(commentService.updateComment(commentPostRequestBody, id));
     }
