@@ -17,7 +17,7 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int refreshTokenId;
+    private Integer refreshTokenId;
 
     @OneToOne
     @JoinColumn(name = "userId")

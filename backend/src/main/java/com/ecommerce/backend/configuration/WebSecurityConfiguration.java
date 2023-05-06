@@ -1,6 +1,8 @@
 package com.ecommerce.backend.configuration;
 
+import com.ecommerce.backend.repository.CommentRepository;
 import com.ecommerce.backend.services.CustomUserDetailsService;
+import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,15 +15,17 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.GenericFilterBean;
 
 
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 public class WebSecurityConfiguration {
 
     @Autowired
@@ -29,30 +33,38 @@ public class WebSecurityConfiguration {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .addFilterBefore(exceptionHandlingFilter(), LogoutFilter.class)
-                .cors().configurationSource(corsConfigurationSource())
-                .and()
-                .csrf().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint)
-                .and()
+                .authenticationProvider(authenticationProvider())
                 .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        httpSecurity
                 .authorizeHttpRequests()
                 .requestMatchers("/users/**").permitAll()
                 .requestMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
+                .requestMatchers("/error").permitAll();
+        httpSecurity
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
-                .httpBasic()
-                .and()
-                .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .csrf().disable()
+                .httpBasic();
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
+                .authorizeHttpRequests()
+                .anyRequest().authenticated();
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint);
+
         return httpSecurity.build();
+    }
+
+    @Bean
+    public CustomExceptionHandling customExceptionHandlingFilter() {
+        return new CustomExceptionHandling();
     }
 
     @Bean
@@ -69,11 +81,6 @@ public class WebSecurityConfiguration {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public ExceptionHandlingFilter exceptionHandlingFilter() {
-        return new ExceptionHandlingFilter();
     }
 
     @Bean

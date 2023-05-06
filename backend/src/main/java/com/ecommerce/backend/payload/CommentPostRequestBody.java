@@ -16,7 +16,6 @@ public class CommentPostRequestBody {
     private String text;
 
     @NotNull
-    @NotBlank
     private Integer rating;
 
     @NotNull

@@ -3,7 +3,7 @@ package com.ecommerce.backend.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -11,27 +11,27 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderId;
+    private Integer orderId;
 
     @Column
-    private Date orderedDate;
+    private LocalDate orderedDate;
 
     @Column
     private double totalPrice;
 
     @ManyToOne
-    @JoinColumn(name = "userOrders")
+    @JoinColumn(name = "user_orders", referencedColumnName = "userId")
     private User customer;
 
     private boolean closed;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
     private List<OrderDetails> orderDetailsId;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Shipment shipment;
 }

@@ -14,7 +14,7 @@ public class Shipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int shipmentId;
+    private Integer shipmentId;
 
     @Column
     private boolean delivered;
@@ -22,6 +22,6 @@ public class Shipment {
     @Column
     private Date expectedDeliveryDate;
     @OneToOne
-    @JoinColumn(name = "order")
-    private Order order;
+    @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
+    private Orders orders;
 }

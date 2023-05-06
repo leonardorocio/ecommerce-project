@@ -1,5 +1,6 @@
 package com.ecommerce.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,20 +13,17 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderDetailsId;
+    private Integer orderDetailsId;
 
     @Column
     private int quantity;
 
-    @Column
-    private double unitPrice;
-
+    @ManyToOne
+    @JoinColumn(name = "order_id", referencedColumnName = "orderId")
+    @JsonIgnore
+    private Orders orders;
 
     @ManyToOne
-    @JoinColumn(name = "orderId")
-    private Order order;
-
-    @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id", referencedColumnName = "productId")
     private Product product;
 }

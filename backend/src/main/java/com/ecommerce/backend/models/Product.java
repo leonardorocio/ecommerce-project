@@ -21,7 +21,7 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int productId;
+    private Integer productId;
 
     @NotNull
     @NotBlank
@@ -41,7 +41,7 @@ public class Product {
     private double discount = 1.0;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
 
     @OneToMany(mappedBy = "productRated", cascade = CascadeType.ALL)

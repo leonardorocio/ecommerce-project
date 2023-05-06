@@ -25,7 +25,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int userId;
+    private Integer userId;
 
     @NotNull
     @NotBlank
@@ -45,7 +45,7 @@ public class User {
 
     @OneToMany(mappedBy = "customer")
     @JsonIgnore
-    private List<Order> userOrders;
+    private List<Orders> userOrders;
 
     @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL)
     @JsonIgnore

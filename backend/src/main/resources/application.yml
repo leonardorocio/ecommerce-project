@@ -1,0 +1,28 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/ecommerce_v2
+    password: ''
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+server:
+  port: 8080
+  error:
+    path: "/error"
+    include-stacktrace: never
+    include-message: never
+    whitelabel:
+      enabled: false
+
+
+jwt:
+  secret: '"2A472D4A614E645267556B58703273357638792F423F4528482B4D6250655368"'
+  expiration: '700000'

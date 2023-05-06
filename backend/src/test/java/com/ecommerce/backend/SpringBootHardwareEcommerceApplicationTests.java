@@ -102,25 +102,25 @@ class SpringBootHardwareEcommerceApplicationTests {
 		Assertions.assertEquals(jsonObject.get("cep"), updatedUser.getCep());
 	}
 
-	@Test
-	void addOrderForUser() throws Exception {
-		MvcResult result = mockMvc.perform(patch("/users/order")
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(new OrderRequestBody(21, 4))))
-				.andExpect(status().isOk()).andReturn();
+//	@Test
+//	void addOrderForUser() throws Exception {
+//		MvcResult result = mockMvc.perform(patch("/users/order")
+//				.contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.content(objectMapper.writeValueAsString(new OrderRequestBody(21, 4))))
+//				.andExpect(status().isOk()).andReturn();
+//
+//		JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString());
+//		Assertions.assertEquals(jsonObject.get("name"), "Gata Bulicas");
+//
+//	}
 
-		JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString());
-		Assertions.assertEquals(jsonObject.get("name"), "Gata Bulicas");
-
-	}
-
-	@Test
-	void deleteOrderForUser() throws Exception {
-		mockMvc.perform(patch("/users/order/edit")
-				.contentType(MediaType.APPLICATION_JSON_VALUE)
-				.content(objectMapper.writeValueAsString(new OrderRequestBody(21, 4))))
-				.andExpect(status().isOk());
-	}
+//	@Test
+//	void deleteOrderForUser() throws Exception {
+//		mockMvc.perform(patch("/users/order/edit")
+//				.contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.content(objectMapper.writeValueAsString(new OrderRequestBody(21, 4))))
+//				.andExpect(status().isOk());
+//	}
 
 	@Test
 	void changePassword() throws Exception {

@@ -27,9 +27,6 @@ public class JWTGenerator {
     @Value("${jwt.expiration}")
     public long JWT_EXPIRATION;
 
-    @Autowired
-    private RestExceptionHandler restExceptionHandler;
-
     @Value("${jwt.secret}")
     public String JWT_SECRET;
     public String generateToken(UserDetails userDetails) {
