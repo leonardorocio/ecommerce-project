@@ -3,15 +3,12 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.mapper.OrderDetailsMapper;
-import com.ecommerce.backend.mapper.OrderMapper;
 import com.ecommerce.backend.mapper.PatchMapper;
 import com.ecommerce.backend.models.OrderDetails;
-import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.payload.OrderDetailsRequestBody;
 import com.ecommerce.backend.repository.OrderDetailsRepository;
 import java.util.List;
 
-import jakarta.persistence.criteria.Order;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

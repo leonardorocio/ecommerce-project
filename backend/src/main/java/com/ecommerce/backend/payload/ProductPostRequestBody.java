@@ -18,8 +18,10 @@ public class ProductPostRequestBody {
     @NotNull
     double price;
 
+    @NotNull
     int stock;
 
+    @NotNull
     double discount;
 
     @NotNull

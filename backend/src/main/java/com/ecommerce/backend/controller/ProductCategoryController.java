@@ -4,6 +4,7 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.models.ProductCategory;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.services.ProductCategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +32,7 @@ public class ProductCategoryController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProductCategory> updateProductCategory(
-            @RequestBody ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {
+            @RequestBody @Valid ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {
         return ResponseEntity.ok(productCategoryService.updateProductCategory(productCategoryRequestBody, id));
     }
 

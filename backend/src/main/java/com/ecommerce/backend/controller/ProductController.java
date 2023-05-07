@@ -66,10 +66,10 @@ public class ProductController {
         return new ResponseEntity<String>("Produto deletado com sucesso", HttpStatus.NO_CONTENT);
     }
 
-    @PatchMapping(path = "/{id}")
-    public ResponseEntity<Product> setProductPrice(@RequestBody @Valid ProductPriceRequestBody productPriceRequestBody,
-                                                   @PathVariable Integer id) {
-        return ResponseEntity.ok(productService.setProductPrice(productPriceRequestBody, id));
-    }
+//    @PatchMapping(path = "/{id}")
+//    public ResponseEntity<Product> setProductPrice(@RequestBody @Valid ProductPriceRequestBody productPriceRequestBody,
+//                                                   @PathVariable Integer id) {
+//        return ResponseEntity.ok(productService.setProductPrice(productPriceRequestBody, id));
+//    }
 
 }

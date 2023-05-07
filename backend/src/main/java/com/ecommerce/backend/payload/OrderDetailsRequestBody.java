@@ -17,6 +17,7 @@ public class OrderDetailsRequestBody {
     @NotNull
     private int productId;
 
+    @NotNull
     private int quantity;
 
 }

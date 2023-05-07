@@ -49,7 +49,7 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Integer id) {
-        return new ResponseEntity<String>("Usuário deletado com sucesso", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("Usuário deletado com sucesso", HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/change_password/{id}")
