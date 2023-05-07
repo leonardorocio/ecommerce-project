@@ -30,7 +30,7 @@ public class OrderMapper {
     public Orders mapToOrderPatch(OrderRequestBody orderRequestBody) {
         Orders mappedOrders = Orders.builder()
                 .closed(orderRequestBody.isClosed())
-                .totalPrice(orderRequestBody.getTotalPrice())
+                .totalPrice(0)
 //                .shipment(null)
 //                .orderDetailsId(null)
                 .build();

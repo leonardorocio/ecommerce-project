@@ -25,7 +25,7 @@ public class Shipment {
 
     @Column
     private Date expectedDeliveryDate;
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
     private Orders orders;
 }

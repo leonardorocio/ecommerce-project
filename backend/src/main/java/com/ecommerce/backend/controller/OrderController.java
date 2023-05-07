@@ -29,6 +29,16 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Orders>> getUsersOrders(@PathVariable int id) {
+        return ResponseEntity.ok(orderService.getOrdersByUser(id));
+    }
+
+    @GetMapping("/open")
+    public ResponseEntity<List<Orders>> getOpenOrders() {
+        return ResponseEntity.ok(orderService.getOpenOrders());
+    }
+
     @PostMapping
     public ResponseEntity<Orders> postOrder(@RequestBody @Valid OrderRequestBody orderRequestBody) {
         return new ResponseEntity<>(orderService.postOrder(orderRequestBody), HttpStatus.CREATED);

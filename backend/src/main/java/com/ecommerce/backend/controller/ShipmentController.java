@@ -27,15 +27,15 @@ public class ShipmentController {
         return ResponseEntity.ok(shipmentService.getShipmentById(id));
     }
 
+    @GetMapping("/open")
+    public ResponseEntity<List<Shipment>> getOnGoingShipments() {
+        return ResponseEntity.ok(shipmentService.getOnGoingShipments());
+    }
+
+
     @PostMapping
     public ResponseEntity<Shipment> postShipment(@RequestBody @Valid ShipmentRequestBody shipmentRequestBody) {
         return new ResponseEntity<>(shipmentService.postShipment(shipmentRequestBody), HttpStatus.CREATED);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteShipment(@PathVariable int id) {
-        shipmentService.deleteShipment(id);
-        return new ResponseEntity<>("Shipment deleted succesfully", HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")

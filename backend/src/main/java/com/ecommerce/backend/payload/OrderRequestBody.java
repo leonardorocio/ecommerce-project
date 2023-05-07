@@ -14,12 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequestBody {
 
-    @NotEmpty
-    private double totalPrice;
-
     private boolean closed;
 
-    @NotEmpty
+    @NotNull
     private int customerId;
 
     private int shipmentId;

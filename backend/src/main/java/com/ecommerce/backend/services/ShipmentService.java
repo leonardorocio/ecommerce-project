@@ -5,11 +5,13 @@ import com.ecommerce.backend.mapper.ShipmentMapper;
 import com.ecommerce.backend.models.Shipment;
 import com.ecommerce.backend.payload.ShipmentRequestBody;
 import com.ecommerce.backend.repository.ShipmentRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Log4j2
 public class ShipmentService {
 
     @Autowired
@@ -20,6 +22,11 @@ public class ShipmentService {
 
     public List<Shipment> getShipments() {
         return shipmentRepository.findAll();
+    }
+
+    public List<Shipment> getOnGoingShipments() {
+        return shipmentRepository.findAllOnGoingShipments().orElseThrow(() ->
+                new ResourceNotFoundException("No on going shipments"));
     }
 
     public Shipment getShipmentById(int id) {
@@ -33,13 +40,16 @@ public class ShipmentService {
     }
 
     public Shipment updateShipment(ShipmentRequestBody shipmentRequestBody, int id) {
+        Shipment originalShipment = getShipmentById(id);
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);
-        updatedShipment.setShipmentId(id);
+        updatedShipment.setShipmentId(originalShipment.getShipmentId());
+        log.info(updatedShipment.getShipmentId());
         return shipmentRepository.save(updatedShipment);
     }
 
     public void deleteShipment(int id) {
         Shipment toDeleteShipment = getShipmentById(id);
+        log.info(toDeleteShipment.getShipmentId());
         shipmentRepository.delete(toDeleteShipment);
     }
 }
