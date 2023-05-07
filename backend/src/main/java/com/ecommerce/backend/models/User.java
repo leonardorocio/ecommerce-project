@@ -29,18 +29,22 @@ public class User {
 
     @NotNull
     @NotBlank
+    @Column
     private String password;
 
     @NotNull
     @NotBlank
+    @Column
     private String name;
 
     @Column(unique = true)
     @Email
     private String email;
 
+    @Column
     private Date birthDate;
 
+    @Column
     private String cep;
 
     @OneToMany(mappedBy = "customer")

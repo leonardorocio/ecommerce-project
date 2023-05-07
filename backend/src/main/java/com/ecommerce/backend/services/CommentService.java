@@ -7,20 +7,26 @@ import com.ecommerce.backend.repository.CommentRepository;
 import com.ecommerce.backend.payload.CommentPostRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 @Log4j2
 public class CommentService {
-    private final CommentRepository commentRepository;
-    private final UserService userService;
-    private final ProductService productService;
 
-    private final CommentMapper commentMapper;
+    @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProductService productService;
+    @Autowired
+    private CommentMapper commentMapper;
 
     public Comment getCommentById(Integer id) {
         return commentRepository.findById(id).orElseThrow(

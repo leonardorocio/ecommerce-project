@@ -2,6 +2,7 @@ package com.ecommerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -19,15 +20,19 @@ public class Orders {
     private Integer orderId;
 
     @Column
+    @NotNull
     private LocalDate orderedDate;
 
     @Column
+    @NotNull
     private double totalPrice;
 
     @ManyToOne
     @JoinColumn(name = "user_orders", referencedColumnName = "userId")
     private User customer;
 
+    @Column
+    @NotNull
     private boolean closed;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)

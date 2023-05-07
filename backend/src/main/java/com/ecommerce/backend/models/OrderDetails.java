@@ -20,6 +20,10 @@ public class OrderDetails {
     @NotNull
     private int quantity;
 
+    @Column
+    @NotNull
+    private Double unitPrice;
+
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "orderId")
     @JsonIgnore

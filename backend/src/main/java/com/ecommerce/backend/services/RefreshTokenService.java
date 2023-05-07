@@ -5,6 +5,7 @@ import com.ecommerce.backend.models.RefreshToken;
 import com.ecommerce.backend.repository.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,14 +15,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@RequiredArgsConstructor
 public class RefreshTokenService {
 
     @Value("${jwt.expiration}")
     private Integer refreshTokenDuration;
 
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final UserService userService;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+
+    @Autowired
+    private  UserService userService;
 
     public Optional<RefreshToken> findByToken(String token) {
         return refreshTokenRepository.findByToken(token);

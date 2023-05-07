@@ -25,19 +25,24 @@ public class Product {
 
     @NotNull
     @NotBlank
+    @Column
     private String name;
 
     @NotNull
     @NotBlank
+    @Column
     private String description;
 
     @NotNull
+    @Column
     private double price;
 
     @NotNull
+    @Column
     private int stock;
 
     @Column(columnDefinition = "float default 1.0")
+    @NotNull
     private double discount = 1.0;
 
     @JsonIgnore
@@ -51,5 +56,6 @@ public class Product {
     @JoinColumn(name = "productCategory")
     private ProductCategory productCategory;
 
+    @Column
     private String imageURL;
 }

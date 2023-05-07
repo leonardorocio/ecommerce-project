@@ -1,5 +1,6 @@
 package com.ecommerce.backend.mapper;
 
+import com.ecommerce.backend.models.OrderDetails;
 import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.services.UserService;
@@ -20,9 +21,6 @@ public class OrderMapper {
                 .orderedDate(LocalDate.now())
                 .closed(false)
                 .customer(userService.getUserById(orderRequestBody.getCustomerId()))
-                .totalPrice(0.0)
-                .shipment(null)
-                .orderDetailsId(null)
                 .build();
         return mappedOrders;
     }
@@ -30,9 +28,6 @@ public class OrderMapper {
     public Orders mapToOrderPatch(OrderRequestBody orderRequestBody) {
         Orders mappedOrders = Orders.builder()
                 .closed(orderRequestBody.isClosed())
-                .totalPrice(0)
-//                .shipment(null)
-//                .orderDetailsId(null)
                 .build();
         return mappedOrders;
     }

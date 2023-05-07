@@ -7,16 +7,19 @@ import com.ecommerce.backend.repository.ProductCategoryRepository;
 import com.ecommerce.backend.repository.ProductRepository;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class ProductCategoryService {
 
-    private final ProductCategoryRepository productCategoryRepository;
-    private final ProductRepository productRepository;
+    @Autowired
+    private ProductCategoryRepository productCategoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<ProductCategory> getProductCategories() {
         return productCategoryRepository.findAll();

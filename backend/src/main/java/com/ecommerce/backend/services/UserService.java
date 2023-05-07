@@ -11,6 +11,7 @@ import com.ecommerce.backend.payload.PasswordRequestBody;
 import com.ecommerce.backend.payload.UserPostRequestBody;
 
 import com.ecommerce.backend.payload.UserPatchRequestBody;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 @Log4j2
 public class UserService {
 
@@ -30,6 +30,7 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
     private ProductService productService;
 
@@ -65,6 +66,7 @@ public class UserService {
     }
 
 
+    @Transactional(rollbackOn = Exception.class)
     public void updateUserPassword(PasswordRequestBody passwordRequestBody, Integer id) {
         User user = getUserById(id);
         if (passwordRequestBody.getEmail().equals(user.getEmail())) {

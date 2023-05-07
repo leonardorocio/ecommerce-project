@@ -23,18 +23,20 @@ public class Comment {
 
     @NotNull
     @NotBlank
+    @Column
     private String text;
 
     @NotNull
+    @Column
     private Integer rating;
 
     @ManyToOne
-    @JoinColumn(name = "productId")
+    @JoinColumn(name = "product_id", referencedColumnName = "productId")
     @JsonIgnore
     private Product productRated;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "userId")
     @JsonIgnore
     private User userOwner;
 }

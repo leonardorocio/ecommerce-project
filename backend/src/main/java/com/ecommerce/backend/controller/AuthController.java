@@ -2,11 +2,8 @@ package com.ecommerce.backend.controller;
 
 import com.ecommerce.backend.configuration.CustomUserDetails;
 import com.ecommerce.backend.configuration.JWTGenerator;
-import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.exceptions.RefreshTokenException;
 import com.ecommerce.backend.models.RefreshToken;
-import com.ecommerce.backend.models.User;
-import com.ecommerce.backend.payload.AuthRequestBody;
 import com.ecommerce.backend.payload.PasswordRequestBody;
 import com.ecommerce.backend.payload.RefreshTokenRequestBody;
 import com.ecommerce.backend.payload.RefreshTokenResponse;
@@ -20,9 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

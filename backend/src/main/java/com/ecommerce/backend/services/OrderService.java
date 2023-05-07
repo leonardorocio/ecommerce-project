@@ -61,6 +61,12 @@ public class OrderService {
         return orderRepository.save(originalOrders);
     }
 
+    public void updateOrderTotalPrice(int id, double totalPrice) {
+        Orders order = getOrderById(id);
+        order.setTotalPrice(order.getTotalPrice() + totalPrice);
+        orderRepository.updateTotalPrice(id, order.getTotalPrice());
+    }
+
     public void deleteOrder(int id) {
         Orders ordersToDelete = getOrderById(id);
         orderRepository.delete(ordersToDelete);

@@ -11,19 +11,23 @@ import com.ecommerce.backend.payload.ProductPostRequestBody;
 import com.ecommerce.backend.payload.ProductPriceRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 @Log4j2
 public class ProductService {
-    private final ProductRepository productRepository;
 
-    private final ProductMapper productMapper;
+    @Autowired
+    private ProductRepository productRepository;
 
-    private final PatchMapper patchMapper;
+    @Autowired
+    private ProductMapper productMapper;
+
+    @Autowired
+    private PatchMapper patchMapper;
 
     public List<Product> getProducts() {
         return productRepository.findAll();
