@@ -3,6 +3,7 @@ package com.ecommerce.backend.payload;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ public class ShipmentRequestBody {
     private boolean delivered;
 
     @NotNull
-    private Date expectedDeliveryDate;
+    private LocalDate expectedDeliveryDate;
 
     @NotNull
     private int orderId;

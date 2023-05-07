@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -28,7 +29,7 @@ public class Shipment {
 
     @Column
     @NotNull
-    private Date expectedDeliveryDate;
+    private LocalDate expectedDeliveryDate;
     @OneToOne
     @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
     private Orders orders;

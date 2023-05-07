@@ -34,9 +34,9 @@ public class OrderDetailsController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteOrderDetails(@PathVariable int id) {
+    public ResponseEntity<Void> deleteOrderDetails(@PathVariable int id) {
         orderDetailsService.deleteOrderDetails(id);
-        return new ResponseEntity<String>("Order details deleted successfully", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping("/{id}")

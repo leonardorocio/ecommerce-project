@@ -7,4 +7,5 @@ public class ProductPriceRequestBody {
 
     double price;
     int stock;
+    double discount;
 }

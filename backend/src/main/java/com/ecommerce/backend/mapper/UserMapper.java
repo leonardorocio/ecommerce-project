@@ -6,16 +6,18 @@ import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.UserPatchRequestBody;
 import com.ecommerce.backend.payload.UserPostRequestBody;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class UserMapper {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public User mapToUser(UserPostRequestBody userPostRequestBody) {
         if (validateUser(userPostRequestBody)) {

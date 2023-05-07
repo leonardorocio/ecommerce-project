@@ -36,9 +36,9 @@ public class ProductCategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProductCategory(
+    public ResponseEntity<Void> deleteProductCategory(
             @RequestBody ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {
         productCategoryService.deleteProductCategory(id);
-        return new ResponseEntity<>("Categoria foi deletada com sucesso", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

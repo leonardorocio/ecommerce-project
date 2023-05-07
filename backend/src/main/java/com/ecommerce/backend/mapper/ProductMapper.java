@@ -6,13 +6,14 @@ import com.ecommerce.backend.payload.ProductPostRequestBody;
 import com.ecommerce.backend.payload.ProductPriceRequestBody;
 import com.ecommerce.backend.services.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class ProductMapper {
 
-    private final ProductCategoryService productCategoryService;
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
@@ -20,8 +21,8 @@ public class ProductMapper {
                     .price(productPostRequestBody.getPrice())
                     .description(productPostRequestBody.getDescription())
                     .name(productPostRequestBody.getName())
-                    .stock(1)
-                    .discount(1.0)
+                    .stock(productPostRequestBody.getStock())
+                    .discount(productPostRequestBody.getDiscount())
                     .productCategory(
                             productCategoryService.getCategoryById(productPostRequestBody.getCategory_id())
                     )
@@ -32,11 +33,15 @@ public class ProductMapper {
     }
 
     public Product mapToProduct(ProductPriceRequestBody productPriceRequestBody) {
-        Product product = Product.builder()
-                .price(productPriceRequestBody.getPrice())
-                .stock(productPriceRequestBody.getStock())
-                .build();
-        return product;
+        if (validateProduct(productPriceRequestBody)) {
+            Product product = Product.builder()
+                    .price(productPriceRequestBody.getPrice())
+                    .stock(productPriceRequestBody.getStock())
+                    .discount(productPriceRequestBody.getDiscount())
+                    .build();
+            return product;
+        }
+        return null;
     }
 
     public boolean validateProduct(ProductPostRequestBody productPostRequestBody) {
@@ -47,6 +52,19 @@ public class ProductMapper {
             throw new BadRequestException("Cannot create new product with empty stock");
         }
         if (productPostRequestBody.getPrice() <= 0.0) {
+            throw new BadRequestException("Cannot create product to be sold for free");
+        }
+        return true;
+    }
+
+    public boolean validateProduct(ProductPriceRequestBody productPriceRequestBody) {
+        if (productPriceRequestBody.getDiscount() <= 0.0 || productPriceRequestBody.getDiscount() > 1.0) {
+            throw new BadRequestException("Discount multiplier cannot be 0 or greater than 1");
+        }
+        if (productPriceRequestBody.getStock() <= 0) {
+            throw new BadRequestException("Cannot create new product with empty stock");
+        }
+        if (productPriceRequestBody.getPrice() <= 0.0) {
             throw new BadRequestException("Cannot create product to be sold for free");
         }
         return true;
