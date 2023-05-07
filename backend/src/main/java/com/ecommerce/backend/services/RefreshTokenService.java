@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.naming.AuthenticationException;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -36,7 +37,7 @@ public class RefreshTokenService {
         return refreshTokenRepository.save(refreshToken);
     }
 
-    public RefreshToken verifyExpiration(RefreshToken token) {
+    public RefreshToken verifyExpiration(RefreshToken token){
         if (token.getExpiryDate().compareTo(Instant.now()) < 0) {
             refreshTokenRepository.delete(token);
             throw new RefreshTokenException("Refresh token invalid");

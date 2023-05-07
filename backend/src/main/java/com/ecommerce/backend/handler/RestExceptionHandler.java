@@ -54,7 +54,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
-    @ExceptionHandler({AuthenticationException.class, AuthenticationCredentialsNotFoundException.class})
+    @ExceptionHandler({AuthenticationException.class, AuthenticationCredentialsNotFoundException.class, RefreshTokenException.class})
     public ResponseEntity<BadRequestExceptionDetails> handlerAuthException(Exception authException) {
         return new ResponseEntity<>(
                 BadRequestExceptionDetails.builder()
@@ -95,19 +95,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .details(RNFE.getMessage())
                         .developerMessage(RNFE.getClass().getName())
                         .build(), HttpStatus.NOT_FOUND
-        );
-    }
-
-    @ExceptionHandler(RefreshTokenException.class)
-    public ResponseEntity<BadRequestExceptionDetails> handlerRefreshTokenException(RefreshTokenException RTE) {
-        return new ResponseEntity<>(
-                BadRequestExceptionDetails.builder()
-                        .timestamp(LocalDateTime.now())
-                        .status(HttpStatus.UNAUTHORIZED.value())
-                        .title("Invalid Refresh Token")
-                        .details(RTE.getMessage())
-                        .developerMessage(RTE.getClass().getName())
-                        .build(), HttpStatus.UNAUTHORIZED
         );
     }
 
