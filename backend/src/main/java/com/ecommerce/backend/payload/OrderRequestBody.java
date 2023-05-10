@@ -19,5 +19,6 @@ public class OrderRequestBody {
     @NotNull
     private int customerId;
 
+    @NotNull
     private int shipmentId;
 }

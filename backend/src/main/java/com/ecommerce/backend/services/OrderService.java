@@ -3,7 +3,9 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.mapper.OrderMapper;
 import com.ecommerce.backend.mapper.PatchMapper;
+import com.ecommerce.backend.models.OrderDetails;
 import com.ecommerce.backend.models.Orders;
+import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.repository.OrderRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -30,9 +33,6 @@ public class OrderService {
     public List<Orders> getOrders() {
         return orderRepository.findAll();
     }
-
-
-    // TODO getOrdersProducts(int id) endpoint order/user/{id}
 
     // Talvez mandar para user service?
     public List<Orders> getOrdersByUser(int userId) {

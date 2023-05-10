@@ -3,33 +3,32 @@ package com.ecommerce.backend.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.Instant;
+import java.util.List;
 
 @Entity
-@Builder
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class RefreshToken {
+public class Shipper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer refreshTokenId;
+    private Integer shipperId;
 
+    @NotNull
+    private String name;
 
-    @OneToOne(mappedBy = "token")
+    @NotNull
+    private double fixedTax;
+
+    @OneToMany(mappedBy = "shipper", cascade = CascadeType.ALL)
     @JsonIgnore
-    private User user;
-
-    @Column(nullable = false)
-    private Instant expiryDate;
-
-    @Column(nullable = false, unique = true)
-    private String token;
+    private List<Shipment> shipmentList;
 }

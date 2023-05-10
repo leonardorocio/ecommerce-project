@@ -1,6 +1,7 @@
 package com.ecommerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -21,6 +22,7 @@ import java.util.List;
 @Entity
 @Builder
 @Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,13 +49,20 @@ public class User {
     @Column
     private String cep;
 
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Orders> userOrders;
 
-    @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Address> addressList;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @JoinColumn(name = "refresh_token", referencedColumnName = "refreshTokenId")
+    private RefreshToken token;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {

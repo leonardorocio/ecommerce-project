@@ -1,6 +1,7 @@
 package com.ecommerce.backend.controller;
 
 import com.ecommerce.backend.models.Orders;
+import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.services.OrderService;
 import jakarta.validation.Valid;

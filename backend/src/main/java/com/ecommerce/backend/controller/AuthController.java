@@ -9,6 +9,7 @@ import com.ecommerce.backend.payload.RefreshTokenRequestBody;
 import com.ecommerce.backend.payload.RefreshTokenResponse;
 import com.ecommerce.backend.services.CustomUserDetailsService;
 import com.ecommerce.backend.services.RefreshTokenService;
+import com.ecommerce.backend.services.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -30,6 +31,11 @@ public class AuthController {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
+
+
     @Autowired
     private JWTGenerator jwtGenerator;
 
@@ -47,6 +53,7 @@ public class AuthController {
 
         log.info(userDetails.getUserId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
+        userService.updateUserRefreshToken(userService.getUserById(userDetails.getUserId()), refreshToken);
         return ResponseEntity.ok(new RefreshTokenResponse(token, refreshToken.getToken()));
     }
 
