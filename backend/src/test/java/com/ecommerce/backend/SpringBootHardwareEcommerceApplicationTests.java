@@ -73,7 +73,6 @@ class SpringBootHardwareEcommerceApplicationTests {
 				.email("gato.boulos" + randomInt + "@gmail.com")
 				.name("Gata Bulicas")
 				.birthDate(new Date())
-				.cep("89233740")
 				.build();
 
 		String passwordField = ",\"password\": \"Stringteste\"}";
@@ -88,7 +87,6 @@ class SpringBootHardwareEcommerceApplicationTests {
 	@Test
 	void updateUser() throws Exception {
 		User updatedUser = User.builder()
-				.cep("89235890")
 				.birthDate(new Date())
 				.name("Bartico Liberal")
 				.build();
@@ -98,8 +96,8 @@ class SpringBootHardwareEcommerceApplicationTests {
 				.content(objectMapper.writeValueAsString(updatedUser)))
 				.andExpect(status().isOk()).andReturn();
 
-		JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString());
-		Assertions.assertEquals(jsonObject.get("cep"), updatedUser.getCep());
+//		JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString());
+//		Assertions.assertEquals(jsonObject.get("cep"), updatedUser.getCep());
 	}
 
 //	@Test

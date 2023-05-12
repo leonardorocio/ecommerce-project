@@ -9,6 +9,12 @@ import com.ecommerce.backend.payload.RefreshTokenRequestBody;
 import com.ecommerce.backend.payload.RefreshTokenResponse;
 import com.ecommerce.backend.services.CustomUserDetailsService;
 import com.ecommerce.backend.services.RefreshTokenService;
+import com.ecommerce.backend.services.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Log4j2
+@Tag(name = "Authentication", description = "Describes the login and RefreshToken operations")
 public class AuthController {
 
     @Autowired
@@ -30,6 +37,11 @@ public class AuthController {
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
+
+    @Autowired
+    private UserService userService;
+
+
     @Autowired
     private JWTGenerator jwtGenerator;
 
@@ -38,6 +50,12 @@ public class AuthController {
 
     @PostMapping("/login")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
+    @Operation(summary = "Authenticates the user",
+            description = "Takes a PasswordRequestBody and authenticates them")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns the AccessToken and RefreshToken"),
+            @ApiResponse(responseCode = "401", description = "Authentication failed")
+    })
     public ResponseEntity<RefreshTokenResponse> login(@RequestBody @Valid PasswordRequestBody passwordRequestBody) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(passwordRequestBody.getEmail(),
@@ -47,10 +65,17 @@ public class AuthController {
 
         log.info(userDetails.getUserId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
+        userService.updateUserRefreshToken(userService.getUserById(userDetails.getUserId()), refreshToken);
         return ResponseEntity.ok(new RefreshTokenResponse(token, refreshToken.getToken()));
     }
 
     @PostMapping("/refreshtoken")
+    @Operation(summary = "Returns to the user a new accessToken",
+            description = "Takes the user's RefreshToken and then returns the new accessToken")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Returns the AccessToken and RefreshToken"),
+            @ApiResponse(responseCode = "401", description = "Invalid Token")
+    })
     public ResponseEntity<RefreshTokenResponse> getRefreshToken(@Valid @RequestBody RefreshTokenRequestBody requestBody)  {
         String refreshToken = requestBody.getRequestToken();
         return refreshTokenService.findByToken(refreshToken)

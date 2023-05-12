@@ -1,6 +1,7 @@
 package com.ecommerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Orders {
 
     @Id
@@ -27,7 +29,7 @@ public class Orders {
     @NotNull
     private double totalPrice;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_orders", referencedColumnName = "userId")
     private User customer;
 
@@ -39,6 +41,5 @@ public class Orders {
     private List<OrderDetails> orderDetailsId;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Shipment shipment;
 }

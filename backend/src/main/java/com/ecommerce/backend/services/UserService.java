@@ -4,6 +4,7 @@ import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.mapper.PatchMapper;
 import com.ecommerce.backend.mapper.UserMapper;
 import com.ecommerce.backend.models.Product;
+import com.ecommerce.backend.models.RefreshToken;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.OrderRequestBody;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -40,6 +42,10 @@ public class UserService {
     @Autowired
     private PatchMapper patchMapper;
 
+    @Autowired
+    @Lazy
+    private RefreshTokenService refreshTokenService;
+
     public List<User> getUsers() {
         return userRepository.findAll();
     }
@@ -50,7 +56,7 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("No id found"));
+        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("No user id found"));
     }
 
     public User updateUser(UserPatchRequestBody userPatchRequestBody, Integer id) {
@@ -60,11 +66,17 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void deleteUser(Integer id) {
         User user = getUserById(id);
+//        refreshTokenService.deleteByUserId(id);
         userRepository.delete(user);
     }
 
+    public void updateUserRefreshToken(User user, RefreshToken token) {
+        user.setToken(token);
+        userRepository.save(user);
+    }
 
     @Transactional(rollbackOn = Exception.class)
     public void updateUserPassword(PasswordRequestBody passwordRequestBody, Integer id) {

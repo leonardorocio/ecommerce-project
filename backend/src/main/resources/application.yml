@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/ecommerce_v2
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/ecommerce_v2?createDatabaseIfNotExist=true
     password: ''
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect

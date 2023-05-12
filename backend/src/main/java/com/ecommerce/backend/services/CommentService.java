@@ -3,6 +3,8 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.mapper.CommentMapper;
 import com.ecommerce.backend.models.Comment;
+import com.ecommerce.backend.models.Product;
+import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.CommentRepository;
 import com.ecommerce.backend.payload.CommentPostRequestBody;
 import lombok.RequiredArgsConstructor;
@@ -35,15 +37,13 @@ public class CommentService {
     }
 
     public List<Comment> getCommentsByUser(Integer id) {
-        return commentRepository.getCommentsByUser(id).orElseThrow(
-                () -> new ResourceNotFoundException("No comments from this user")
-        );
+        User user = userService.getUserById(id);
+        return user.getComments();
     }
 
     public List<Comment> getCommentsByProduct(Integer id) {
-        return commentRepository.getCommentsByProduct(id).orElseThrow(
-                () -> new ResourceNotFoundException("There are no comments on this product")
-        );
+        Product product = productService.getProductById(id);
+        return product.getComments();
     }
 
     public Comment createComment(CommentPostRequestBody commentPostRequestBody) {

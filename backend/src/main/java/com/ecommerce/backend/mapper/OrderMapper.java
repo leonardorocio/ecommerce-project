@@ -16,7 +16,6 @@ public class OrderMapper {
     private UserService userService;
 
     public Orders mapToOrder(OrderRequestBody orderRequestBody) {
-        // TODO Arrumar esse mapper
         Orders mappedOrders = Orders.builder()
                 .orderedDate(LocalDate.now())
                 .closed(false)

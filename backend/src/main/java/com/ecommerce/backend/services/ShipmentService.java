@@ -43,7 +43,6 @@ public class ShipmentService {
         Shipment originalShipment = getShipmentById(id);
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);
         updatedShipment.setShipmentId(originalShipment.getShipmentId());
-        log.info(updatedShipment.getShipmentId());
         return shipmentRepository.save(updatedShipment);
     }
 

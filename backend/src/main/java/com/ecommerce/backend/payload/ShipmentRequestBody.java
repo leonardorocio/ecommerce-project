@@ -1,8 +1,10 @@
 package com.ecommerce.backend.payload;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -10,14 +12,27 @@ import java.util.Date;
 public class ShipmentRequestBody {
 
     @NotNull
+    @Schema(name = "ShippingPrice", description = "Shipment's price",
+            example = "20.00")
     private double shippingPrice;
 
     @NotNull
+    @Schema(name = "Delivered", description = "Specifies if the shipment is delivered or not. (Always starts with false)",
+            example = "false")
     private boolean delivered;
 
     @NotNull
-    private Date expectedDeliveryDate;
+    @Schema(name = "ExpectedDeliveryDate", description = "The shipments's expected delivery date",
+            example = "2024-01-01")
+    private LocalDate expectedDeliveryDate;
 
     @NotNull
+    @Schema(name = "OrderId", description = "The Id of the Order related to the Shipment",
+            example = "1")
     private int orderId;
+
+    @NotNull
+    @Schema(name = "ShipperId", description = "The Id of the Shipper related to the Shipment",
+            example = "1")
+    private int shipperId;
 }

@@ -3,16 +3,15 @@ package com.ecommerce.backend.mapper;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
-import com.ecommerce.backend.payload.ProductPriceRequestBody;
 import com.ecommerce.backend.services.ProductCategoryService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class ProductMapper {
 
-    private final ProductCategoryService productCategoryService;
+    @Autowired
+    private ProductCategoryService productCategoryService;
 
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
@@ -20,8 +19,8 @@ public class ProductMapper {
                     .price(productPostRequestBody.getPrice())
                     .description(productPostRequestBody.getDescription())
                     .name(productPostRequestBody.getName())
-                    .stock(1)
-                    .discount(1.0)
+                    .stock(productPostRequestBody.getStock())
+                    .discount(productPostRequestBody.getDiscount())
                     .productCategory(
                             productCategoryService.getCategoryById(productPostRequestBody.getCategory_id())
                     )
@@ -29,14 +28,6 @@ public class ProductMapper {
             return product;
         }
         return null;
-    }
-
-    public Product mapToProduct(ProductPriceRequestBody productPriceRequestBody) {
-        Product product = Product.builder()
-                .price(productPriceRequestBody.getPrice())
-                .stock(productPriceRequestBody.getStock())
-                .build();
-        return product;
     }
 
     public boolean validateProduct(ProductPostRequestBody productPostRequestBody) {
@@ -51,4 +42,5 @@ public class ProductMapper {
         }
         return true;
     }
+
 }

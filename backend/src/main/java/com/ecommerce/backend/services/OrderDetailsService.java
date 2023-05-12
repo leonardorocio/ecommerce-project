@@ -34,24 +34,17 @@ public class OrderDetailsService {
         return orderDetailsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No details available with this id"));
     }
-
     @Transactional(rollbackOn = Exception.class)
     public OrderDetails postOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
         OrderDetails orderDetails = orderDetailsMapper.mapToOrderDetails(orderDetailsRequestBody);
-        int orderId = orderDetails.getOrders().getOrderId();
-        int productId = orderDetails.getProduct().getProductId();
-        if (orderDetailsRepository.existsOrderWithSameProduct(orderId, productId) != null) {
-            throw new BadRequestException(
-                    "Cannot create new order details for the same product and order. Please update the quantity");
-        }
         return orderDetailsRepository.save(orderDetails);
     }
 
     public OrderDetails updateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, int id) {
         OrderDetails originalOrderDetails = getOrderDetailsById(id);
-        OrderDetails toUpdateOrderDetails = orderDetailsMapper.mapToPatchOrderDetails(orderDetailsRequestBody);
-        patchMapper.mapToPatchRequest(originalOrderDetails, toUpdateOrderDetails);
-        return orderDetailsRepository.save(originalOrderDetails);
+        OrderDetails updatedOrderDetails = orderDetailsMapper.mapToOrderDetails(orderDetailsRequestBody);
+        updatedOrderDetails.setOrderDetailsId(originalOrderDetails.getOrderDetailsId());
+        return orderDetailsRepository.save(updatedOrderDetails);
     }
 
     public void deleteOrderDetails(int id) {
