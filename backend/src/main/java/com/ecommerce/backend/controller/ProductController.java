@@ -66,7 +66,7 @@ public class ProductController {
     @Operation(summary = "Create a new Product",
             description = "Takes a ProductPostRequestBody, maps to Product and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Product saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the Product saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

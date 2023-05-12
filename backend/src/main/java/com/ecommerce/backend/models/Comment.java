@@ -35,10 +35,12 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id", referencedColumnName = "productId")
     @JsonIgnore
+    @NotNull
     private Product productRated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
     @JsonIgnore
+    @NotNull
     private User userOwner;
 }

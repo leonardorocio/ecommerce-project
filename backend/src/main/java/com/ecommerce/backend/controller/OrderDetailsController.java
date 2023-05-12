@@ -52,7 +52,7 @@ public class OrderDetailsController {
     @Operation(summary = "Creates an OrderDetails",
             description = "Takes an OrderDetailsRequestBody, maps to an OrderDetails and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the orderDetails saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the orderDetails saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "404", description = "Order not found"),
             @ApiResponse(responseCode = "404", description = "Product not found"),

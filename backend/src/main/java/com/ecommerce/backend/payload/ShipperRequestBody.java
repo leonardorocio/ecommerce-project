@@ -11,12 +11,12 @@ public class ShipperRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "Name", description = "The shipper's name",
+    @Schema(name = "name", description = "The shipper's name",
             example = "Correios")
     private String name;
 
     @NotNull
-    @Schema(name = "FixedTax", description = "The Shipper's fixed tax for it's shipments",
+    @Schema(name = "fixedTax", description = "The Shipper's fixed tax for it's shipments",
             example = "10.00")
     private double fixedTax;
 }

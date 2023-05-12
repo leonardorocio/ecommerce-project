@@ -52,7 +52,7 @@ public class AddressController {
     @Operation(summary = "Creates a new address",
             description = "Receives an AddressRequestBody, maps it to an User and then saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the addresses saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the addresses saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid arguments"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")

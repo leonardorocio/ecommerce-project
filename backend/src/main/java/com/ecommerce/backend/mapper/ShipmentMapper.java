@@ -33,13 +33,17 @@ public class ShipmentMapper {
                     .orders(order)
                     .shipper(shipper)
                     .build();
-            orderService.updateOrderTotalPrice(order.getOrderId(), shipmentRequestBody.getShippingPrice());
+            orderService.updateOrderTotalPrice(order.getOrderId(), shipment.getShippingPrice());
             return shipment;
         }
         return null;
     }
 
     public boolean validateShipment(ShipmentRequestBody shipmentRequestBody, Orders orders) {
+        if (orders.getShipment() != null) {
+            throw new BadRequestException("Order already has a designated shipment");
+        }
+
         if (shipmentRequestBody.getExpectedDeliveryDate().isBefore(LocalDate.now()) ||
             shipmentRequestBody.getExpectedDeliveryDate().isBefore(orders.getOrderedDate())) {
             throw new BadRequestException("Expected delivery date cannot be before today or before ordering date");

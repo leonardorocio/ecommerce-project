@@ -42,7 +42,7 @@ public class ProductCategoryController {
     @Operation(summary = "Creates a ProductCategory",
             description = "Takes a ProductCategoryRequestBody, returns the productCategory saved in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the productCategory saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the productCategory saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

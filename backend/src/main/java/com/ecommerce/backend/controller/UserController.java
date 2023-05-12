@@ -34,10 +34,10 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    @Operation(summary = "Returns all the Shippers in the database",
-            description = "Takes no parameters, returns all the Shippers in the database")
+    @Operation(summary = "Returns all the Users in the database",
+            description = "Takes no parameters, returns all the Users in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shippers"),
+            @ApiResponse(responseCode = "200", description = "Returns the list of Users"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<List<User>> getUsers() {
@@ -48,7 +48,7 @@ public class UserController {
     @Operation(summary = "Creates a User",
             description = "Takes a UserPostRequestBody, maps to a User and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shippers"),
+            @ApiResponse(responseCode = "201", description = "Returns the user saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

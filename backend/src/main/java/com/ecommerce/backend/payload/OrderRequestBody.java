@@ -15,10 +15,10 @@ import java.util.List;
 @NoArgsConstructor
 public class OrderRequestBody {
 
-    @Schema(name = "Closed", description = "Specifies if the order is closed or not. If you're using a POST request for the order, it will always start with closed = false", example = "false")
+    @Schema(name = "closed", description = "Specifies if the order is closed or not. If you're using a POST request for the order, it will always start with closed = false", example = "false")
     private boolean closed;
 
     @NotNull
-    @Schema(name = "CustomerId", description = "The ID of the User related to the Order", example = "1")
+    @Schema(name = "customerId", description = "The ID of the User related to the Order", example = "1")
     private int customerId;
 }

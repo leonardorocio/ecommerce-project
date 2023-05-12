@@ -58,7 +58,7 @@ public class CommentController {
     @Operation(summary = "Posts a comment",
             description = "Takes a CommentRequestBody, maps to a Comment and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns comment saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns comment saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Argument"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "404", description = "Product not found"),

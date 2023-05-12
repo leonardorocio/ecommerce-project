@@ -39,10 +39,10 @@ public class ShipperController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Returns all the Shipments in the database",
-            description = "Takes no parameters, returns all the Shipments in the database")
+    @Operation(summary = "Returns a Shipper based on id",
+            description = "Takes a shipper's id and then returns the shipper")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shipments"),
+            @ApiResponse(responseCode = "200", description = "Returns a shipper based on id"),
             @ApiResponse(responseCode = "404", description = "Shipper not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -66,7 +66,7 @@ public class ShipperController {
     @Operation(summary = "Creates a new Shipper",
             description = "Takes a ShipperRequestBody, maps to Shipper and then saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shipments"),
+            @ApiResponse(responseCode = "201", description = "Returns the list of Shipments"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -88,7 +88,7 @@ public class ShipperController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates a Product",
+    @Operation(summary = "Updates a Shipper",
             description = "Takes a product's id and a ShipperRequestBody, maps to Shipper and saves in the database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),

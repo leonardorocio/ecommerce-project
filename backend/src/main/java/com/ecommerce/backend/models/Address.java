@@ -36,6 +36,7 @@ public class Address {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", referencedColumnName = "userId")
     @JsonIgnore
+    @NotNull
     private User user;
 
 }

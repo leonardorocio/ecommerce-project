@@ -25,8 +25,8 @@ public class OrderDetailsMapper {
     private OrderDetailsRepository orderDetailsRepository;
 
     public OrderDetails mapToOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
-        if (validateOrderDetails(orderDetailsRequestBody)) {
-            Product product = productService.getProductById(orderDetailsRequestBody.getProductId());
+        Product product = productService.getProductById(orderDetailsRequestBody.getProductId());
+        if (validateOrderDetails(orderDetailsRequestBody, product)) {
             OrderDetails orderDetails = OrderDetails.builder()
                     .orders(orderService.getOrderById(orderDetailsRequestBody.getOrderId()))
                     .product(product)
@@ -38,16 +38,12 @@ public class OrderDetailsMapper {
         return null;
     }
 
-    public OrderDetails mapToPatchOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
-        OrderDetails orderDetails = OrderDetails.builder()
-                .quantity(orderDetailsRequestBody.getQuantity())
-                .build();
-        return orderDetails;
-    }
-
-    public boolean validateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
+    public boolean validateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, Product product) {
         if (orderDetailsRequestBody.getQuantity() < 1) {
             throw new BadRequestException("Order details product quantity cannot be lower than 1.");
+        }
+        if (orderDetailsRequestBody.getQuantity() > product.getStock()) {
+            throw new BadRequestException("Quantity ordered cannot be greater the available stock for the product");
         }
         int orderId = orderDetailsRequestBody.getOrderId();
         int productId = orderDetailsRequestBody.getProductId();

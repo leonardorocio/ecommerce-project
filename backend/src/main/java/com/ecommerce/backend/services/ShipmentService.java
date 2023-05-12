@@ -5,6 +5,7 @@ import com.ecommerce.backend.mapper.ShipmentMapper;
 import com.ecommerce.backend.models.Shipment;
 import com.ecommerce.backend.payload.ShipmentRequestBody;
 import com.ecommerce.backend.repository.ShipmentRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,11 +35,13 @@ public class ShipmentService {
                 .orElseThrow(() -> new ResourceNotFoundException("No shipments found with this id"));
     }
 
+    @Transactional
     public Shipment postShipment(ShipmentRequestBody shipmentRequestBody) {
         Shipment shipment = shipmentMapper.mapToShipment(shipmentRequestBody);
         return shipmentRepository.save(shipment);
     }
 
+    @Transactional
     public Shipment updateShipment(ShipmentRequestBody shipmentRequestBody, int id) {
         Shipment originalShipment = getShipmentById(id);
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);

@@ -77,7 +77,7 @@ public class AuthController {
             @ApiResponse(responseCode = "401", description = "Invalid Token")
     })
     public ResponseEntity<RefreshTokenResponse> getRefreshToken(@Valid @RequestBody RefreshTokenRequestBody requestBody)  {
-        String refreshToken = requestBody.getRequestToken();
+        String refreshToken = requestBody.getRefreshToken();
         return refreshTokenService.findByToken(refreshToken)
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUser)

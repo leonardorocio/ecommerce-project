@@ -63,7 +63,7 @@ public class ShipmentController {
     @Operation(summary = "Creates a new Shipment in database",
             description = "Takes a ShipmentRequestBody, maps to Shipment and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Shipment saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the Shipment saved in the database"),
             @ApiResponse(responseCode = "404", description = "Order not found"),
             @ApiResponse(responseCode = "404", description = "Shipper not found"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
@@ -87,5 +87,18 @@ public class ShipmentController {
     public ResponseEntity<Shipment> updateShipment(@Valid @RequestBody ShipmentRequestBody shipmentRequestBody,
                                                    @PathVariable int id) {
         return ResponseEntity.ok(shipmentService.updateShipment(shipmentRequestBody, id));
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Deletes a Shipment",
+                description = "Takes a shipment's id and then deletes it")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Shipment deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Shipment not found"),
+            @ApiResponse(responseCode = "401", description = "Authentication failed")
+    })
+    public ResponseEntity<Void> deleteShipment(@PathVariable int id) {
+        shipmentService.deleteShipment(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

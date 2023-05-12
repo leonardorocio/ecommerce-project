@@ -10,6 +10,6 @@ public class ProductCategoryRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "Name", description = "ProductCategory's name", example = "CPU")
+    @Schema(name = "name", description = "ProductCategory's name", example = "CPU")
     String name;
 }
