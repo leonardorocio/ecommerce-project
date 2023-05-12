@@ -3,8 +3,10 @@ package com.ecommerce.backend.mapper;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.models.Shipment;
+import com.ecommerce.backend.models.Shipper;
 import com.ecommerce.backend.payload.ShipmentRequestBody;
 import com.ecommerce.backend.services.OrderService;
+import com.ecommerce.backend.services.ShipperService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,15 +19,21 @@ public class ShipmentMapper {
     @Autowired
     private OrderService orderService;
 
+    @Autowired
+    private ShipperService shipperService;
+
     public Shipment mapToShipment(ShipmentRequestBody shipmentRequestBody) {
         Orders order = orderService.getOrderById(shipmentRequestBody.getOrderId());
+        Shipper shipper = shipperService.getShipperById(shipmentRequestBody.getShipperId());
         if (validateShipment(shipmentRequestBody, order)) {
             Shipment shipment = Shipment.builder()
                     .delivered(shipmentRequestBody.isDelivered())
                     .expectedDeliveryDate(shipmentRequestBody.getExpectedDeliveryDate())
-                    .shippingPrice(shipmentRequestBody.getShippingPrice())
+                    .shippingPrice(shipmentRequestBody.getShippingPrice() + shipper.getFixedTax())
                     .orders(order)
+                    .shipper(shipper)
                     .build();
+            orderService.updateOrderTotalPrice(order.getOrderId(), shipmentRequestBody.getShippingPrice());
             return shipment;
         }
         return null;

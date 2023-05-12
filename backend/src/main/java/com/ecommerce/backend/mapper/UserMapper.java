@@ -26,7 +26,6 @@ public class UserMapper {
                     .name(userPostRequestBody.getName())
                     .birthDate(userPostRequestBody.getDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
-                    .cep(userPostRequestBody.getCep())
                     .build();
             return user;
         }
@@ -36,8 +35,7 @@ public class UserMapper {
     public User mapToUserPatch(UserPatchRequestBody userPatchRequestBody) {
         User user = User.builder()
                 .name(userPatchRequestBody.getName())
-                .cep(userPatchRequestBody.getCep())
-                .birthDate(userPatchRequestBody.getDate())
+                .birthDate(userPatchRequestBody.getBirthDate())
                 .build();
         return user;
     }

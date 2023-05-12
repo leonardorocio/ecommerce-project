@@ -8,8 +8,6 @@ import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.repository.ProductRepository;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
-import com.ecommerce.backend.payload.ProductPriceRequestBody;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,12 +59,12 @@ public class ProductService {
         productRepository.delete(toBeDeleted);
     }
 
-    public Product setProductPrice(ProductPriceRequestBody productPriceRequestBody, Integer id) {
-        Product originalProduct = getProductById(id);
-        Product newProductInfo = productMapper.mapToProduct(productPriceRequestBody);
-        patchMapper.mapToPatchRequest(originalProduct, newProductInfo);
-        return productRepository.save(originalProduct);
-    }
+//    public Product setProductPrice(ProductPriceRequestBody productPriceRequestBody, Integer id) {
+//        Product originalProduct = getProductById(id);
+//        Product newProductInfo = productMapper.mapToProduct(productPriceRequestBody);
+//        patchMapper.mapToPatchRequest(originalProduct, newProductInfo);
+//        return productRepository.save(originalProduct);
+//    }
 
     public List<Product> searchProduct(String name) {
         return productRepository.searchProduct(name).orElseThrow(

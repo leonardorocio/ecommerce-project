@@ -34,10 +34,12 @@ public class Shipment {
     private LocalDate expectedDeliveryDate;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
+    @NotNull
     @JsonIgnore
     private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipper", referencedColumnName = "shipperId")
+    @NotNull
     private Shipper shipper;
 }

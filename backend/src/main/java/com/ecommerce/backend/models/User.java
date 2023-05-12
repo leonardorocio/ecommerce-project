@@ -46,9 +46,6 @@ public class User {
     @Column
     private Date birthDate;
 
-    @Column
-    private String cep;
-
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Orders> userOrders;

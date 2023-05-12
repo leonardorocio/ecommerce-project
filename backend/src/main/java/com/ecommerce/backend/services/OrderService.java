@@ -56,9 +56,9 @@ public class OrderService {
 
     public Orders updateOrder(OrderRequestBody orderRequestBody, int id) {
         Orders originalOrders = getOrderById(id);
-        Orders updatedOrders = orderMapper.mapToOrderPatch(orderRequestBody);
-        patchMapper.mapToPatchRequest(originalOrders, updatedOrders);
-        return orderRepository.save(originalOrders);
+        Orders updatedOrders = orderMapper.mapToOrder(orderRequestBody);
+        updatedOrders.setOrderId(originalOrders.getOrderId());
+        return orderRepository.save(updatedOrders);
     }
 
     public void updateOrderTotalPrice(int id, double totalPrice) {
@@ -66,6 +66,8 @@ public class OrderService {
         order.setTotalPrice(order.getTotalPrice() + totalPrice);
         orderRepository.updateTotalPrice(id, order.getTotalPrice());
     }
+
+    // TODO IMPLEMENTAR closeOrder(int id)
 
     public void deleteOrder(int id) {
         Orders ordersToDelete = getOrderById(id);
