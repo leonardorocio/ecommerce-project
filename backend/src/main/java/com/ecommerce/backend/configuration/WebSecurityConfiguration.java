@@ -43,15 +43,15 @@ public class WebSecurityConfiguration {
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-//        httpSecurity
-//                .authorizeHttpRequests()
-//                .requestMatchers("/users/**").permitAll()
-//                .requestMatchers("/auth/**").permitAll()
-//                .requestMatchers("/error").permitAll()
-//                .requestMatchers("/swagger-ui").permitAll()
-//                .requestMatchers("/swagger-ui/**").permitAll()
-//                .requestMatchers("/h2-console/**").permitAll()
-//                .requestMatchers("/v3/**").permitAll();
+        httpSecurity
+                .authorizeHttpRequests()
+                .requestMatchers("/users/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
+                .requestMatchers("/error").permitAll()
+                .requestMatchers("/swagger-ui").permitAll()
+                .requestMatchers("/swagger-ui/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .requestMatchers("/v3/**").permitAll();
 
         httpSecurity
                 .cors().configurationSource(corsConfigurationSource())
@@ -61,10 +61,10 @@ public class WebSecurityConfiguration {
                 .csrf().disable()
                 .httpBasic();
         httpSecurity
-//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-//                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
                 .authorizeHttpRequests()
-                .anyRequest().permitAll();
+                .anyRequest().authenticated();
         httpSecurity.exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);
 
