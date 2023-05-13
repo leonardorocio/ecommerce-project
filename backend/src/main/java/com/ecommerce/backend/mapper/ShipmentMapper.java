@@ -44,10 +44,17 @@ public class ShipmentMapper {
             throw new BadRequestException("Order already has a designated shipment");
         }
 
+        if (shipmentRequestBody.isDelivered()) {
+            throw new BadRequestException("Cannot update/create a delivered shipment");
+        }
+
         if (shipmentRequestBody.getExpectedDeliveryDate().isBefore(LocalDate.now()) ||
             shipmentRequestBody.getExpectedDeliveryDate().isBefore(orders.getOrderedDate())) {
             throw new BadRequestException("Expected delivery date cannot be before today or before ordering date");
         }
+
+
+
         if (shipmentRequestBody.getShippingPrice() < 0) {
             throw new BadRequestException("Shipping price cannot be lower than 0");
         }

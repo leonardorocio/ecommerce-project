@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -16,21 +17,22 @@ public class UserPostRequestBody {
     @NotBlank
     @Schema(name = "name", description = "The user's name",
             example = "Fulano da Silva")
-    String name;
+    private String name;
 
     @NotNull
     @NotBlank
     @Column(unique = true)
     @Schema(name = "email", description = "User's email", example = "test.testing2000@example.com")
-    String email;
+    private String email;
 
     @Schema(name = "birthDate", description = "The user's birth date",
             example = "1981-09-09")
-    Date date;
+    @NotNull
+    private LocalDate birthDate;
 
     @NotNull
     @NotBlank
     @Schema(name = "password", description = "User's password", example = "example123")
-    String password;
+    private String password;
 
 }

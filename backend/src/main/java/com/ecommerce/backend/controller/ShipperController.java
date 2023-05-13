@@ -4,6 +4,7 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.models.Shipment;
 import com.ecommerce.backend.models.Shipper;
 import com.ecommerce.backend.payload.ShipperRequestBody;
+import com.ecommerce.backend.repository.ShipperRepository;
 import com.ecommerce.backend.services.ShipperService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,6 +27,8 @@ public class ShipperController {
 
     @Autowired
     private ShipperService shipperService;
+    @Autowired
+    private ShipperRepository shipperRepository;
 
     @GetMapping
     @Operation(summary = "Returns all the Shippers in the database",
@@ -71,7 +74,7 @@ public class ShipperController {
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<Shipper> postShipper(@Valid @RequestBody ShipperRequestBody shipperRequestBody) {
-        return ResponseEntity.ok(shipperService.postShipper(shipperRequestBody));
+        return new ResponseEntity<>(shipperService.postShipper(shipperRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

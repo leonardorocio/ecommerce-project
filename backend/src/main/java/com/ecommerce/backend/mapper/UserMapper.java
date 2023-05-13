@@ -24,7 +24,7 @@ public class UserMapper {
             User user = User.builder()
                     .email(userPostRequestBody.getEmail())
                     .name(userPostRequestBody.getName())
-                    .birthDate(userPostRequestBody.getDate())
+                    .birthDate(userPostRequestBody.getBirthDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
                     .build();
             return user;

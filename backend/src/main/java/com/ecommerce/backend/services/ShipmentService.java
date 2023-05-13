@@ -54,4 +54,10 @@ public class ShipmentService {
         log.info(toDeleteShipment.getShipmentId());
         shipmentRepository.delete(toDeleteShipment);
     }
+
+    public Shipment closeShipment(int id) {
+        Shipment shipment = getShipmentById(id);
+        shipment.setDelivered(true);
+        return shipmentRepository.save(shipment);
+    }
 }
