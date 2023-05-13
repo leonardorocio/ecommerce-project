@@ -32,7 +32,7 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(Integer userId) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .user(userService.getUserById(userId))
+                .userOwner(userService.getUserById(userId))
                 .expiryDate(Instant.now().plusMillis(refreshTokenDuration * 10))
                 .token(UUID.randomUUID().toString())
                 .build();
@@ -50,6 +50,6 @@ public class RefreshTokenService {
 
     @Transactional
     public int deleteByUserId(Integer userId) {
-        return refreshTokenRepository.deleteByUser(userService.getUserById(userId));
+        return refreshTokenRepository.deleteByUserOwner(userService.getUserById(userId));
     }
 }

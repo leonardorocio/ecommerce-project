@@ -71,7 +71,7 @@ public class ShipperController {
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<Shipper> postShipper(@Valid @RequestBody ShipperRequestBody shipperRequestBody) {
-        return ResponseEntity.ok(shipperService.postShipper(shipperRequestBody));
+        return new ResponseEntity<>(shipperService.postShipper(shipperRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

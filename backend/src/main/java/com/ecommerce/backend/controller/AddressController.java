@@ -58,7 +58,7 @@ public class AddressController {
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<Address> createAddress(@Valid @RequestBody AddressRequestBody addressRequestBody) {
-        return ResponseEntity.ok(addressService.createAddress(addressRequestBody));
+        return new ResponseEntity<>(addressService.createAddress(addressRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")

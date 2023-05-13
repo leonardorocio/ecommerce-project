@@ -25,7 +25,7 @@ public class RefreshToken {
 
     @OneToOne(mappedBy = "token")
     @JsonIgnore
-    private User user;
+    private User userOwner;
 
     @Column(nullable = false)
     private Instant expiryDate;

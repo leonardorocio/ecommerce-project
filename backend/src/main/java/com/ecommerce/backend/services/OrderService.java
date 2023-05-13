@@ -74,4 +74,9 @@ public class OrderService {
         orderRepository.delete(ordersToDelete);
     }
 
+    public Orders closeOrder(int id) {
+        Orders order = getOrderById(id);
+        order.setClosed(true);
+        return orderRepository.save(order);
+    }
 }

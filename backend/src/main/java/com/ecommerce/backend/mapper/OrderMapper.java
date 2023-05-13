@@ -1,5 +1,6 @@
 package com.ecommerce.backend.mapper;
 
+import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.models.OrderDetails;
 import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.payload.OrderRequestBody;
@@ -16,18 +17,21 @@ public class OrderMapper {
     private UserService userService;
 
     public Orders mapToOrder(OrderRequestBody orderRequestBody) {
-        Orders mappedOrders = Orders.builder()
-                .orderedDate(LocalDate.now())
-                .closed(false)
-                .customer(userService.getUserById(orderRequestBody.getCustomerId()))
-                .build();
-        return mappedOrders;
+        if (validateOrder(orderRequestBody)) {
+            Orders mappedOrders = Orders.builder()
+                    .orderedDate(LocalDate.now())
+                    .closed(false)
+                    .customer(userService.getUserById(orderRequestBody.getCustomerId()))
+                    .build();
+            return mappedOrders;
+        }
+        return null;
     }
 
-    public Orders mapToOrderPatch(OrderRequestBody orderRequestBody) {
-        Orders mappedOrders = Orders.builder()
-                .closed(orderRequestBody.isClosed())
-                .build();
-        return mappedOrders;
+    public boolean validateOrder(OrderRequestBody orderRequestBody) {
+        if (orderRequestBody.isClosed()) {
+            throw new BadRequestException("Cannot create/edit a closed order");
+        }
+        return true;
     }
 }

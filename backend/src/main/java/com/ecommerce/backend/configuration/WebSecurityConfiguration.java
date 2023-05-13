@@ -43,24 +43,28 @@ public class WebSecurityConfiguration {
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        httpSecurity
-                .authorizeHttpRequests()
-                .requestMatchers("/users/**").permitAll()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/error").permitAll()
-                .requestMatchers("/swagger-ui").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll()
-                .requestMatchers("/v3/**").permitAll();
+//        httpSecurity
+//                .authorizeHttpRequests()
+//                .requestMatchers("/users/**").permitAll()
+//                .requestMatchers("/auth/**").permitAll()
+//                .requestMatchers("/error").permitAll()
+//                .requestMatchers("/swagger-ui").permitAll()
+//                .requestMatchers("/swagger-ui/**").permitAll()
+//                .requestMatchers("/h2-console/**").permitAll()
+//                .requestMatchers("/v3/**").permitAll();
 
         httpSecurity
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
+                .headers().frameOptions().disable()
+                .and()
                 .csrf().disable()
                 .httpBasic();
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
+        httpSecurity
+//                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
                 .authorizeHttpRequests()
-                .anyRequest().authenticated();
+                .anyRequest().permitAll();
         httpSecurity.exceptionHandling()
                 .authenticationEntryPoint(authEntryPoint);
 

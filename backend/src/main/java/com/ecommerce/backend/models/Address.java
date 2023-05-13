@@ -34,7 +34,7 @@ public class Address {
     private String streetWithNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "userId")
+    @JoinColumn(name = "userOwner", referencedColumnName = "userId")
     @JsonIgnore
     @NotNull
     private User user;
