@@ -17,21 +17,12 @@ public class OrderMapper {
     private UserService userService;
 
     public Orders mapToOrder(OrderRequestBody orderRequestBody) {
-        if (validateOrder(orderRequestBody)) {
-            Orders mappedOrders = Orders.builder()
-                    .orderedDate(LocalDate.now())
-                    .closed(false)
-                    .customer(userService.getUserById(orderRequestBody.getCustomerId()))
-                    .build();
-            return mappedOrders;
-        }
-        return null;
+        Orders mappedOrders = Orders.builder()
+                .orderedDate(LocalDate.now())
+                .closed(false)
+                .customer(userService.getUserById(orderRequestBody.getCustomerId()))
+                .build();
+        return mappedOrders;
     }
 
-    public boolean validateOrder(OrderRequestBody orderRequestBody) {
-        if (orderRequestBody.isClosed()) {
-            throw new BadRequestException("Cannot create/edit a closed order");
-        }
-        return true;
-    }
 }
