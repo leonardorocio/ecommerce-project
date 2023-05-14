@@ -88,21 +88,6 @@ public class OrderController {
         return new ResponseEntity<>(orderService.postOrder(orderRequestBody), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
-    @Operation(summary = "Updates an order",
-            description = "Takes an order's id and receives a OrderRequestBody, maps to a Order and updates the order")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the order updated in the database"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "404", description = "Order not found"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
-    })
-    public ResponseEntity<Orders> updateOrder(@RequestBody @Valid OrderRequestBody orderRequestBody,
-                                              @PathVariable int id) {
-        return ResponseEntity.ok(orderService.updateOrder(orderRequestBody, id));
-    }
-
     @PutMapping("/{id}/close")
     @Operation(summary = "Closes an order",
             description = "Takes an order's id and closes the order")
