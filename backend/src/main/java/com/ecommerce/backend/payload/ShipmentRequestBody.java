@@ -17,11 +17,6 @@ public class ShipmentRequestBody {
     private double shippingPrice;
 
     @NotNull
-    @Schema(name = "delivered", description = "Specifies if the shipment is delivered or not. (Always starts with false)",
-            example = "false")
-    private boolean delivered;
-
-    @NotNull
     @Schema(name = "expectedDeliveryDate", description = "The shipments's expected delivery date",
             example = "2024-01-01")
     private LocalDate expectedDeliveryDate;

@@ -1,5 +1,6 @@
 package com.ecommerce.backend.services;
 
+import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.mapper.ShipmentMapper;
 import com.ecommerce.backend.models.Shipment;
@@ -44,6 +45,9 @@ public class ShipmentService {
     @Transactional
     public Shipment updateShipment(ShipmentRequestBody shipmentRequestBody, int id) {
         Shipment originalShipment = getShipmentById(id);
+        if (originalShipment.isDelivered()) {
+            throw new BadRequestException("Cannot update delivered shipment");
+        }
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);
         updatedShipment.setShipmentId(originalShipment.getShipmentId());
         return shipmentRepository.save(updatedShipment);
