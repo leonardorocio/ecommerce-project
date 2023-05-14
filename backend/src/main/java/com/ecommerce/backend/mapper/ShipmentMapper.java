@@ -27,7 +27,7 @@ public class ShipmentMapper {
         Shipper shipper = shipperService.getShipperById(shipmentRequestBody.getShipperId());
         if (validateShipment(shipmentRequestBody, order)) {
             Shipment shipment = Shipment.builder()
-                    .delivered(shipmentRequestBody.isDelivered())
+                    .delivered(false)
                     .expectedDeliveryDate(shipmentRequestBody.getExpectedDeliveryDate())
                     .shippingPrice(shipmentRequestBody.getShippingPrice() + shipper.getFixedTax())
                     .orders(order)
@@ -42,10 +42,6 @@ public class ShipmentMapper {
     public boolean validateShipment(ShipmentRequestBody shipmentRequestBody, Orders orders) {
         if (orders.getShipment() != null) {
             throw new BadRequestException("Order already has a designated shipment");
-        }
-
-        if (shipmentRequestBody.isDelivered()) {
-            throw new BadRequestException("Cannot update/create a delivered shipment");
         }
 
         if (shipmentRequestBody.getExpectedDeliveryDate().isBefore(LocalDate.now()) ||
