@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderDetailsRepository extends JpaRepository<OrderDetails, Integer> {
-    @Query("select OD from OrderDetails OD where OD.orders.orderId = :orderId and OD.product.productId = :productId")
-    OrderDetails existsOrderWithSameProduct(@Param("orderId") Integer orderId, @Param("productId") Integer productId);
+    @Query("select count(OD) > 0 from OrderDetails OD where OD.orders.orderId = :orderId and OD.product.productId = :productId")
+    boolean existsOrderWithSameProduct(@Param("orderId") Integer orderId, @Param("productId") Integer productId);
 }

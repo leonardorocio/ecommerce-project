@@ -16,6 +16,5 @@ public class UserPatchRequestBody {
 
     @Schema(name = "birthDate", description = "The user's birth date",
             example = "1981-09-09")
-    @NotNull
     private LocalDate birthDate;
 }
