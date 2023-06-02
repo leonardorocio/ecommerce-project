@@ -3,6 +3,8 @@ package com.ecommerce.backend.payload;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 public class RefreshTokenResponse {
 
@@ -20,8 +22,16 @@ public class RefreshTokenResponse {
             example = "Bearer")
     private String tokenType = "Bearer";
 
+    @Schema(name = "expiryDate", description = "The token's expiry date", example = "2023-06-01 20:13:32")
+    private Instant expiryDate;
+
     public RefreshTokenResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+    }
+
+    public RefreshTokenResponse(String accessToken, String refreshToken, Instant expiryDate) {
+        this(accessToken, refreshToken);
+        this.expiryDate = expiryDate;
     }
 }

@@ -66,7 +66,7 @@ public class AuthController {
         log.info(userDetails.getUserId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
         userService.updateUserRefreshToken(userService.getUserById(userDetails.getUserId()), refreshToken);
-        return ResponseEntity.ok(new RefreshTokenResponse(token, refreshToken.getToken()));
+        return ResponseEntity.ok(new RefreshTokenResponse(token, refreshToken.getToken(), refreshToken.getExpiryDate()));
     }
 
     @PostMapping("/refreshtoken")

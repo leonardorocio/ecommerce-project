@@ -16,6 +16,7 @@ public class ProductMapper {
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
             Product product = Product.builder()
+                    .productImage(productPostRequestBody.getImageURL())
                     .price(productPostRequestBody.getPrice())
                     .description(productPostRequestBody.getDescription())
                     .name(productPostRequestBody.getName())
@@ -24,6 +25,7 @@ public class ProductMapper {
                     .productCategory(
                             productCategoryService.getCategoryById(productPostRequestBody.getCategory_id())
                     )
+
                     .build();
             return product;
         }
