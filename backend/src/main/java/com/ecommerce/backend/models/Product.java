@@ -59,4 +59,7 @@ public class Product {
     @NotNull
     private ProductCategory productCategory;
 
+    @NotNull
+    @Column(length = 512)
+    private String productImage;
 }

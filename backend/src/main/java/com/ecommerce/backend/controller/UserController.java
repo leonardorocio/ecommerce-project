@@ -49,6 +49,7 @@ public class UserController {
             description = "Takes a UserPostRequestBody, maps to a User and saves in the database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Returns the user saved in the database"),
+            @ApiResponse(responseCode = "201", description = "Returns the user created"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -72,7 +73,7 @@ public class UserController {
     @Operation(summary = "Updates a User",
             description = "Takes the user's id and a UserPatchRequestBody, maps to a User and updates it")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "User updated successfully"),
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")

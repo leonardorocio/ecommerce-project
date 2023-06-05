@@ -47,7 +47,7 @@ public class OrderDetailsMapper {
         }
         int orderId = orderDetailsRequestBody.getOrderId();
         int productId = orderDetailsRequestBody.getProductId();
-        if (orderDetailsRepository.existsOrderWithSameProduct(orderId, productId) != null) {
+        if (orderDetailsRepository.existsOrderWithSameProduct(orderId, productId)) {
             throw new BadRequestException(
                     "Cannot create new order details for the same product and order. Please update the quantity"
             );

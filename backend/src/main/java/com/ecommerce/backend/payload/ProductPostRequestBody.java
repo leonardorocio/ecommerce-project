@@ -33,4 +33,9 @@ public class ProductPostRequestBody {
     @NotNull
     @Schema(name = "category_id", description = "The ID of the Category related to the Product", example = "1")
     int category_id;
+
+    @NotNull
+    @Schema(name = "imageURL", description = "The link to access the image",
+            example = "https://firebasestorage.googleapis.com/v0/b/portfolio-project-e9246.appspot.com/o/shutterstock_2082475195.webp?alt=media&token=24595f07-be69-42a6-82c3-0f08e3044d9c&_gl=1*dvce9z*_ga*MTc0OTUwMTQ1OS4xNjg0MDIxMDcw*_ga_CW55HF8NVT*MTY4NTY0MTMwNC4yLjEuMTY4NTY0MTUyMi4wLjAuMA..")
+    String imageURL;
 }

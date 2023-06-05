@@ -48,6 +48,9 @@ public class ShipmentMapper {
             shipmentRequestBody.getExpectedDeliveryDate().isBefore(orders.getOrderedDate())) {
             throw new BadRequestException("Expected delivery date cannot be before today or before ordering date");
         }
+
+
+
         if (shipmentRequestBody.getShippingPrice() < 0) {
             throw new BadRequestException("Shipping price cannot be lower than 0");
         }

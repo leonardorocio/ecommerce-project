@@ -20,7 +20,7 @@ public class OrderDetails {
 
     @Column
     @NotNull
-    private int quantity;
+    private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id", referencedColumnName = "orderId")

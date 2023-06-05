@@ -6,6 +6,7 @@ import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -51,7 +52,9 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/swagger-ui").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/v3/**").permitAll();
+                .requestMatchers("/v3/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .requestMatchers(HttpMethod.GET, "/category").permitAll();
 
         httpSecurity
                 .cors().configurationSource(corsConfigurationSource())
