@@ -1,0 +1,37 @@
+<div class="container-fluid w-75 mt-5">
+  <p class="lead mb-0 fw-bold">{{ product.name }}</p>
+  <div class="container-fluid d-flex flex-wrap justify-content-between border rounded p-3">
+    <div class="container-fluid w-50">
+      <img
+        [src]="product.productImage"
+        [alt]="product.name"
+        class="img-fluid rounded"
+      />
+    </div>
+    <div class="container-fluid w-50 d-flex flex-column justify-content-center">
+      <div class="container-fluid d-flex justify-content-between no-margin">
+        <h6 class="display-6">R${{ product.price | number: '1.2-2':'pt' }}</h6>
+        <button class="btn btn-primary btn-lg px-5">Comprar</button>
+      </div>
+      <p class="lead" *ngIf="product.stock > 0">Em estoque: {{ product.stock }} unidades disponíveis</p>
+      <p class="lead" *ngIf="product.stock == 0">Produto indisponível</p>
+      <p class="lead" >Consultar frete e prazo de entrega: </p>
+      <div class="container-fluid d-flex justify-content-start cep-search">
+        <input
+          class="form-control w-75"
+          type="text"
+          placeholder="Inserir CEP"
+          aria-label="cep"
+        />
+        <button class="btn btn-outline-primary py-2">Buscar</button>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="lead mb-0 mt-4 fw-bold">Descrição do produto:</p>
+  <div class="container-fluid d-flex border rounded p-3">
+    <p class="lead">{{ product.description }}</p>
+  </div>
+
+</div>
