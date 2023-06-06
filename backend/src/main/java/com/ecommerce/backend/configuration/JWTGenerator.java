@@ -24,9 +24,6 @@ import java.util.function.Function;
 @Log4j2
 public class JWTGenerator {
 
-    @Value("${jwt.expiration}")
-    public long JWT_EXPIRATION;
-
     @Value("${jwt.secret}")
     public String JWT_SECRET;
     public String generateToken(UserDetails userDetails) {
@@ -67,7 +64,7 @@ public class JWTGenerator {
         return extractExpiration(token).before(new Date());
     }
 
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
@@ -88,7 +85,7 @@ public class JWTGenerator {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(token);
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
             return true;
         } catch (Exception e) {
             throw new AuthenticationCredentialsNotFoundException("JWT was expired or incorrect. Please authenticate.");

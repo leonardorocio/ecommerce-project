@@ -1,12 +1,13 @@
 package com.ecommerce.backend.payload;
 
+import com.ecommerce.backend.models.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
-public class RefreshTokenResponse {
+public class TokenResponse {
 
     @Schema(name = "accessToken",
             description = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb25zby5mZWRlN0BnbWFpbC5jb20iLCJpYX" +
@@ -25,13 +26,21 @@ public class RefreshTokenResponse {
     @Schema(name = "expiryDate", description = "The token's expiry date", example = "2023-06-01 20:13:32")
     private Instant expiryDate;
 
-    public RefreshTokenResponse(String accessToken, String refreshToken) {
+    @Schema(name = "user", description = "The access token's user owner", example = "")
+    private User user;
+
+    public TokenResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public RefreshTokenResponse(String accessToken, String refreshToken, Instant expiryDate) {
+    public TokenResponse(User user, String refreshToken) {
+        this.user = user;
+        this.refreshToken = refreshToken;
+    }
+    public TokenResponse(String accessToken, String refreshToken, Instant expiryDate, User user) {
         this(accessToken, refreshToken);
         this.expiryDate = expiryDate;
+        this.user = user;
     }
 }

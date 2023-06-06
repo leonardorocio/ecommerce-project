@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 @Component
 public class OrderMapper {
@@ -18,6 +19,7 @@ public class OrderMapper {
 
     public Orders mapToOrder(OrderRequestBody orderRequestBody) {
             Orders mappedOrders = Orders.builder()
+                    .orderDetailsId(Collections.emptyList())
                     .orderedDate(LocalDate.now())
                     .closed(false)
                     .customer(userService.getUserById(orderRequestBody.getCustomerId()))
