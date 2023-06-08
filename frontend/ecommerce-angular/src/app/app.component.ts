@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { CategoryService } from './services/category.service';
 import { Category } from './models/category';
 
@@ -10,6 +10,7 @@ import { Category } from './models/category';
 export class AppComponent implements OnInit {
   title = 'ecommerce-angular';
   categories: Category[] = [];
+  userId = !localStorage.length ? -1 : JSON.parse(localStorage['user']).userId;
 
   constructor(public categoryService: CategoryService) {}
 

@@ -6,3 +6,9 @@
 .link-decoration-none {
   text-decoration: none;
 }
+
+#footer {
+  position: static;
+  bottom: 0;
+}
+

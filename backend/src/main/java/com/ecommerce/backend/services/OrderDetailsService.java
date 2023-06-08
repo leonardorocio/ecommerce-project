@@ -40,9 +40,10 @@ public class OrderDetailsService {
         return orderDetailsRepository.save(orderDetails);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public OrderDetails updateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, int id) {
         OrderDetails originalOrderDetails = getOrderDetailsById(id);
-        OrderDetails updatedOrderDetails = orderDetailsMapper.mapToOrderDetails(orderDetailsRequestBody);
+        OrderDetails updatedOrderDetails = orderDetailsMapper.mapToUpdateOrderDetails(orderDetailsRequestBody);
         updatedOrderDetails.setOrderDetailsId(originalOrderDetails.getOrderDetailsId());
         return orderDetailsRepository.save(updatedOrderDetails);
     }

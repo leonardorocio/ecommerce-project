@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import {Observable, of} from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
-// import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export class ErrorHandlingService {
 
   constructor(private toastr: ToastrService) { }
 
-  getFieldsErrors(error: any): string {
+  private getFieldsErrors(error: any): string {
     const fields: string[] = error.error['fields'].split(',');
     const fieldMessage: string[] = error.error['fieldsMessage'].split(',');
     let errorMessage: string = '';

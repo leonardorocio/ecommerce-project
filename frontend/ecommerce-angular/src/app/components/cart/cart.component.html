@@ -1,0 +1,104 @@
+<body>
+  <div class="container-fluid d-flex flex-column justify-content-center align-items-center w-75 mt-5">
+    <h3 class="display-3 mb-3">Meu Carrinho</h3>
+    <div class="container-fluid d-flex flex-column border rounded p-3 mb-3">
+      <p class="lead mb-3 fw-bold">Endereço:</p>
+      <select
+        [(ngModel)]="selectedAddress"
+        name="address"
+        id="address"
+        class="form-select form-select-md"
+      >
+        <option *ngFor="let address of addresses" [ngValue]="address">
+          {{ address.city }}; {{ address.state }};
+          {{ address.streetWithNumber }}
+        </option>
+      </select>
+
+      <div
+        class="container-fluid d-flex flex-column border bg-light rounded mt-3 p-3"
+      >
+        <p class="lead fw-bold">Endereço Selecionado:</p>
+        <p class="lead">
+          <span class="fw-bold">CEP: </span
+          >{{ selectedAddress.zipCode | zipCode }}
+        </p>
+        <p class="lead">
+          <span class="fw-bold">Rua: </span
+          >{{ selectedAddress.streetWithNumber }}
+        </p>
+        <p class="lead">
+          <span class="fw-bold">Cidade: </span>{{ selectedAddress.city }}
+        </p>
+        <p class="lead">
+          <span class="fw-bold">Estado: </span>{{ selectedAddress.state }}
+        </p>
+      </div>
+    </div>
+
+    <div class="container-fluid d-flex flex-column border rounded p-3">
+      <p class="lead mb-3 fw-bold">Produtos:</p>
+      <ul
+        *ngFor="let item of items; index as i"
+        class="border rounded no-spacing"
+      >
+        <div
+          class="container-fluid d-flex align-items-center justify-content-around"
+        >
+          <img
+            class="img-fluid img-small"
+            [src]="item.product.productImage"
+            [alt]="item.product.name"
+          />
+          <div class="d-flex flex-column align-items-center">
+            <p class="lead fw-bold">{{ item.product.name }}</p>
+            <p class="lead">
+              Preço unitário: R$
+              {{ item.product.price | number : "1.2-2" : "pt" }}
+            </p>
+          </div>
+          <div class="d-flex flex-column align-items-center">
+            <p class="lead">Quantidade</p>
+            <!-- <input #quantity type="number" name="quantidade" id="quantidade" [(ngModel)]="updateQuantity(quantity.value)"> -->
+            <p class="lead">{{ item.quantity }}</p>
+            <button
+              class="btn btn-outline-primary"
+              (click)="updateQuantity(item, i)"
+            >
+              Adicionar
+            </button>
+          </div>
+          <div class="d-flex flex-column align-items-center">
+            <p class="lead fw-bold">Subtotal</p>
+            <p class="lead">
+              R${{
+                item.quantity * item.product.price | number : "1.2-2" : "pt"
+              }}
+            </p>
+          </div>
+        </div>
+      </ul>
+    </div>
+    <div class="container-fluid d-flex flex-column border rounded p-3 mt-3">
+      <p class="lead mb-3 fw-bold">Frete:</p>
+      <select
+        [(ngModel)]="selectedShip"
+        name="address"
+        id="address"
+        class="form-select form-select-md"
+      >
+        <option *ngFor="let shipper of shippers" [ngValue]="shipper">
+          {{ shipper.name }}
+        </option>
+      </select>
+
+      <div
+        class="container-fluid d-flex flex-column border bg-light rounded mt-3 p-3"
+      >
+        <p class="lead fw-bold">Frete Selecionado: </p>
+        <p class="lead"><span class="fw-bold">Preço: R${{ shipments[selectedShip.name].shippingPrice | number:'1.2-2':'pt' }}</span></p>
+        <p class="lead"><span class="fw-bold">Data de entrega estimada: {{ shipments[selectedShip.name].expectedDeliveryDate }}</span></p>
+      </div>
+    </div>
+  </div>
+</body>

@@ -1,7 +1,9 @@
-<div class="container-fluid w-75 d-flex flex-column justify-content-center align-items-center mt-5">
-  <h6 class="display-5 mt-3 mb-4">Destaques</h6>
-  <div class="container-fluid d-flex justify-content-around align-items-center">
-    <ul *ngFor="let product of products" class="product">
+<body>
+
+  <div class="container-fluid w-75 d-flex flex-column justify-content-center align-items-center mt-5">
+    <h6 class="display-5 mt-3 mb-4">Destaques</h6>
+    <div class="container-fluid d-flex justify-content-around align-items-center">
+      <ul *ngFor="let product of products" class="product">
       <div class="card">
         <img [src]="product.productImage" [alt]="product.name" class="card-img-top">
         <div class="card-body">
@@ -27,3 +29,5 @@
     </ul>
   </div>
 </div>
+
+</body>

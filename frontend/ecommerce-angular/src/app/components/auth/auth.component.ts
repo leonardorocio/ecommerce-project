@@ -20,10 +20,10 @@ export class AuthComponent {
 
   login(email: string, password: string) {
     this.authService.login(email, password).subscribe((data) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('expiryDate', data.expiryDate);
-      this.authService.accessToken = data.accessToken;
+      Object.keys(data).forEach((e) => {
+        const value = data[e as keyof typeof data]
+        localStorage.setItem(e, typeof value == 'string' ? value : JSON.stringify(value))
+      });
       this.toastr.success('Redirecionando...', 'Login Realizado com sucesso!');
       this.router.navigate(['/dashboard']);
     });

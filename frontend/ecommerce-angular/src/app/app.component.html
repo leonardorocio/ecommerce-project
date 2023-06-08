@@ -1,4 +1,4 @@
-<div>
+<body>
   <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container-fluid d-flex justify-content-around">
       <a routerLink="/dashboard" class="navbar-brand text-light mr-5"
@@ -17,7 +17,7 @@
           <a routerLink="/auth" class="nav-link text-light">Perfil</a>
         </li>
         <li class="nav-item item">
-          <a routerLink="/dashboard" class="nav-link text-light">Carrinho</a>
+          <a routerLink="/carrinho/{{ userId }}" class="nav-link text-light">Carrinho</a>
         </li>
         <li class="nav-item item">
           <a routerLink="/auth" class="nav-link text-light">Login</a>
@@ -32,7 +32,7 @@
     <!-- </div> -->
   </nav>
   <router-outlet></router-outlet>
-  <div class="container-fluid d-flex justify-content-around bg-dark mt-5 p-4">
+  <div id="footer" class="container-fluid d-flex justify-content-around bg-dark mt-5 p-4">
     <div class="contatos text-justify">
       <h5 class="display-6 text-light">Departamentos:</h5>
       <ul *ngFor="let category of categories">
@@ -44,7 +44,7 @@
     <div class="links">
       <h5 class="display-6 text-light">Links Úteis:</h5>
       <p class="lead text-light"><a class="text-light link-decoration-none" routerLink="/dashboard">Perfil </a></p>
-      <p class="lead text-light"><a class="text-light link-decoration-none" routerLink="/dashboard">Carrinho </a></p>
+      <p class="lead text-light"><a class="text-light link-decoration-none" routerLink="/carrinho/{{ userId }}">Carrinho </a></p>
     </div>
   </div>
 
@@ -55,4 +55,4 @@
       >Ecommerce</span
     >
   </div>
-</div>
+</body>

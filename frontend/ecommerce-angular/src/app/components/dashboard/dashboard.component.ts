@@ -32,6 +32,8 @@ export class DashboardComponent implements OnInit {
   }
 
   goToDetail(product: Product) {
-    this.router.navigateByUrl(`/produto/${product.productId}`, {state: product});
+    this.router.navigateByUrl(`/produto/${product.productId}`, {
+      state: product,
+    });
   }
 }

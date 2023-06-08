@@ -1,0 +1,9 @@
+.img-small {
+  width: 25%;
+  height: auto;
+}
+
+.no-spacing {
+  margin: 0;
+  padding: 0;
+}

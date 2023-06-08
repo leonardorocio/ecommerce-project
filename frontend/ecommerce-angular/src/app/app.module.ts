@@ -13,12 +13,14 @@ import { AuthInterceptorService } from './services/auth-interceptor.service';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { registerLocaleData } from '@angular/common';
 import pt from '@angular/common/locales/pt';
+import { CartComponent } from './components/cart/cart.component';
+import { ZipCodePipe } from './pipes/zip-code.pipe';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe],
   imports: [
     BrowserModule,
     AppRoutingModule,

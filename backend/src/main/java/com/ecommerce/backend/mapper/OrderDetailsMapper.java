@@ -38,6 +38,20 @@ public class OrderDetailsMapper {
         return null;
     }
 
+    public OrderDetails mapToUpdateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
+        Product product = productService.getProductById(orderDetailsRequestBody.getProductId());
+        if (validateUpdateOrderDetails(orderDetailsRequestBody, product)) {
+            OrderDetails orderDetails = OrderDetails.builder()
+                    .orders(orderService.getOrderById(orderDetailsRequestBody.getOrderId()))
+                    .product(product)
+                    .quantity(orderDetailsRequestBody.getQuantity())
+                    .build();
+            orderService.updateOrderTotalPrice(orderDetailsRequestBody.getOrderId(), product.getPrice() * product.getDiscount() * orderDetails.getQuantity());
+            return orderDetails;
+        }
+        return null;
+    }
+
     public boolean validateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, Product product) {
         if (orderDetailsRequestBody.getQuantity() < 1) {
             throw new BadRequestException("Order details product quantity cannot be lower than 1.");
@@ -51,6 +65,16 @@ public class OrderDetailsMapper {
             throw new BadRequestException(
                     "Cannot create new order details for the same product and order. Please update the quantity"
             );
+        }
+        return true;
+    }
+
+    public boolean validateUpdateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, Product product) {
+        if (orderDetailsRequestBody.getQuantity() < 1) {
+            throw new BadRequestException("Order details product quantity cannot be lower than 1.");
+        }
+        if (orderDetailsRequestBody.getQuantity() > product.getStock()) {
+            throw new BadRequestException("Quantity ordered cannot be greater the available stock for the product");
         }
         return true;
     }

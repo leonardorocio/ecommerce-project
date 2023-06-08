@@ -1,10 +1,11 @@
+import { Address } from "./address";
+import { Comment } from "./comment";
+
 export interface User {
   userId: number,
   name: string,
   email: string,
   password: string,
   birthDate: string,
-  // addressList: Address[],
-  // comments: Comment[],
-  // orders:
+  addressList: Address[],
 }
