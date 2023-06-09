@@ -8,6 +8,8 @@ import { ErrorHandlingService } from './error-handling.service';
 })
 export class UserService {
 
+  currentUser!: User;
+
   constructor(
     private http: HttpClient,
     private errorHandling: ErrorHandlingService

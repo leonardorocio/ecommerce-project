@@ -5,6 +5,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { CategoryService } from 'src/app/services/category.service';
 import { Category } from 'src/app/models/category';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
+  private user: User = JSON.parse(localStorage['user']);
 
   constructor(
     private productService: ProductService,
@@ -33,6 +35,12 @@ export class DashboardComponent implements OnInit {
 
   goToDetail(product: Product) {
     this.router.navigateByUrl(`/produto/${product.productId}`, {
+      state: product,
+    });
+  }
+
+  sendToCart(product: Product) {
+    this.router.navigateByUrl(`/carrinho/${this.user.userId}`, {
       state: product,
     });
   }

@@ -15,12 +15,15 @@ import { registerLocaleData } from '@angular/common';
 import pt from '@angular/common/locales/pt';
 import { CartComponent } from './components/cart/cart.component';
 import { ZipCodePipe } from './pipes/zip-code.pipe';
+import { FooterComponent } from './components/footer/footer.component';
+import { NavComponent } from './components/nav/nav.component';
+import { AddressComponent } from './components/address/address.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

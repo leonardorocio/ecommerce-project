@@ -1,9 +1,22 @@
 .img-small {
   width: 25%;
   height: auto;
+  max-height: 10rem;
 }
 
 .no-spacing {
   margin: 0;
   padding: 0;
 }
+
+#price-sizing {
+  width: 10%;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+
+
+

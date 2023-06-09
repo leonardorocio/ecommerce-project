@@ -3,6 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-auth',
@@ -15,6 +16,7 @@ export class AuthComponent {
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -24,6 +26,7 @@ export class AuthComponent {
         const value = data[e as keyof typeof data]
         localStorage.setItem(e, typeof value == 'string' ? value : JSON.stringify(value))
       });
+      this.userService.currentUser = data.user;
       this.toastr.success('Redirecionando...', 'Login Realizado com sucesso!');
       this.router.navigate(['/dashboard']);
     });

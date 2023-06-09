@@ -13,7 +13,7 @@
       <div class="container-fluid w-50 d-flex flex-column justify-content-center">
         <div class="container-fluid d-flex justify-content-between no-margin">
           <h6 class="display-6">R${{ product.price | number: '1.2-2':'pt' }}</h6>
-          <button class="btn btn-primary btn-lg px-5">Comprar</button>
+          <button (click)="sendToCart(product)" class="btn btn-primary btn-lg px-5">Comprar</button>
         </div>
         <p class="lead" *ngIf="product.stock > 0">Em estoque: {{ product.stock }} unidades disponíveis</p>
         <p class="lead" *ngIf="product.stock == 0">Produto indisponível</p>
