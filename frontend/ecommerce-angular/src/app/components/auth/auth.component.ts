@@ -26,9 +26,8 @@ export class AuthComponent {
         const value = data[e as keyof typeof data]
         localStorage.setItem(e, typeof value == 'string' ? value : JSON.stringify(value))
       });
-      this.userService.currentUser = data.user;
       this.toastr.success('Redirecionando...', 'Login Realizado com sucesso!');
-      this.router.navigate(['/dashboard']);
+      this.router.navigateByUrl("/dashboard");
     });
   }
 

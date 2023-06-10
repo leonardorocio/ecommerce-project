@@ -2,18 +2,51 @@
   *ngIf="!addresses.length"
   class="container-fluid d-flex flex-column border rounded mb-3 p-3"
 >
-  <p class="lead mb-3 fw-bold">Endereço não encontrado! Adicione um novo!</p>
-  <form class="form-group">
-    <label for="cep">CEP:</label>
+  <p class="lead mb-4 fw-bold">Endereço não encontrado! Adicione um novo!</p>
+  <form class="form-group d-flex flex-column justify-content-between">
+    <label class="fw-bold" for="cep">CEP:</label>
     <input
       class="form-control"
       type="text"
       name="cep"
       id="cep"
       placeholder="xxxxx-xxx"
-      [ngModel]="cep | zipCode"
-      (ngModelChange)="cep = $event"
+      [ngModel]="zipCode | zipCode"
+      (ngModelChange)="zipCode = $event"
     />
+    <label class="fw-bold" for="streetWithNumber">Rua e número:</label>
+    <input
+      type="text"
+      placeholder="Rua dos Teste, 101"
+      class="form-control"
+      [(ngModel)]="streetWithNumber"
+    />
+    <label class="fw-bold" for="UF">Estado:</label>
+    <select
+      [(ngModel)]="selectedState"
+      (ngModelChange)="changeCities()"
+      id="UF"
+      class="form-select form-select-md"
+      name="UF"
+    >
+      <option *ngFor="let state of states" [ngValue]="state">
+        {{ state.nome }}
+      </option>
+    </select>
+    <label class="fw-bold" for="city">Cidade:</label>
+    <input [(ngModel)]="selectedCity" class="form-control" list="cities" placeholder="Selecione um estado primeiro"/>
+    <!-- TODO: Corrigir a questão do valor de datalist -->
+    <datalist name="cities" id="cities">
+      <option *ngFor="let city of cities" [ngValue]="city">
+        {{ city.nome }}
+      </option>
+    </datalist>
+    <button
+      class="btn btn-primary mt-3 w-25"
+      (click)="createAddress(zipCode, streetWithNumber, selectedState, selectedCity)"
+    >
+      Criar
+    </button>
   </form>
 </div>
 

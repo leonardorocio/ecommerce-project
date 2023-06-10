@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
   }
 
   sendToCart(product: Product) {
-    this.router.navigateByUrl(`/carrinho/${this.user.userId}`, {
+    this.router.navigateByUrl(`/carrinho`, {
       state: product,
     });
   }

@@ -28,7 +28,7 @@ const routes: Routes = [
     title: 'Ecommerce - Produto'
   },
   {
-    path: 'carrinho/:id',
+    path: 'carrinho',
     component: CartComponent,
     title: 'Ecommerce - Carrinho'
   }
