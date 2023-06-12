@@ -27,13 +27,13 @@ export class OrderService {
 
   createOrder(userId: number): Observable<Order> {
     return this.http.post<Order>(this.baseOrderURL, { customerId: userId }, this.options).pipe(
-      catchError(this.errorHandling.handleError('createOrder', {}))
+      catchError(this.errorHandling.handleError('createOrder', {} as Order))
     ) as Observable<Order>;
   }
 
   deleteOrder(orderId: number): Observable<any> {
     return this.http.delete(`${this.baseOrderURL}/${orderId}`, this.options).pipe(
-      catchError(this.errorHandling.handleError('deleteOrder', {}))
+      catchError(this.errorHandling.handleError('deleteOrder', {} as Order))
     );
   }
 }

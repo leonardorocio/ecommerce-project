@@ -13,13 +13,16 @@
       placeholder="xxxxx-xxx"
       [ngModel]="zipCode | zipCode"
       (ngModelChange)="zipCode = $event"
+      required
     />
     <label class="fw-bold" for="streetWithNumber">Rua e número:</label>
     <input
+      name="streetWithNumber"
       type="text"
       placeholder="Rua dos Teste, 101"
       class="form-control"
       [(ngModel)]="streetWithNumber"
+      required
     />
     <label class="fw-bold" for="UF">Estado:</label>
     <select
@@ -28,22 +31,34 @@
       id="UF"
       class="form-select form-select-md"
       name="UF"
+      required
     >
       <option *ngFor="let state of states" [ngValue]="state">
         {{ state.nome }}
       </option>
     </select>
-    <label class="fw-bold" for="city">Cidade:</label>
-    <input [(ngModel)]="selectedCity" class="form-control" list="cities" placeholder="Selecione um estado primeiro"/>
-    <!-- TODO: Corrigir a questão do valor de datalist -->
-    <datalist name="cities" id="cities">
-      <option *ngFor="let city of cities" [ngValue]="city">
-        {{ city.nome }}
-      </option>
-    </datalist>
+    <div class="dropdown">
+      <label class="fw-bold" for="city">Cidade:</label>
+      <input
+        [(ngModel)]="selectedCity"
+        name="city"
+        id="city-input"
+        #filter
+        (click)="paginatorService.showDropdownMenu(true)"
+        (ngModelChange)="searchCities(selectedCity)"
+        class="form-control mb-3"
+        list="cities"
+        placeholder="Selecione um estado primeiro"
+        [disabled]="!selectedState"
+        required
+      />
+      <app-paginator *ngIf="paginatorService.showDropdown" [items]="filteredCities" (selectedItemEvent)="selectCity($event)" [pageSize]="5"></app-paginator>
+    </div>
     <button
       class="btn btn-primary mt-3 w-25"
-      (click)="createAddress(zipCode, streetWithNumber, selectedState, selectedCity)"
+      (click)="
+        createAddress(zipCode, streetWithNumber, selectedState, selectedCity)
+      "
     >
       Criar
     </button>

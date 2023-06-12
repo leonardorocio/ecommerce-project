@@ -1,0 +1,77 @@
+<div class="container-fluid border rounded d-flex flex-column p-3 mt-4">
+  <p *ngIf="!editing" class="lead fw-bold">Deixe seu comentário!</p>
+  <div *ngIf="editing" id="editando">
+    <span class="lead fw-bold edit-button">Editando comentário</span>
+    <button class="btn btn-primary" (click)="cancelEditing()">Cancelar</button>
+  </div>
+  <form class="form-group">
+    <label for="nota" class="form-label">Nota:</label>
+    <div
+      class="container-fluid d-flex justify-content-between align-items-center border rounded p-3"
+    >
+      <span class="lead fw-bold">1</span>
+      <input
+        type="range"
+        name="nota"
+        id="nota"
+        max="5"
+        min="1"
+        #rating
+        class="form-range w-100 mx-3"
+        [(ngModel)]="currentRating"
+      />
+      <span class="lead fw-bold">5</span>
+    </div>
+    <label for="texto" class="form-label">Texto:</label>
+    <textarea
+      #texto
+      name="texto"
+      id="texto"
+      cols="30"
+      rows="5"
+      [(ngModel)]="currentText"
+      class="form-control mb-3"
+    ></textarea>
+    <button
+      class="btn btn-primary w-25 mb-3"
+      (click)="sendComment(texto.value, rating.value)"
+    >
+      Enviar
+    </button>
+  </form>
+</div>
+
+<p class="lead mb-0 mt-4 fw-bold">Comentários:</p>
+<div class="container-fluid border rounded d-flex flex-column p-3">
+  <ul class="list-group">
+    <li
+      *ngFor="let comment of product.comments; let i = index"
+
+      class="list-group-item"
+    >
+      <div
+        class="container-fluid d-flex align-items-center justify-content-between no-spacing"
+      >
+        <p class="lead fw-bold">{{ comment.userOwner.name }}</p>
+        <div *ngIf="comment.userOwner.userId === user.userId">
+          <button
+            class="btn btn-outline-primary edit-button"
+            (click)="editComment(comment, i)"
+          >
+            Editar
+          </button>
+          <button
+            class="btn btn-outline-danger"
+            (click)="deleteComment(comment.commentId)"
+          >
+            Apagar
+          </button>
+        </div>
+      </div>
+      <p #currentRating class="lead fw-bold">Nota: {{ comment.rating }} / 5</p>
+      <p #currentText class="lead">
+        {{ comment.text }}
+      </p>
+    </li>
+  </ul>
+</div>

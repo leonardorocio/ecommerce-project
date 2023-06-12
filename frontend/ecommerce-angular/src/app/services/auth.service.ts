@@ -23,7 +23,7 @@ export class AuthService {
       password: password
     };
     return this.http.post<AuthResponseBody>(`${this.authURL}/login`, requestBody, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<AuthResponseBody>('login'))
+      catchError(this.errorHandling.handleError<AuthResponseBody>('login', {} as AuthResponseBody))
     );
   }
 

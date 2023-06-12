@@ -40,4 +40,10 @@ export class AddressService {
       catchError(this.errorHandling.handleError('createAddress', {} as Address))
     );
   }
+
+  filterCities(cities: CityResponse[], filter: string): CityResponse[] {
+    return cities.filter(
+      (city) => city.nome.toLowerCase().indexOf(filter.toLowerCase()) > -1
+    );
+  }
 }

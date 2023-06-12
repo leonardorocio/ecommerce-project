@@ -18,12 +18,16 @@ import { ZipCodePipe } from './pipes/zip-code.pipe';
 import { FooterComponent } from './components/footer/footer.component';
 import { NavComponent } from './components/nav/nav.component';
 import { AddressComponent } from './components/address/address.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { CartProductComponent } from './components/cart-product/cart-product.component';
+import { ShippingComponent } from './components/shipping/shipping.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
