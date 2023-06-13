@@ -3,35 +3,34 @@ import { ErrorHandlingService } from './error-handling.service';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { CityResponse } from '../models/address';
 import { ToastrService } from 'ngx-toastr';
+import { Paginator } from '../models/paginator';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PaginatorService {
+  constructor(private toastr: ToastrService) {}
 
-  constructor(private errorHandling: ErrorHandlingService, private toastr: ToastrService) { }
+  updateShowingItems = new Subject<Array<any>>();
 
-  showDropdown: boolean = false;
-
-  showDropdownMenu(option: boolean) {
-    this.showDropdown = option;
+  updateItems(items: Array<any>) {
+    this.updateShowingItems.next(items);
   }
 
-  changePage(currentPage: number, pageSize: number, items: Array<any>, option: number): Array<any> {
+  changePage(paginator: Paginator, option: number): Paginator {
+    const pageNumber = Math.ceil((paginator.items.length / paginator.pageSize));
     if (
-      currentPage + option < 1 ||
-      currentPage * pageSize + option > items.length
+      paginator.currentPage + option < 1 ||
+      paginator.currentPage + option > pageNumber
     ) {
       this.toastr.error('Indíce indisponível', 'Erro');
-      return [];
     } else {
-      currentPage += option;
-      let showingItems = items.slice(
-        (currentPage - 1) * pageSize,
-        pageSize * currentPage
-      );
-      return showingItems;
+      paginator.currentPage += option;
     }
+    paginator.items = paginator.items.slice(
+      (paginator.currentPage - 1) * paginator.pageSize,
+      paginator.pageSize * paginator.currentPage
+    );
+    return paginator;
   }
-
 }

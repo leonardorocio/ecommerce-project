@@ -1,14 +1,7 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import {
-  BehaviorSubject,
-  debounceTime,
-  defaultIfEmpty,
-  distinctUntilChanged,
-  distinctUntilKeyChanged,
-} from 'rxjs';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { AddressService } from 'src/app/services/address.service';
-import { PaginatorService } from 'src/app/services/paginator.service';
+import { DropdownService } from 'src/app/services/dropdown.service';
 
 @Component({
   selector: 'app-address',
@@ -18,7 +11,7 @@ import { PaginatorService } from 'src/app/services/paginator.service';
 export class AddressComponent implements OnInit, OnChanges {
   constructor(
     public addressService: AddressService,
-    public paginatorService: PaginatorService
+    public dropDownService: DropdownService,
   ) {}
 
 
@@ -80,7 +73,7 @@ export class AddressComponent implements OnInit, OnChanges {
   selectCity(city: CityResponse) {
     this.selectedCity = city.nome;
     this.searchCities(this.selectedCity);
-    this.paginatorService.showDropdownMenu(false);
+    this.dropDownService.showDropdownMenu(false);
   }
 
   searchCities(term: string) {

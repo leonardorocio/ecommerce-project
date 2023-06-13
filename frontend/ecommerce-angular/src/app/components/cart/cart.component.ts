@@ -1,18 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Order, OrderDetails } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
-import { OrderDetailsService } from 'src/app/services/order-details.service';
-import { OrderService } from 'src/app/services/order.service';
-import { Address } from 'src/app/models/address';
-import { ShipperService } from 'src/app/services/shipper.service';
-import { Shipper } from 'src/app/models/shipper';
-import { ShipmentService } from 'src/app/services/shipment.service';
 import { Shipment } from 'src/app/models/shipment';
-import { Product } from 'src/app/models/product';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import Swal, { SweetAlertOptions } from 'sweetalert2';
-import { AddressComponent } from '../address/address.component';
 
 @Component({
   selector: 'app-cart',

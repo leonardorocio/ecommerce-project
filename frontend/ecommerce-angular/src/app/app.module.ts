@@ -22,12 +22,13 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
 import { CartProductComponent } from './components/cart-product/cart-product.component';
 import { ShippingComponent } from './components/shipping/shipping.component';
 import { CommentComponent } from './components/comment/comment.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -44,7 +44,7 @@
         name="city"
         id="city-input"
         #filter
-        (click)="paginatorService.showDropdownMenu(true)"
+        (click)="dropDownService.showDropdownMenu(true)"
         (ngModelChange)="searchCities(selectedCity)"
         class="form-control mb-3"
         list="cities"
@@ -52,7 +52,10 @@
         [disabled]="!selectedState"
         required
       />
-      <app-paginator *ngIf="paginatorService.showDropdown" [items]="filteredCities" (selectedItemEvent)="selectCity($event)" [pageSize]="5"></app-paginator>
+      <div class="container-fluid d-flex flex-column" *ngIf="dropDownService.showDropdown">
+        <app-dropdown (selectedItemEvent)="selectCity($event)"> </app-dropdown>
+        <app-paginator [items]="filteredCities" [pageSize]="5"></app-paginator>
+      </div>
     </div>
     <button
       class="btn btn-primary mt-3 w-25"

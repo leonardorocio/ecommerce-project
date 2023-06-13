@@ -7,9 +7,12 @@ import {
   Output,
   SimpleChange,
   SimpleChanges,
+  TemplateRef,
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 import { CityResponse } from 'src/app/models/address';
+import { Paginator } from 'src/app/models/paginator';
 import { AddressService } from 'src/app/services/address.service';
 import { PaginatorService } from 'src/app/services/paginator.service';
 
@@ -19,32 +22,33 @@ import { PaginatorService } from 'src/app/services/paginator.service';
   styleUrls: ['./paginator.component.css'],
 })
 export class PaginatorComponent implements OnChanges {
-  @Input() items = [] as CityResponse[];
-  @Input() pageSize = 10;
-  @Input() action!: (city: CityResponse) => void;
-  showingItems: CityResponse[] = [...this.items];
-  currentPage: number = 0;
 
-  @Output() selectedItemEvent = new EventEmitter<CityResponse>();
+  @Input() items: Array<any> = [];
+  @Input() pageSize = 10;
+  showingItems: Array<any> = [...this.items];
+  currentPage: number = 0;
 
   constructor(
     public paginatorService: PaginatorService,
-  ) {}
+    ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['items']) {
-      this.items = changes['items'].currentValue;
-      this.currentPage = 0;
-      this.changePage(1);
+    ngOnChanges(changes: SimpleChanges): void {
+      if (changes['items']) {
+        this.items = changes['items'].currentValue;
+        this.currentPage = 0;
+        this.changePage(1);
+        // this.paginatorService.updateItems(this.items);
+      }
     }
-  }
-
-  selectItem(item: CityResponse) {
-    this.selectedItemEvent.emit(item);
-  }
 
   changePage(option: number) {
-    const newPageItems = this.paginatorService.changePage(this.currentPage, this.pageSize, this.items, option);
-    this.showingItems =  newPageItems ? newPageItems : this.showingItems;
+    const paginator: Paginator = {
+      currentPage: this.currentPage,
+      pageSize: this.pageSize,
+      items: this.items
+    }
+    const newPaginator = this.paginatorService.changePage(paginator, option);
+    ({currentPage: this.currentPage, pageSize: this.pageSize, items: this.showingItems} = newPaginator);
+    this.paginatorService.updateItems(this.showingItems);
   }
 }

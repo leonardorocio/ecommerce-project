@@ -1,0 +1,9 @@
+<ul class="list-group">
+  <li
+    class="list-group-item custom-dropdown"
+    (click)="selectItem(item)"
+    *ngFor="let item of items"
+  >
+    {{ item.nome }}
+  </li>
+</ul>
