@@ -20,7 +20,7 @@ import { Cart } from 'src/app/models/cart';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
-export class CartComponent implements OnInit {
+export class CartComponent implements OnInit, OnChanges {
   constructor(
     private router: Router,
     private toastr: ToastrService,
@@ -38,6 +38,12 @@ export class CartComponent implements OnInit {
         this.cart = cart;
         history.replaceState({}, '');
       });
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['cart']) {
+      this.cart = changes['cart'].currentValue;
     }
   }
 

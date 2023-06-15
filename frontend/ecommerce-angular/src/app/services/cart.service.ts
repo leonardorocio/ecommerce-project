@@ -40,11 +40,15 @@ export class CartService {
 
   updateLocalCart(cart: Cart) {
     const user: User = JSON.parse(localStorage['user']);
-    user.userOrders.map((order) => {
-      if (order.orderId === cart.order.orderId) {
-        order = cart.order;
-      }
-    })
+    if (!Object.keys(cart).length) {
+      user.userOrders.shift();
+    } else {
+      user.userOrders.map((order) => {
+        if (order.orderId === cart.order.orderId) {
+          order = cart.order;
+        }
+      })
+    }
     localStorage['user'] = JSON.stringify(user);
   }
 
