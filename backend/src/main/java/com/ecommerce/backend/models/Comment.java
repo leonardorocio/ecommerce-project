@@ -40,7 +40,6 @@ public class Comment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "userId")
-    @JsonIgnore
     @NotNull
     private User userOwner;
 }

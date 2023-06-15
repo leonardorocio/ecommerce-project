@@ -8,6 +8,7 @@ import { Order, OrderDetails } from '../models/order';
 import { EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { Product } from '../models/product';
 
 @Injectable({
   providedIn: 'root',
@@ -87,6 +88,7 @@ export class CartService {
     if (result.value) {
       cart = {} as Cart;
       this.orderService.deleteOrder(order.orderId).subscribe(() => {
+        this.updateLocalCart(cart);
         history.replaceState({}, '');
         window.location.reload();
       });
@@ -129,9 +131,15 @@ export class CartService {
       let orderDetailsFiltered = cart.items.filter(
         (item) => JSON.stringify(item.product) === JSON.stringify(product)
       )[0];
+      console.log(product);
       if (!cart.items.includes(orderDetailsFiltered)) {
+        let body = {
+          orderId: cart.order.orderId,
+          productId: (product as Product).productId,
+          quantity: 1
+        }
         this.orderDetailsService
-          .createOrderDetails(cart.order, history.state, 1)
+          .createOrderDetails(body)
           .subscribe((orderDetails) => {
             cart.items.push(orderDetails);
             this.updateLocalCart(cart);

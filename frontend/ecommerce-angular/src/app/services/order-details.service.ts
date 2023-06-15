@@ -31,12 +31,8 @@ export class OrderDetailsService {
     ) as Observable<OrderDetails>;
   }
 
-  createOrderDetails(order: Order, product: Product, quantity: number): Observable<OrderDetails> {
-    let body = {
-      orderId: order.orderId,
-      productId: product.productId,
-      quantity: quantity
-    }
+  createOrderDetails(body: any): Observable<OrderDetails> {
+    console.log(body);
     return this.http.post<OrderDetails>(this.baseOrderDetailsURL, body, this.options).pipe(
       catchError(this.errorHandling.handleError('createOrderDetails', {} as OrderDetails))
     );

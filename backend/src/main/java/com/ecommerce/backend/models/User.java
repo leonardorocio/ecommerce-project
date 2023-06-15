@@ -47,7 +47,6 @@ public class User {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Orders> userOrders;
 
     @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -33,21 +33,12 @@ export class CartComponent implements OnInit {
 
   ngOnInit(): void {
     this.cart = this.cartService.initializeCart(this.user);
-    if (history.state) {
+    if (history.state['productId']) {
       this.cartService.addProductToCart(this.cart).subscribe((cart) => {
         this.cart = cart;
         history.replaceState({}, '');
       });
     }
-    // .subscribe((cart) => {
-    //   this.cart = cart;
-    //   if ('productId' in history.state) {
-    //     this.cartService.addProductToCart(cart).subscribe((cart) => {
-    //       this.cart = cart;
-    //       history.replaceState({}, '');
-    //     });
-    //   }
-    // });
   }
 
   cartUpdate(cart: Cart) {
