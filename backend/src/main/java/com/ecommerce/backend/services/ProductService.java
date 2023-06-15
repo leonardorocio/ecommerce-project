@@ -34,12 +34,12 @@ public class ProductService {
     public List<Product> getProductsWithDiscount() {
 
         return productRepository.findByDiscountSorted().orElseThrow(
-                () -> new ResourceNotFoundException("No products on the database")
+                () -> new ResourceNotFoundException("Nenhum produto na base de dados")
         );
     }
 
     public Product getProductById(Integer id) {
-        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such product"));
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Produto não existente"));
     }
 
     public Product createProduct(ProductPostRequestBody productPostRequestBody) {
@@ -68,13 +68,13 @@ public class ProductService {
 
     public List<Product> searchProduct(String name) {
         return productRepository.searchProduct(name).orElseThrow(
-                () -> new ResourceNotFoundException("No products related to this name"));
+                () -> new ResourceNotFoundException("Nenhum produto relacionado a esse nome"));
     }
 
     public List<Product> filterProductByCategory(ProductCategoryRequestBody productCategoryRequestBody) {
         String categoryName = productCategoryRequestBody.getName();
         return productRepository.filterProductByCategory(categoryName).orElseThrow(
-                () -> new ResourceNotFoundException("No products related to this category")
+                () -> new ResourceNotFoundException("Nenhum produto pertencente a essa categoria")
         );
     }
 }

@@ -49,7 +49,6 @@ public class UserController {
             description = "Takes a UserPostRequestBody, maps to a User and saves in the database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Returns the user saved in the database"),
-            @ApiResponse(responseCode = "201", description = "Returns the user created"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

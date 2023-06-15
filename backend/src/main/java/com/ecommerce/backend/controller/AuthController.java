@@ -53,6 +53,7 @@ public class AuthController {
             description = "Takes a PasswordRequestBody and authenticates them")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns the user authenticated"),
+            @ApiResponse(responseCode = "400", description = "Invalid arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid PasswordRequestBody passwordRequestBody) {

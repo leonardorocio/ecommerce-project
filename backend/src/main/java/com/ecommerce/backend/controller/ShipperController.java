@@ -69,7 +69,7 @@ public class ShipperController {
     @Operation(summary = "Creates a new Shipper",
             description = "Takes a ShipperRequestBody, maps to Shipper and then saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the list of Shipments"),
+            @ApiResponse(responseCode = "201", description = "Returns the Shipper create in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -94,7 +94,7 @@ public class ShipperController {
     @Operation(summary = "Updates a Shipper",
             description = "Takes a product's id and a ShipperRequestBody, maps to Shipper and saves in the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
+            @ApiResponse(responseCode = "200", description = "Returns the Shipper updated"),
             @ApiResponse(responseCode = "404", description = "Shipper not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed"),
             @ApiResponse(responseCode = "400", description = "Invalid arguments")

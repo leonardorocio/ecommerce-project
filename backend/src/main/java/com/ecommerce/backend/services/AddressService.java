@@ -31,7 +31,7 @@ public class AddressService {
     }
 
     public Address getAddressById(int id) {
-        return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such address"));
+        return addressRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Endereço não existe"));
     }
 
     @Transactional

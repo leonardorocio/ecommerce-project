@@ -56,7 +56,7 @@ public class UserService {
     }
 
     public User getUserById(Integer id) {
-        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("No user id found"));
+        return userRepository.findById(id).orElseThrow(() -> new BadRequestException("ID de usuário não encontrado"));
     }
 
     public User updateUser(UserPatchRequestBody userPatchRequestBody, Integer id) {
@@ -84,7 +84,7 @@ public class UserService {
         if (passwordRequestBody.getEmail().equals(user.getEmail())) {
             user.setPassword(passwordEncoder.encode(passwordRequestBody.getPassword()));
         } else {
-            throw new BadRequestException("Email does not correspond to the id");
+            throw new BadRequestException("Email não corresponde ao ID do usuário");
         }
         userRepository.save(user);
     }

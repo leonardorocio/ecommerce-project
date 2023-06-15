@@ -35,7 +35,7 @@ public class CommentMapper {
 
     public boolean validateComment(CommentPostRequestBody commentPostRequestBody) {
         if (commentPostRequestBody.getRating() > 5 || commentPostRequestBody.getRating() < 0) {
-            throw new BadRequestException("Rating cannot be lower than 0 or greater than 5");
+            throw new BadRequestException("Nota de avaliação não pode ser menor que 0 e nem maior que 5");
         }
         return true;
     }

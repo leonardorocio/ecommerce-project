@@ -42,10 +42,10 @@ public class UserMapper {
 
     public boolean validateUser(UserPostRequestBody userPostRequestBody) {
         if (userRepository.existsByEmail(userPostRequestBody.getEmail())) {
-            throw new BadRequestException("This email already exists");
+            throw new BadRequestException("Email já existente");
         }
         if (userPostRequestBody.getPassword() == null) {
-            throw new BadRequestException("Password cannot be null");
+            throw new BadRequestException("Senha não pode ser nula");
         }
         return true;
     }

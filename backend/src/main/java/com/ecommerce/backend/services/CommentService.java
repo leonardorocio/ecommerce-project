@@ -32,7 +32,7 @@ public class CommentService {
 
     public Comment getCommentById(Integer id) {
         return commentRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("No such comment for this id")
+                () -> new ResourceNotFoundException("Nenhum comentário com esse ID")
         );
     }
 

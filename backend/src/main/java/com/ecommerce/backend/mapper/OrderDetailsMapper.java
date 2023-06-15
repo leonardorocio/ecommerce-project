@@ -54,16 +54,16 @@ public class OrderDetailsMapper {
 
     public boolean validateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, Product product) {
         if (orderDetailsRequestBody.getQuantity() < 1) {
-            throw new BadRequestException("Order details product quantity cannot be lower than 1.");
+            throw new BadRequestException("Quantidade do item não pode ser menor que 1.");
         }
         if (orderDetailsRequestBody.getQuantity() > product.getStock()) {
-            throw new BadRequestException("Quantity ordered cannot be greater the available stock for the product");
+            throw new BadRequestException("Quantitidade pedida não pode ser maior que estoque disponível");
         }
         int orderId = orderDetailsRequestBody.getOrderId();
         int productId = orderDetailsRequestBody.getProductId();
         if (orderDetailsRepository.existsOrderWithSameProduct(orderId, productId)) {
             throw new BadRequestException(
-                    "Cannot create new order details for the same product and order. Please update the quantity"
+                    "Não é possível criar novo item para o mesmo pedido e mesmo produto. Atualize a quantidade"
             );
         }
         return true;
@@ -71,10 +71,10 @@ public class OrderDetailsMapper {
 
     public boolean validateUpdateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, Product product) {
         if (orderDetailsRequestBody.getQuantity() < 1) {
-            throw new BadRequestException("Order details product quantity cannot be lower than 1.");
+            throw new BadRequestException("Quantidade do item não pode ser menor que 1.");
         }
         if (orderDetailsRequestBody.getQuantity() > product.getStock()) {
-            throw new BadRequestException("Quantity ordered cannot be greater the available stock for the product");
+            throw new BadRequestException("Quantitidade pedida não pode ser maior que estoque disponível");
         }
         return true;
     }

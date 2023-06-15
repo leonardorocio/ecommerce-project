@@ -21,7 +21,7 @@ public class ShipperMapper {
 
     public boolean validateShipper(ShipperRequestBody shipperRequestBody) {
         if (shipperRequestBody.getFixedTax() < 0) {
-            throw new BadRequestException("Fixed tax cannot be lower than 0");
+            throw new BadRequestException("Taxa fixa não pode ser menor que 0");
         }
         return true;
     }

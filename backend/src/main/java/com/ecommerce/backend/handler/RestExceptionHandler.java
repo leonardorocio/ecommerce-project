@@ -45,7 +45,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 BadRequestExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.BAD_REQUEST.value())
-                        .title("Bad Request Exception. Check the docs")
+                        .title("Erro na requisição. Cheque a documentação")
                         .details(BRE.getMessage())
                         .developerMessage(BRE.getClass().getName())
                         .build(), HttpStatus.BAD_REQUEST
@@ -59,7 +59,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 BadRequestExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.UNAUTHORIZED.value())
-                        .title("Authentication Error")
+                        .title("Erro de Autenticação")
                         .details(authException.getMessage())
                         .developerMessage(authException.getClass().getName())
                         .build(), HttpStatus.UNAUTHORIZED
@@ -78,7 +78,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .fields(fields)
                         .fieldsMessage(fieldsMessage)
                         .details(ex.getMessage())
-                        .title("Invalid Fields")
+                        .title("Campos Inválidos")
                         .developerMessage(ex.getClass().getName())
                         .status(status.value())
                         .build(), HttpStatus.BAD_REQUEST
@@ -92,7 +92,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 BadRequestExceptionDetails.builder()
                         .timestamp(LocalDateTime.now())
                         .status(HttpStatus.NOT_FOUND.value())
-                        .title("Resource not found.")
+                        .title("Recurso não foi encontrado")
                         .details(RNFE.getMessage())
                         .developerMessage(RNFE.getClass().getName())
                         .build(), HttpStatus.NOT_FOUND
