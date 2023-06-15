@@ -65,12 +65,12 @@ export class CommentService {
       );
   }
 
-  getCommentsFromUser(userId: number): Observable<Comment[]> {
+  getCommentsFromProduct(productId: number): Observable<Comment[]> {
     return this.http
-      .get<Comment[]>(`${this.baseCommentURL}/user/${userId}`, this.options)
+      .get<Comment[]>(`${this.baseCommentURL}/product/${productId}`, this.options)
       .pipe(
         catchError(
-          this.errorHandling.handleError<Comment[]>('getCommentsFromUser', [])
+          this.errorHandling.handleError<Comment[]>('getCommentsFromProduct', [])
         )
       );
   }

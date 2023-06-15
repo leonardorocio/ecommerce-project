@@ -1,25 +1,27 @@
 <body>
   <div
-    *ngIf="empty"
+    *ngIf="cart.items.length; else emptyCart"
     class="container-fluid d-flex flex-column justify-content-center align-items-center w-75 mt-5"
   >
     <h3 class="display-3 mb-3">Meu Carrinho</h3>
     <app-address class="container-fluid no-spacing"></app-address>
     <app-cart-product
       class="container-fluid no-spacing"
-      (cartOrder)="cartOrder($event)"
+      (cartUpdate)="cartUpdate($event)"
       [user]="user"
+      [cart]="cart"
     ></app-cart-product>
     <app-shipping
       class="container-fluid no-spacing"
-      [order]="order"
+      [order]="cart.order"
       (selectedShipment)="selectShipment($event)"
     ></app-shipping>
     <div class="container-fluid d-flex">
       <div class="container-fluid d-flex flex-column border rounded p-3 mt-3">
         <p class="lead mb-3 fw-bold">Resumo:</p>
         <p class="lead">
-          Total produtos: R$ {{ order.totalPrice | number : "1.2-2" : "pt" }}
+          Total produtos: R$
+          {{ cart.order.totalPrice | number : "1.2-2" : "pt" }}
         </p>
         <p class="lead">
           Frete: R$
@@ -28,7 +30,8 @@
         <p class="lead fw-bold">
           Total do pedido: R$
           {{
-            order.totalPrice + shipment.shippingPrice | number : "1.2-2" : "pt"
+            cart.order.totalPrice + shipment.shippingPrice
+              | number : "1.2-2" : "pt"
           }}
         </p>
         <button
@@ -46,4 +49,17 @@
       </div>
     </div>
   </div>
+  <ng-template #emptyCart>
+    <div
+      class="container-fluid d-flex flex-column align-items-center justify-content-center mid-screen"
+    >
+      <h1 class="display-3">Carrinho Vazio!</h1>
+      <button
+        class="btn btn-primary btn-lg px-5 py-3"
+        (click)="goToDashboard()"
+      >
+        Volte às compras!
+      </button>
+    </div>
+  </ng-template>
 </body>

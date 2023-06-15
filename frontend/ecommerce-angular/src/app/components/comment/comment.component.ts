@@ -20,6 +20,7 @@ import Swal from 'sweetalert2';
 export class CommentComponent implements OnInit {
   @Input() product!: Product;
   @Input() user!: User;
+  comments!: Comment[];
   editing: boolean = false;
   currentText: string = '';
   currentRating: number = 1;
@@ -33,19 +34,16 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.commentService
-      .getCommentsFromUser(this.user.userId)
+      .getCommentsFromProduct(this.product.productId)
       .subscribe((comments) => {
-        this.product.comments = comments.concat(
-          this.product.comments.filter(
-            (comment) => comment.userOwner.userId !== this.user.userId
-          )
-        );
+        const compareId = (commentA: Comment, commentB: Comment) => commentA.userOwner.userId === this.user.userId ? 1 : 0;
+        this.comments = comments.sort(compareId);
       });
   }
 
   clearComment() {
     this.currentRating = 1;
-    this.currentText = "";
+    this.currentText = '';
   }
 
   sendComment(text: string, rating: string) {
@@ -58,7 +56,7 @@ export class CommentComponent implements OnInit {
         product_rated: this.product.productId,
       };
       this.commentService.editComment(newComment).subscribe((comment) => {
-        this.product.comments[this.editedCommentIndex] = comment;
+        this.comments[this.editedCommentIndex] = comment;
         this.editing = false;
         this.toastr.success('Comentário editado com sucesso', 'OK');
       });
@@ -71,7 +69,7 @@ export class CommentComponent implements OnInit {
           this.product.productId
         )
         .subscribe((comment) => {
-          this.product.comments.unshift(comment)
+          this.product.comments.unshift(comment);
           this.toastr.success('Comentário criado com sucesso', 'OK');
         });
     }
@@ -97,10 +95,10 @@ export class CommentComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         this.commentService.deleteComment(commentId).subscribe(() => {
-          this.product.comments = this.product.comments.filter(
+          this.comments = this.comments.filter(
             (comment) => commentId !== comment.commentId
           );
-          this.toastr.success("Comentário excluído com sucesso", "OK");
+          this.toastr.success('Comentário excluído com sucesso', 'OK');
           this.clearComment();
         });
       }

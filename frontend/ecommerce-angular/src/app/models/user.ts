@@ -1,5 +1,6 @@
 import { Address } from "./address";
 import { Comment } from "./comment";
+import { Order } from "./order";
 
 export interface User {
   userId: number,
@@ -8,4 +9,5 @@ export interface User {
   password: string,
   birthDate: string,
   addressList: Address[],
+  userOrders: Order[]
 }

@@ -3,13 +3,13 @@
     class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3"
   >
     <span class="lead fw-bold">Produtos:</span>
-    <button class="btn p-3 btn-outline-danger" (click)="clearCart(order)">
+    <button class="btn p-3 btn-outline-danger" (click)="clearCart(cart.order)">
       Remover todos os produtos
     </button>
   </div>
   <ul class="no-spacing">
     <li
-      *ngFor="let item of items; index as i"
+      *ngFor="let item of cart.items; index as i"
       class="border rounded no-spacing mb-3 list-group-item"
     >
       <div

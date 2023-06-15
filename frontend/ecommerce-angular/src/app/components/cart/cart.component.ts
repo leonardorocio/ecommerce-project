@@ -1,29 +1,57 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  DoCheck,
+  IterableDiffers,
+  KeyValueDiffers,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Order, OrderDetails } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
 import { Shipment } from 'src/app/models/shipment';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { CartService } from 'src/app/services/cart.service';
+import { Cart } from 'src/app/models/cart';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
-export class CartComponent {
+export class CartComponent implements OnInit {
   constructor(
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cartService: CartService
   ) {}
 
-  order!: Order;
-  empty = false;
   user: User = JSON.parse(localStorage['user']);
+  cart!: Cart;
   shipment!: Shipment;
 
-  cartOrder(order: Order) {
-    this.order = order;
-    this.empty = this.order.orderDetailsId.length == 0;
+  ngOnInit(): void {
+    this.cart = this.cartService.initializeCart(this.user);
+    if (history.state) {
+      this.cartService.addProductToCart(this.cart).subscribe((cart) => {
+        this.cart = cart;
+        history.replaceState({}, '');
+      });
+    }
+    // .subscribe((cart) => {
+    //   this.cart = cart;
+    //   if ('productId' in history.state) {
+    //     this.cartService.addProductToCart(cart).subscribe((cart) => {
+    //       this.cart = cart;
+    //       history.replaceState({}, '');
+    //     });
+    //   }
+    // });
+  }
+
+  cartUpdate(cart: Cart) {
+    this.cart = cart;
   }
 
   selectShipment(shipment: Shipment) {
@@ -39,5 +67,4 @@ export class CartComponent {
       .success('Voltando ao início...', 'Compra finalizada com sucesso!')
       .onShown.subscribe(() => this.goToDashboard());
   }
-
 }
