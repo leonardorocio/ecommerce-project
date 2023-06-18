@@ -60,6 +60,10 @@ public class User {
     @JoinColumn(name = "refresh_token", referencedColumnName = "refreshTokenId")
     private RefreshToken token;
 
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default ROLE_USER")
+    private Role role;
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;

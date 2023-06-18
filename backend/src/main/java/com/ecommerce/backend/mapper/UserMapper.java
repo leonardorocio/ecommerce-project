@@ -1,6 +1,7 @@
 package com.ecommerce.backend.mapper;
 
 import com.ecommerce.backend.exceptions.BadRequestException;
+import com.ecommerce.backend.models.Role;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.UserPatchRequestBody;
@@ -26,6 +27,7 @@ public class UserMapper {
                     .name(userPostRequestBody.getName())
                     .birthDate(userPostRequestBody.getBirthDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
+                    .role(Role.ROLE_USER)
                     .build();
             return user;
         }

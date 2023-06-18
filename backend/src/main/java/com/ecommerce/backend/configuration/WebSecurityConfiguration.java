@@ -2,7 +2,6 @@ package com.ecommerce.backend.configuration;
 
 import com.ecommerce.backend.repository.CommentRepository;
 import com.ecommerce.backend.services.CustomUserDetailsService;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,18 +15,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.GenericFilterBean;
 
 
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class WebSecurityConfiguration {
 
     @Autowired
@@ -40,6 +36,12 @@ public class WebSecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(authEntryPoint);
+        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class);
+
+
         httpSecurity
                 .authenticationProvider(authenticationProvider())
                 .sessionManagement()
@@ -52,20 +54,25 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/swagger-ui").permitAll()
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/**").permitAll()
+                .requestMatchers( "/products").hasRole("ADMIN")
+                .requestMatchers("/category").hasRole("ADMIN")
+                .requestMatchers("/shipper/**").hasRole("ADMIN")
+                .requestMatchers("/shipments/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/order").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/shipments").permitAll()
+                .requestMatchers(HttpMethod.GET, "/shipper/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/category").permitAll();
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/category").permitAll()
+                .anyRequest().authenticated();
 
         httpSecurity
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .csrf().disable()
                 .httpBasic();
-        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(customExceptionHandlingFilter(), LogoutFilter.class)
-                .authorizeHttpRequests()
-                .anyRequest().authenticated();
-        httpSecurity.exceptionHandling()
-                .authenticationEntryPoint(authEntryPoint);
+
 
         return httpSecurity.build();
     }
@@ -77,13 +84,13 @@ public class WebSecurityConfiguration {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-            CorsConfiguration configuration = new CorsConfiguration();
-            configuration.addAllowedOrigin("*");
-            configuration.addAllowedHeader("*");
-            configuration.addAllowedMethod("*");
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            source.registerCorsConfiguration("/**", configuration);
-            return source;
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -108,5 +115,4 @@ public class WebSecurityConfiguration {
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }
-
 }

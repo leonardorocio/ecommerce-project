@@ -48,6 +48,7 @@ public class OrderDetailsService {
         return orderDetailsRepository.save(updatedOrderDetails);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void deleteOrderDetails(int id) {
         OrderDetails orderDetailsToDelete = getOrderDetailsById(id);
         orderDetailsRepository.delete(orderDetailsToDelete);

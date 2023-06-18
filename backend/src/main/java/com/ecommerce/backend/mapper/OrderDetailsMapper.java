@@ -46,7 +46,6 @@ public class OrderDetailsMapper {
                     .product(product)
                     .quantity(orderDetailsRequestBody.getQuantity())
                     .build();
-            orderService.updateOrderTotalPrice(orderDetailsRequestBody.getOrderId(), product.getPrice() * product.getDiscount() * orderDetails.getQuantity());
             return orderDetails;
         }
         return null;

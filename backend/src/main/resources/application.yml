@@ -5,6 +5,7 @@ spring:
     url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/ecommerce_v2?createDatabaseIfNotExist=true
     password: ''
   jpa:
+    database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
