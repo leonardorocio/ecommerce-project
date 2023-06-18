@@ -61,7 +61,7 @@ public class User {
     private RefreshToken token;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(255) default ROLE_USER")
+    @Column(columnDefinition = "varchar(255) default 'ROLE_USER'")
     private Role role;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

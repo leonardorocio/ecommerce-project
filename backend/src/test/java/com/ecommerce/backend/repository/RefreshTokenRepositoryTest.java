@@ -43,7 +43,7 @@ class RefreshTokenRepositoryTest {
         RefreshToken refreshTokenToSave = createRefreshToken();
         RefreshToken refreshToken = refreshTokenRepository.findByToken(refreshTokenToSave.getToken()).get();
 
-        refreshTokenRepository.deleteByUser(refreshToken.getUser());
+        refreshTokenRepository.deleteByUserOwner(refreshToken.getUserOwner());
 
         Optional<RefreshToken> refreshTokenOptional = refreshTokenRepository
                 .findById(refreshToken.getRefreshTokenId());
@@ -55,7 +55,7 @@ class RefreshTokenRepositoryTest {
         RefreshToken refreshToken = RefreshToken.builder()
                 .expiryDate(Instant.now())
                 .token("esejaoie-aosndoaid-fieqonf-sfsdfs")
-                .user(userRepository.findById(3).get())
+                .userOwner(userRepository.findById(3).get())
                 .build();
         return refreshToken;
     }
