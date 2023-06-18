@@ -6,12 +6,13 @@ import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 @Service
@@ -24,7 +25,8 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new BadRequestException("User not found. Please create a user and then try to authenticate"));
-        return new CustomUserDetails(user.getUserId(), user.getEmail(), user.getPassword(), Collections.EMPTY_LIST);
+                () -> new BadRequestException("Usuário não encontrado"));
+        return new CustomUserDetails(user.getUserId(), user.getEmail(), user.getPassword(),
+                List.of(new SimpleGrantedAuthority(user.getRole().name())));
     }
 }

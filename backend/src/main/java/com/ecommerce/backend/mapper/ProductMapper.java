@@ -34,13 +34,13 @@ public class ProductMapper {
 
     public boolean validateProduct(ProductPostRequestBody productPostRequestBody) {
         if (productPostRequestBody.getDiscount() <= 0.0 || productPostRequestBody.getDiscount() > 1.0) {
-            throw new BadRequestException("Discount multiplier cannot be 0 or greater than 1");
+            throw new BadRequestException("Multiplicador de desconto não pode ser menor que 0 ou maior que 1");
         }
         if (productPostRequestBody.getStock() <= 0) {
-            throw new BadRequestException("Cannot create new product with empty stock");
+            throw new BadRequestException("Não é possível criar produto com estoque vazio");
         }
         if (productPostRequestBody.getPrice() <= 0.0) {
-            throw new BadRequestException("Cannot create product to be sold for free");
+            throw new BadRequestException("Não é possível criar produto de graça");
         }
         return true;
     }

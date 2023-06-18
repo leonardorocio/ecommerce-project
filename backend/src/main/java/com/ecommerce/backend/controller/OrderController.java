@@ -55,7 +55,7 @@ public class OrderController {
             description = "Takes an user's id and returns all of it's orders",
             tags = {"Order", "User"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of comments of the user"),
+            @ApiResponse(responseCode = "200", description = "Returns the list of orders of the user"),
             @ApiResponse(responseCode = "404", description = "User not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

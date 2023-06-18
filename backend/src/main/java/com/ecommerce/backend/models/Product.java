@@ -52,6 +52,7 @@ public class Product {
     private List<OrderDetails> orderDetails;
 
     @OneToMany(mappedBy = "productRated", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -26,7 +26,7 @@ public class ShipperService {
     }
 
     public Shipper getShipperById(int id) {
-        return shipperRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No such shipper"));
+        return shipperRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Transportadora não encontrada"));
     }
 
     public List<Shipment> getShippersOnGoingShipments(int id) {

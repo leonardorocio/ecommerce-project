@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/models/product';
+import { User } from 'src/app/models/user';
+import { ProductService } from 'src/app/services/product.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -10,13 +12,28 @@ import { Product } from 'src/app/models/product';
 })
 export class ProductDetailComponent implements OnInit {
   product!: Product;
+  user: User = JSON.parse(localStorage['user']);
 
   constructor(
     private titleService: Title,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private productService: ProductService
   ) {}
 
   ngOnInit(): void {
-      this.product = history.state;
-      this.titleService.setTitle(this.product!.name);
+    const productId = this.activatedRoute.snapshot.params['id'];
+    this.productService.getProductById(productId).subscribe(
+      (product) => {
+        this.product = product;
+        this.titleService.setTitle(this.product!.name);
+      }
+    );
+  }
+
+  sendToCart(product: Product) {
+    this.router.navigateByUrl(`/carrinho`, {
+      state: product,
+    });
   }
 }

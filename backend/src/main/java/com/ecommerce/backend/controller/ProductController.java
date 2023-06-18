@@ -54,7 +54,7 @@ public class ProductController {
     @Operation(summary = "Returns a product based on id",
             description = "Takes the product's id, returns the product")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
+            @ApiResponse(responseCode = "200", description = "Returns the product related to the id"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -80,7 +80,7 @@ public class ProductController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Returns the Product saved in the database"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "404", description = "Product Id"),
+            @ApiResponse(responseCode = "404", description = "Product Id not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<Product> updateProduct(@RequestBody @Valid ProductPostRequestBody productPostRequestBody,
@@ -92,7 +92,7 @@ public class ProductController {
     @Operation(summary = "Search for Products",
             description = "Takes a request parameter and searches for Product based on ProductCategory, Product's name and description")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
+            @ApiResponse(responseCode = "200", description = "Returns the list of products based on the search term"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<List<Product>> searchProduct(@RequestParam(defaultValue = "") String name) {
@@ -101,9 +101,9 @@ public class ProductController {
 
     @GetMapping(path = "/filter")
     @Operation(summary = "Search for a Product",
-            description = "Takes a request parameter and searches for Product based on ProductCategory, Product's name and description")
+            description = "Takes a request parameter and searches for Product based on ProductCategory")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
+            @ApiResponse(responseCode = "200", description = "Returns the list of products based on productCategory"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
     public ResponseEntity<List<Product>> filterProductByCategory(
@@ -115,7 +115,7 @@ public class ProductController {
     @Operation(summary = "Deletes a Product",
             description = "Takes a product's id and then deletes from the database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
+            @ApiResponse(responseCode = "204", description = "Product deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Product not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })

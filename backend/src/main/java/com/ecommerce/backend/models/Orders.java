@@ -32,6 +32,7 @@ public class Orders {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_orders", referencedColumnName = "userId")
     @NotNull
+    @JsonIgnore
     private User customer;
 
     @Column

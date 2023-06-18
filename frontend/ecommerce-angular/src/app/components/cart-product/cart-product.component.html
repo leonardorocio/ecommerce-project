@@ -1,0 +1,67 @@
+<div class="border rounded container-fluid d-flex flex-column justify-content-center mt-3">
+  <div
+    class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3"
+  >
+    <span class="lead fw-bold">Produtos:</span>
+    <button class="btn p-3 btn-outline-danger" (click)="clearCart(cart.order)">
+      Remover todos os produtos
+    </button>
+  </div>
+  <ul class="no-spacing">
+    <li
+      *ngFor="let item of cart.items; index as i"
+      class="border rounded no-spacing mb-3 list-group-item"
+    >
+      <div
+        class="container-fluid d-flex align-items-center justify-content-around"
+      >
+        <img
+          class="img-small"
+          [src]="item.product.productImage"
+          [alt]="item.product.name"
+        />
+        <div
+          class="d-flex flex-column align-items-center justify-content-center"
+        >
+          <p class="lead fw-bold">{{ item.product.name }}</p>
+          <p class="lead">
+            Preço unitário: R$
+            {{ item.product.price | number : "1.2-2" : "pt" }}
+          </p>
+          <p *ngIf="item.product.discount < 1" class="lead">
+            Desconto:
+            {{ (1 - item.product.discount) * 100 | number : "1.2-2" : "pt" }}%
+          </p>
+        </div>
+        <div
+          class="d-flex flex-column align-items-center justify-content-center w-25"
+        >
+          <p class="lead">Quantidade</p>
+          <div class="d-flex align-items-center justify-content-between">
+            <i
+              class="bi bi-caret-left-fill pointer mr-3"
+              (click)="updateQuantity(item, -1, i)"
+            ></i>
+            <span class="lead">{{ item.quantity }}</span>
+            <i
+              class="bi bi-caret-right-fill pointer ml-3"
+              (click)="updateQuantity(item, 1, i)"
+            ></i>
+          </div>
+        </div>
+        <div id="price-sizing" class="d-flex flex-column align-items-center">
+          <p class="lead fw-bold">Subtotal</p>
+          <p class="lead">
+            R${{
+              item.quantity * (item.product.price * item.product.discount)
+                | number : "1.2-2" : "pt"
+            }}
+          </p>
+          <button class="btn btn-outline-danger" (click)="removeProduct(item)">
+            Remover
+          </button>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>

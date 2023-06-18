@@ -1,5 +1,8 @@
+import { User } from "./user";
+
 export interface Comment {
   commentId: number,
   rating: number,
-  text: string
+  text: string,
+  userOwner: User
 }

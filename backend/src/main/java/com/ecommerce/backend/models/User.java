@@ -47,7 +47,6 @@ public class User {
     private LocalDate birthDate;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Orders> userOrders;
 
     @OneToMany(mappedBy = "userOwner", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -60,6 +59,10 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "refresh_token", referencedColumnName = "refreshTokenId")
     private RefreshToken token;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default ROLE_USER")
+    private Role role;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {

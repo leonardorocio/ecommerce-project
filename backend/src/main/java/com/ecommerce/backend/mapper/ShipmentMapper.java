@@ -41,18 +41,16 @@ public class ShipmentMapper {
 
     public boolean validateShipment(ShipmentRequestBody shipmentRequestBody, Orders orders) {
         if (orders.getShipment() != null) {
-            throw new BadRequestException("Order already has a designated shipment");
+            throw new BadRequestException("Pedido já possui uma entrega relacionada");
         }
 
         if (shipmentRequestBody.getExpectedDeliveryDate().isBefore(LocalDate.now()) ||
             shipmentRequestBody.getExpectedDeliveryDate().isBefore(orders.getOrderedDate())) {
-            throw new BadRequestException("Expected delivery date cannot be before today or before ordering date");
+            throw new BadRequestException("Data de entrega esperada não pode ser antes de hoje ou da data de pedido inicial");
         }
 
-
-
         if (shipmentRequestBody.getShippingPrice() < 0) {
-            throw new BadRequestException("Shipping price cannot be lower than 0");
+            throw new BadRequestException("Taxa de entrega não pode ser menor que 0");
         }
         return true;
     }

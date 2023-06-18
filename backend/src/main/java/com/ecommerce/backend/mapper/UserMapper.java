@@ -1,6 +1,7 @@
 package com.ecommerce.backend.mapper;
 
 import com.ecommerce.backend.exceptions.BadRequestException;
+import com.ecommerce.backend.models.Role;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.UserPatchRequestBody;
@@ -26,6 +27,7 @@ public class UserMapper {
                     .name(userPostRequestBody.getName())
                     .birthDate(userPostRequestBody.getBirthDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
+                    .role(Role.ROLE_USER)
                     .build();
             return user;
         }
@@ -42,10 +44,10 @@ public class UserMapper {
 
     public boolean validateUser(UserPostRequestBody userPostRequestBody) {
         if (userRepository.existsByEmail(userPostRequestBody.getEmail())) {
-            throw new BadRequestException("This email already exists");
+            throw new BadRequestException("Email já existente");
         }
         if (userPostRequestBody.getPassword() == null) {
-            throw new BadRequestException("Password cannot be null");
+            throw new BadRequestException("Senha não pode ser nula");
         }
         return true;
     }

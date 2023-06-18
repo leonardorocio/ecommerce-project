@@ -28,12 +28,12 @@ public class ShipmentService {
 
     public List<Shipment> getOnGoingShipments() {
         return shipmentRepository.findAllOnGoingShipments().orElseThrow(() ->
-                new ResourceNotFoundException("No on going shipments"));
+                new ResourceNotFoundException("Sem entregas em andamento"));
     }
 
     public Shipment getShipmentById(int id) {
         return shipmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No shipments found with this id"));
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhuma entrega existente com esse ID"));
     }
 
     @Transactional
@@ -46,7 +46,7 @@ public class ShipmentService {
     public Shipment updateShipment(ShipmentRequestBody shipmentRequestBody, int id) {
         Shipment originalShipment = getShipmentById(id);
         if (originalShipment.isDelivered()) {
-            throw new BadRequestException("Cannot update delivered shipment");
+            throw new BadRequestException("Não é possível atualizar entrega já efetuada");
         }
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);
         updatedShipment.setShipmentId(originalShipment.getShipmentId());

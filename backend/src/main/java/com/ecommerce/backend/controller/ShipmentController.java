@@ -113,17 +113,4 @@ public class ShipmentController {
         shipmentService.deleteShipment(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-    @PutMapping("/{id}/close")
-    @Operation(summary = "Closes a Shipment in database",
-            description = "Takes a shipment's id and closes the shipment")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Shipment closed"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
-    })
-    public ResponseEntity<Shipment> closeShipment(@PathVariable int id) {
-        return ResponseEntity.ok(shipmentService.closeShipment(id));
-    }
 }

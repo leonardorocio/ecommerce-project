@@ -42,11 +42,11 @@ public class OrderService {
 
     public List<Orders> getOpenOrders() {
         return orderRepository.findAllOpenOrders().orElseThrow(() ->
-                new ResourceNotFoundException("No open orders found"));
+                new ResourceNotFoundException("Nenhum pedido em aberto"));
     }
 
     public Orders getOrderById(int id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+        return orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Pedido não encontrado"));
     }
 
     public Orders postOrder(OrderRequestBody orderRequestBody) {
@@ -66,8 +66,6 @@ public class OrderService {
         order.setTotalPrice(order.getTotalPrice() + totalPrice);
         orderRepository.updateTotalPrice(id, order.getTotalPrice());
     }
-
-    // TODO IMPLEMENTAR closeOrder(int id)
 
     public void deleteOrder(int id) {
         Orders ordersToDelete = getOrderById(id);

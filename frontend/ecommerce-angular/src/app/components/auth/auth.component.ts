@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
-import { trigger, style, animate, transition } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-auth',
@@ -15,17 +16,35 @@ export class AuthComponent {
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
+    private userService: UserService,
     private router: Router
   ) {}
 
   login(email: string, password: string) {
     this.authService.login(email, password).subscribe((data) => {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      localStorage.setItem('expiryDate', data.expiryDate);
-      this.authService.accessToken = data.accessToken;
+      Object.keys(data).forEach((e) => {
+        const value = data[e as keyof typeof data];
+        localStorage.setItem(
+          e,
+          typeof value == 'string' ? value : JSON.stringify(value)
+        );
+      });
       this.toastr.success('Redirecionando...', 'Login Realizado com sucesso!');
-      this.router.navigate(['/dashboard']);
+      this.router.navigateByUrl('/dashboard');
+    });
+  }
+
+  createUser(name: string, dateBirth: string, email: string, password: string) {
+    const newUser: User = {
+      name: name,
+      email: email,
+      birthDate: new Date(dateBirth).toISOString(),
+      password: password,
+    } as User;
+    this.userService.createUser(newUser).subscribe((user) => {
+      this.toastr
+        .success('Indo para o Login...', 'Usuário criado com sucesso')
+        .onShown.subscribe(() => this.changeView());
     });
   }
 

@@ -12,7 +12,6 @@ export class AuthService {
 
   constructor(private http: HttpClient, private errorHandling: ErrorHandlingService) { }
 
-  accessToken: string = '';
   authURL: string = 'http://localhost:9000/auth';
   httpOptions = {
     headers: new HttpHeaders('Content-Type: application/json')
@@ -24,13 +23,8 @@ export class AuthService {
       password: password
     };
     return this.http.post<AuthResponseBody>(`${this.authURL}/login`, requestBody, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<AuthResponseBody>('login'))
+      catchError(this.errorHandling.handleError<AuthResponseBody>('login', {} as AuthResponseBody))
     );
-  }
-
-  async getAccessToken(): Promise<string> {
-    const item = localStorage.getItem('accessToken');
-    return item ? item : '';
   }
 
 }

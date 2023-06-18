@@ -1,16 +1,18 @@
-<div class="container-fluid w-75 d-flex flex-column justify-content-center align-items-center mt-5">
-  <h6 class="display-5 mt-3 mb-4">Destaques</h6>
-  <div class="container-fluid d-flex justify-content-around align-items-center">
-    <ul *ngFor="let product of products" class="product">
-      <div class="card">
+<body>
+
+  <div class="container-fluid w-75 d-flex flex-column justify-content-center align-items-center mt-5">
+    <h6 class="display-5 mt-3 mb-4">Destaques</h6>
+    <div class="container-fluid d-flex justify-content-around align-items-center">
+      <div *ngFor="let product of products" class="product">
+      <div (click)="goToDetail(product)" class="card">
         <img [src]="product.productImage" [alt]="product.name" class="card-img-top">
         <div class="card-body">
           <h5 class="card-title">{{ product.name }}</h5>
           <p class="card-text">{{ product.description }}</p>
-          <a (click)="goToDetail(product)" class="btn btn-primary">Comprar</a>
+          <a (click)="sendToCart(product)" class="btn btn-primary">Comprar</a>
         </div>
       </div>
-    </ul>
+    </div>
   </div>
 
   <h6 class="display-5 mt-3 mb-4">Departamentos</h6>
@@ -27,3 +29,5 @@
     </ul>
   </div>
 </div>
+
+</body>

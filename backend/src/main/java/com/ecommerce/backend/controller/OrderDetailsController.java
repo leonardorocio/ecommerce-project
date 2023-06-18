@@ -40,7 +40,7 @@ public class OrderDetailsController {
     @Operation(summary = "Returns an orderDetails based on id",
             description = "Takes an orderDetails's id, returns the orderDetails")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of orders"),
+            @ApiResponse(responseCode = "200", description = "Returns the orderDetails based on id"),
             @ApiResponse(responseCode = "404", description = "OrderDetails not found"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")
     })
@@ -79,7 +79,7 @@ public class OrderDetailsController {
     @Operation(summary = "Updates an orderDetails based on id",
             description = "Takes an orderDetails's id and an OrderDetailsRequestBody, maps to a OrderDetails and updates the orderDetails")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Returns the orderDetails updated"),
+            @ApiResponse(responseCode = "200", description = "Returns the orderDetails updated"),
             @ApiResponse(responseCode = "404", description = "OrderDetails not found"),
             @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
             @ApiResponse(responseCode = "401", description = "Authentication failed")

@@ -32,7 +32,7 @@ public class OrderDetailsService {
 
     public OrderDetails getOrderDetailsById(int id) {
         return orderDetailsRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("No details available with this id"));
+                .orElseThrow(() -> new ResourceNotFoundException("Nenhum item de pedido disponível com esse ID"));
     }
     @Transactional(rollbackOn = Exception.class)
     public OrderDetails postOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
@@ -40,13 +40,15 @@ public class OrderDetailsService {
         return orderDetailsRepository.save(orderDetails);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public OrderDetails updateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, int id) {
         OrderDetails originalOrderDetails = getOrderDetailsById(id);
-        OrderDetails updatedOrderDetails = orderDetailsMapper.mapToOrderDetails(orderDetailsRequestBody);
+        OrderDetails updatedOrderDetails = orderDetailsMapper.mapToUpdateOrderDetails(orderDetailsRequestBody);
         updatedOrderDetails.setOrderDetailsId(originalOrderDetails.getOrderDetailsId());
         return orderDetailsRepository.save(updatedOrderDetails);
     }
 
+    @Transactional(rollbackOn = Exception.class)
     public void deleteOrderDetails(int id) {
         OrderDetails orderDetailsToDelete = getOrderDetailsById(id);
         orderDetailsRepository.delete(orderDetailsToDelete);

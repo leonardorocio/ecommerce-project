@@ -27,7 +27,7 @@ public class ProductCategoryService {
 
     public ProductCategory getCategoryById(Integer id) {
         return productCategoryRepository.findById(id).orElseThrow(
-                () -> new BadRequestException("No such category"));
+                () -> new BadRequestException("Categoria não existente"));
     }
 
     public ProductCategory createProductCategory(ProductCategoryRequestBody productCategoryRequestBody) {

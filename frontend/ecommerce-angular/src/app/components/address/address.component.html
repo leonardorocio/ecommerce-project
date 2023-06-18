@@ -1,0 +1,105 @@
+<div
+  *ngIf="!addresses.length"
+  class="container-fluid d-flex flex-column border rounded mb-3 p-3"
+>
+  <p class="lead mb-4 fw-bold">Endereço não encontrado! Adicione um novo!</p>
+  <form class="form-group d-flex flex-column justify-content-between">
+    <label class="fw-bold" for="cep">CEP:</label>
+    <input
+      class="form-control"
+      type="text"
+      name="cep"
+      id="cep"
+      placeholder="xxxxx-xxx"
+      [ngModel]="zipCode | zipCode"
+      (ngModelChange)="zipCode = $event"
+      required
+    />
+    <label class="fw-bold" for="streetWithNumber">Rua e número:</label>
+    <input
+      name="streetWithNumber"
+      type="text"
+      placeholder="Rua dos Teste, 101"
+      class="form-control"
+      [(ngModel)]="streetWithNumber"
+      required
+    />
+    <label class="fw-bold" for="UF">Estado:</label>
+    <select
+      [(ngModel)]="selectedState"
+      (ngModelChange)="changeCities()"
+      id="UF"
+      class="form-select form-select-md"
+      name="UF"
+      required
+    >
+      <option *ngFor="let state of states" [ngValue]="state">
+        {{ state.nome }}
+      </option>
+    </select>
+    <div class="dropdown">
+      <label class="fw-bold" for="city">Cidade:</label>
+      <input
+        [(ngModel)]="selectedCity"
+        name="city"
+        id="city-input"
+        #filter
+        (click)="dropDownService.showDropdownMenu(true)"
+        (ngModelChange)="searchCities(selectedCity)"
+        class="form-control mb-3"
+        list="cities"
+        placeholder="Selecione um estado primeiro"
+        [disabled]="!selectedState"
+        required
+      />
+      <div class="container-fluid d-flex flex-column" *ngIf="dropDownService.showDropdown">
+        <app-dropdown (selectedItemEvent)="selectCity($event)"> </app-dropdown>
+        <app-paginator [items]="filteredCities" [pageSize]="5"></app-paginator>
+      </div>
+    </div>
+    <button
+      class="btn btn-primary mt-3 w-25"
+      (click)="
+        createAddress(zipCode, streetWithNumber, selectedState, selectedCity)
+      "
+    >
+      Criar
+    </button>
+  </form>
+</div>
+
+<div
+  *ngIf="addresses.length"
+  class="container-fluid d-flex flex-column border rounded p-3 mb-3"
+>
+  <p class="lead mb-3 fw-bold">Endereço de entrega:</p>
+  <select
+    [(ngModel)]="selectedAddress"
+    name="address"
+    id="address"
+    class="form-select form-select-md"
+  >
+    <option *ngFor="let address of addresses" [ngValue]="address">
+      {{ address.city }}; {{ address.state }};
+      {{ address.streetWithNumber }}
+    </option>
+  </select>
+
+  <div
+    class="container-fluid d-flex flex-column border bg-light rounded mt-3 p-3"
+  >
+    <p class="lead fw-bold">Endereço Selecionado:</p>
+    <p class="lead">
+      <span class="fw-bold">CEP: </span>{{ selectedAddress.zipCode | zipCode }}
+    </p>
+    <p class="lead">
+      <span class="fw-bold">Rua: </span>{{ selectedAddress.streetWithNumber }}
+    </p>
+    <p class="lead">
+      <span class="fw-bold">Cidade: </span>{{ selectedAddress.city }}
+    </p>
+    <p class="lead">
+      <span class="fw-bold">Estado: </span>{{ selectedAddress.state }}
+    </p>
+  </div>
+</div>

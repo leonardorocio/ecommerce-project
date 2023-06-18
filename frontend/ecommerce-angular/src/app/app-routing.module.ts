@@ -4,6 +4,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { UserComponent } from './components/user/user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
+import { CartComponent } from './components/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -25,11 +26,16 @@ const routes: Routes = [
     path: 'produto/:id',
     component: ProductDetailComponent,
     title: 'Ecommerce - Produto'
+  },
+  {
+    path: 'carrinho',
+    component: CartComponent,
+    title: 'Ecommerce - Carrinho'
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'top', onSameUrlNavigation: 'reload'})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
