@@ -55,17 +55,17 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/v3/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/shipments").permitAll()
+                .requestMatchers(HttpMethod.GET, "/shipper/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/category").permitAll()
                 .requestMatchers( "/products").hasRole("ADMIN")
                 .requestMatchers("/category").hasRole("ADMIN")
                 .requestMatchers("/shipper/**").hasRole("ADMIN")
                 .requestMatchers("/shipments/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/order").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/shipments").permitAll()
-                .requestMatchers(HttpMethod.GET, "/shipper/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/products").permitAll()
-                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/category").permitAll()
                 .anyRequest().authenticated();
 
         httpSecurity
