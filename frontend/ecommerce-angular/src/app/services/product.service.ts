@@ -25,7 +25,7 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     return this.http
       .get<Product[]>(this.productsURL, this.httpOptions)
-      .pipe(catchError(this.errorHandling.handleError('getProducts', [])));
+      .pipe(catchError(this.errorHandling.handleError<Product[]>('getProducts', [])));
   }
 
   getProductById(productId: number): Observable<Product> {

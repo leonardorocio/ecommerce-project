@@ -1,13 +1,12 @@
 <body>
   <div
-    *ngIf="cart.items.length; else emptyCart"
+    *ngIf="hasProducts; else emptyCart"
     class="container-fluid d-flex flex-column justify-content-center align-items-center w-75 mt-5"
   >
     <h3 class="display-3 mb-3">Meu Carrinho</h3>
     <app-address class="container-fluid no-spacing"></app-address>
     <app-cart-product
       class="container-fluid no-spacing"
-      (cartUpdate)="cartUpdate($event)"
       [user]="user"
       [cart]="cart"
     ></app-cart-product>
@@ -21,7 +20,7 @@
         <p class="lead mb-3 fw-bold">Resumo:</p>
         <p class="lead">
           Total produtos: R$
-          {{ cart.order.totalPrice | number : "1.2-2" : "pt" }}
+          {{ orderTotalPrice() - shipment.shippingPrice | number : "1.2-2" : "pt" }}
         </p>
         <p class="lead">
           Frete: R$
@@ -30,7 +29,7 @@
         <p class="lead fw-bold">
           Total do pedido: R$
           {{
-            cart.order.totalPrice + shipment.shippingPrice
+            orderTotalPrice()
               | number : "1.2-2" : "pt"
           }}
         </p>

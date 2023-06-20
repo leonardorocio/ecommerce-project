@@ -26,7 +26,7 @@ export class ShipmentService {
 
   consultZipCode(address: Address): Observable<any> {
     return this.http.get(`${this.correiosAPIURL}/${address.zipCode}`, this.options).pipe(
-      catchError(this.errorHandling.handleError('consultZipCode', ''))
+      catchError(this.errorHandling.handleError<any>('consultZipCode', ''))
     )
   }
 

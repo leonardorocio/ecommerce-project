@@ -22,7 +22,7 @@ export class ShipperService {
 
   getShippers(): Observable<Shipper[]> {
     return this.http.get<Shipper[]>(this.baseShipperURL, this.options).pipe(
-      catchError(this.errorHandling.handleError('getShippers', []))
+      catchError(this.errorHandling.handleError<Shipper[]>('getShippers', [] as Shipper[]))
     )
   }
 }

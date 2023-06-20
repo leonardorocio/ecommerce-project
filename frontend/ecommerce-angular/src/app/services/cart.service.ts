@@ -19,20 +19,30 @@ export class CartService {
     private orderDetailsService: OrderDetailsService
   ) {}
 
-  initializeCart(user: User): Cart {
-    const openOrder = user.userOrders.filter((order) => !order.closed)[0];
+  fetchCart(user: User): Observable<Cart> {
+    return new Observable<Cart>((observer) => {
+      const openOrder: Order = user.userOrders.filter((order) => !order.closed)[0];
+      if (openOrder != null && openOrder != undefined) {
+        const cart: Cart = this.initializeCart(openOrder);
+        observer.next(cart);
+        observer.complete();
+      } else {
+        this.createOrder(user).subscribe((order) => {
+          observer.next(this.initializeCart(order));
+          observer.complete();
+        })
+      }
+    })
+  }
+
+  initializeCart(order: Order) {
     let cart: Cart = {
       items: [],
       order: {} as Order
     };
-    if (!openOrder) {
-      this.createOrder(user).subscribe((order) => {
-        cart.items = [];
-        cart.order = order;
-      })
-    } else {
-      cart.items = openOrder.orderDetailsId;
-      cart.order = openOrder;
+    if (order != null && order != undefined) {
+      cart.items = order.orderDetailsId;
+      cart.order = order;
     }
     this.updateLocalCart(cart);
     return cart;
@@ -40,14 +50,15 @@ export class CartService {
 
   updateLocalCart(cart: Cart) {
     const user: User = JSON.parse(localStorage['user']);
-    if (!Object.keys(cart).length) {
+    if (cart.order == null && cart.order == undefined) {
       user.userOrders.shift();
     } else {
-      user.userOrders.map((order) => {
-        if (order.orderId === cart.order.orderId) {
-          order = cart.order;
-        }
-      })
+      const orderIndex = user.userOrders.findIndex((o) => o.orderId === cart.order.orderId);
+      if (orderIndex != -1) {
+        user.userOrders[orderIndex] = cart.order;
+      } else {
+        user.userOrders.push(cart.order);
+      }
     }
     localStorage['user'] = JSON.stringify(user);
   }
@@ -118,8 +129,8 @@ export class CartService {
               .deleteOrderDetails(orderDetails.orderDetailsId)
               .subscribe(() => {
                 cart.items = cart.items.filter((o) => o !== orderDetails);
+                cart.order.orderDetailsId = cart.items;
                 this.updateLocalCart(cart);
-                window.location.reload();
                 observer.next(cart);
                 observer.complete();
               });
@@ -135,7 +146,6 @@ export class CartService {
       let orderDetailsFiltered = cart.items.filter(
         (item) => JSON.stringify(item.product) === JSON.stringify(product)
       )[0];
-      console.log(product);
       if (!cart.items.includes(orderDetailsFiltered)) {
         let body = {
           orderId: cart.order.orderId,
