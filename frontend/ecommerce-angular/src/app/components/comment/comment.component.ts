@@ -69,7 +69,7 @@ export class CommentComponent implements OnInit {
           this.product.productId
         )
         .subscribe((comment) => {
-          this.product.comments.unshift(comment);
+          this.comments.unshift(comment);
           this.toastr.success('Comentário criado com sucesso', 'OK');
         });
     }
