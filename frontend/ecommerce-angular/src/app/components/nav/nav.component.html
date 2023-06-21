@@ -5,10 +5,12 @@
     >
     <form class="form-inline w-50">
       <input
+        #searchTerm
         class="form-control"
         type="search"
-        placeholder="Search"
+        placeholder="Pressione a tecla enter para buscar"
         aria-label="Search"
+        (keydown.enter)="goToSearchProducts(searchTerm.value)"
       />
     </form>
     <ul class="navbar-nav">

@@ -5,6 +5,7 @@ import { UserComponent } from './components/user/user.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
 
 const routes: Routes = [
   {
@@ -31,6 +32,11 @@ const routes: Routes = [
     path: 'carrinho',
     component: CartComponent,
     title: 'Ecommerce - Carrinho'
+  },
+  {
+    path: 'search',
+    component: ProductSearchComponent,
+    title: 'Ecommerce - Busca'
   }
 ];
 

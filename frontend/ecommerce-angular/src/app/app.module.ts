@@ -23,12 +23,14 @@ import { CartProductComponent } from './components/cart-product/cart-product.com
 import { ShippingComponent } from './components/shipping/shipping.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { ProductCardComponent } from './components/product-card/product-card.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent, ProductSearchComponent, ProductCardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

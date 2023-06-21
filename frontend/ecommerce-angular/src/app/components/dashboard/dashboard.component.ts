@@ -33,15 +33,9 @@ export class DashboardComponent implements OnInit {
       .subscribe((categories) => (this.categories = categories));
   }
 
-  goToDetail(product: Product) {
-    this.router.navigateByUrl(`/produto/${product.productId}`, {
-      state: product,
-    });
+  goToSearchProducts(term: string) {
+    this.productService.nextTerm(term);
+    this.router.navigate(['/search'], { queryParams: { name: term } });
   }
 
-  sendToCart(product: Product) {
-    this.router.navigateByUrl(`/carrinho`, {
-      state: product,
-    });
-  }
 }
