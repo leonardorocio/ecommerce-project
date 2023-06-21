@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ErrorHandlingService } from './error-handling.service';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { CityResponse } from '../models/address';
+import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Paginator } from '../models/paginator';
 
@@ -18,7 +16,7 @@ export class PaginatorService {
   }
 
   changePage(paginator: Paginator, option: number): Paginator {
-    const pageNumber = Math.ceil((paginator.items.length / paginator.pageSize));
+    const pageNumber = Math.ceil(paginator.items.length / paginator.pageSize);
     if (
       paginator.currentPage + option < 1 ||
       paginator.currentPage + option > pageNumber

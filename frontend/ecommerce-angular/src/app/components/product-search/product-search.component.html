@@ -22,14 +22,15 @@
     </ul>
   </div>
   <div class="container-fluid d-flex align-items-center justify-content-center">
-    <div
-      *ngIf="!isEmpty; else emptySearch"
-      class="container-fluid d-flex justify-content-around flex-wrap"
-    >
-      <div *ngFor="let product of showingItems" class="product mt-3">
-        <app-product-card [product]="product"></app-product-card>
+    <div *ngIf="!isEmpty; else emptySearch" class="container-fluid d-flex flex-column align-items-center">
+      <div
+        class="container-fluid d-flex justify-content-around flex-wrap"
+      >
+        <div *ngFor="let product of showingItems" class="product mt-3">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
       </div>
-      <app-paginator [pageSize]="5" [items]="showingItems"></app-paginator>
+      <app-paginator [pageSize]="6" [items]="items"></app-paginator>
     </div>
     <ng-template #emptySearch>
       <div
