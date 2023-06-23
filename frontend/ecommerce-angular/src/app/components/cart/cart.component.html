@@ -4,14 +4,15 @@
     class="container-fluid d-flex flex-column justify-content-center align-items-center w-75 mt-5"
   >
     <h3 class="display-3 mb-3">Meu Carrinho</h3>
-    <app-address class="container-fluid no-spacing"></app-address>
+    <app-address class="container-fluid"></app-address>
     <app-cart-product
-      class="container-fluid no-spacing"
+      class="container-fluid"
       [user]="user"
       [cart]="cart"
+      [enableEditing]="true"
     ></app-cart-product>
     <app-shipping
-      class="container-fluid no-spacing"
+      class="container-fluid"
       [order]="cart.order"
       (selectedShipment)="selectShipment($event)"
     ></app-shipping>

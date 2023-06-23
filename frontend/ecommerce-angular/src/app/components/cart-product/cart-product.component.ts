@@ -16,6 +16,7 @@ export class CartProductComponent {
 
   @Input() cart!: Cart;
   @Input() user!: User;
+  @Input() enableEditing!: boolean;
 
   updateQuantity(orderDetails: OrderDetails, update: number, index: number) {
     this.cartService.updateQuantity(this.cart, orderDetails, update, index).subscribe((cart) => {

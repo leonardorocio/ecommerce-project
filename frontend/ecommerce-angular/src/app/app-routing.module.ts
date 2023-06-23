@@ -37,6 +37,11 @@ const routes: Routes = [
     path: 'search',
     component: ProductSearchComponent,
     title: 'Ecommerce - Busca'
+  },
+  {
+    path: 'profile',
+    component: UserComponent,
+    title: 'Ecommerce - Perfil'
   }
 ];
 

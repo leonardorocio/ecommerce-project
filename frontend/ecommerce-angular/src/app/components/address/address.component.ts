@@ -1,5 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
+import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 
@@ -21,7 +22,8 @@ export class AddressComponent implements OnInit, OnChanges {
     }
   }
 
-  addresses: Address[] = JSON.parse(localStorage['user']).addressList;
+  user: User = JSON.parse(localStorage['user']);
+  addresses: Address[] = this.user.addressList;
   states!: StateResponse[];
   cities!: CityResponse[];
   filteredCities!: CityResponse[];
@@ -67,6 +69,7 @@ export class AddressComponent implements OnInit, OnChanges {
     } as Address;
     this.addressService.createAddress(address).subscribe((address) => {
       this.addresses.push(address);
+      localStorage['user'] = JSON.stringify(this.user);
     });
   }
 

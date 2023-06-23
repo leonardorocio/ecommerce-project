@@ -35,7 +35,7 @@ export class CartService {
     })
   }
 
-  initializeCart(order: Order) {
+  initializeCart(order: Order): Cart {
     let cart: Cart = {
       items: [],
       order: {} as Order
