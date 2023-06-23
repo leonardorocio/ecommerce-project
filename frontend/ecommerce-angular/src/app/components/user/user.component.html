@@ -63,12 +63,14 @@
             Ver produtos do pedido
           </button>
         </li>
-        <app-cart-product class="mb-3"
-          *ngIf="i === selected"
+        <div *ngIf="i === selected" class="container-fluid border rounded mb-3">
+          <app-cart-product class="mb-3"
           [user]="user"
           [cart]="cartService.initializeCart(order)"
           [enableEditing]="false"
-        ></app-cart-product>
+          ></app-cart-product>
+          <app-cart-summary class="mb-3 no-spacing"  [cart]="cartService.initializeCart(order)"></app-cart-summary>
+        </div>
       </div>
     </ul>
   </div>

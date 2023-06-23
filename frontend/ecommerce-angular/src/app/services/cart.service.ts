@@ -51,7 +51,7 @@ export class CartService {
   updateLocalCart(cart: Cart) {
     const user: User = JSON.parse(localStorage['user']);
     if (cart.order == null && cart.order == undefined) {
-      user.userOrders.shift();
+      user.userOrders.pop();
     } else {
       const orderIndex = user.userOrders.findIndex((o) => o.orderId === cart.order.orderId);
       if (orderIndex != -1) {

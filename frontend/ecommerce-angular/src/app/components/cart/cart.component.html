@@ -16,39 +16,11 @@
       [order]="cart.order"
       (selectedShipment)="selectShipment($event)"
     ></app-shipping>
-    <div class="container-fluid d-flex">
-      <div class="container-fluid d-flex flex-column border rounded p-3 mt-3">
-        <p class="lead mb-3 fw-bold">Resumo:</p>
-        <p class="lead">
-          Total produtos: R$
-          {{ orderTotalPrice() - shipment.shippingPrice | number : "1.2-2" : "pt" }}
-        </p>
-        <p class="lead">
-          Frete: R$
-          {{ shipment.shippingPrice | number : "1.2-2" : "pt" }}
-        </p>
-        <p class="lead fw-bold">
-          Total do pedido: R$
-          {{
-            orderTotalPrice()
-              | number : "1.2-2" : "pt"
-          }}
-        </p>
-        <button
-          class="btn w-25 btn-primary fw-bold lead mb-3"
-          (click)="finishOrder()"
-        >
-          Finalizar Compra
-        </button>
-        <button
-          class="btn w-25 btn-outline-primary fw-bold"
-          (click)="goToDashboard()"
-        >
-          Voltar às compras
-        </button>
-      </div>
-    </div>
+    <app-cart-summary class="container-fluid no-spacing" [cart]="cart" [shipment]="shipment"></app-cart-summary>
   </div>
+
+
+<!-- Se carrinho estiver vazio -->
   <ng-template #emptyCart>
     <div
       class="container-fluid d-flex flex-column align-items-center justify-content-center mid-screen"
