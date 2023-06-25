@@ -1,9 +1,12 @@
 <div class="container-fluid w-75 d-flex flex-column align-items-center">
   <h3 class="display-3 mt-3">Perfil</h3>
   <div class="container-fluid d-flex flex-column border rounded mb-5 p-3">
-    <p class="lead fw-bold">Informações pessoais:</p>
+    <div class="container-fluid d-flex justify-content-between no-spacing">
+      <p class="lead fw-bold">Informações pessoais:</p>
+      <button *ngIf="role === 'ADMIN'" class="btn btn-primary">Administração</button>
+    </div>
     <form class="form-group">
-      <p class="lead">Tipo: {{ role }}</p>
+      <p class="lead">Tipo: {{ role === "USER" ? "Usuário" : "Administrador" }}</p>
       <label class="form-label" for="name">Nome: </label>
       <input
         class="form-control"
@@ -63,13 +66,13 @@
             Ver produtos do pedido
           </button>
         </li>
-        <div *ngIf="i === selected" class="container-fluid border rounded mb-3">
+        <div *ngIf="i === selected" class="container-fluid mb-3">
           <app-cart-product class="mb-3"
           [user]="user"
           [cart]="cartService.initializeCart(order)"
           [enableEditing]="false"
           ></app-cart-product>
-          <app-cart-summary class="mb-3 no-spacing"  [cart]="cartService.initializeCart(order)"></app-cart-summary>
+          <app-cart-summary class="mb-3" [shipment]="order.shipment"  [cart]="cartService.initializeCart(order)"></app-cart-summary>
         </div>
       </div>
     </ul>

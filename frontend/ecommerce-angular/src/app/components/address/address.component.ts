@@ -1,4 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { NgModel } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
@@ -13,6 +15,7 @@ export class AddressComponent implements OnInit, OnChanges {
   constructor(
     public addressService: AddressService,
     public dropDownService: DropdownService,
+    private toastr: ToastrService
   ) {}
 
 
@@ -35,6 +38,7 @@ export class AddressComponent implements OnInit, OnChanges {
   streetWithNumber!: string;
   selectedState!: StateResponse;
   selectedCity: string = '';
+  addingAddress: boolean = false;
 
   ngOnInit(): void {
     this.addressService
@@ -49,6 +53,10 @@ export class AddressComponent implements OnInit, OnChanges {
         this.cities = cities;
         this.filteredCities = cities;
       });
+  }
+
+  enableAddAddress() {
+    this.addingAddress = !this.addingAddress;
   }
 
   createAddress(
@@ -71,6 +79,7 @@ export class AddressComponent implements OnInit, OnChanges {
       this.addresses.push(address);
       localStorage['user'] = JSON.stringify(this.user);
     });
+    this.addingAddress = !this.addingAddress;
   }
 
   selectCity(city: CityResponse) {
@@ -81,5 +90,14 @@ export class AddressComponent implements OnInit, OnChanges {
 
   searchCities(term: string) {
     this.filteredCities = this.addressService.filterCities(this.cities, term);
+  }
+
+  verifyAndSendAddressForm(cep: NgModel, street: NgModel, state: NgModel, city: NgModel) {
+    const fields: NgModel[] = [cep, street, state, city].filter((field) => field.errors != null);
+    if (fields.length > 0) {
+      fields.forEach((field) => this.toastr.error(`${field.name} é obrigatório`, 'Erro'))
+    } else {
+      this.createAddress(cep.value, street.value, state.value, city.value);
+    }
   }
 }

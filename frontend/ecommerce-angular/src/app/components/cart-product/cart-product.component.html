@@ -1,8 +1,11 @@
 <div class="border rounded container-fluid d-flex flex-column justify-content-center mt-3">
   <div
-    class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3"
+    class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3 "
   >
-    <span class="lead fw-bold">Produtos:</span>
+    <span *ngIf="cart.items.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
+    <ng-template class="" #noProducts>
+      <span class="lead fw-bold no-spacing">Carrinho não tem nenhum produto!</span>
+    </ng-template>
     <button class="btn p-3 btn-outline-danger" *ngIf="enableEditing" (click)="clearCart(cart.order)">
       Remover todos os produtos
     </button>

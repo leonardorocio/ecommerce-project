@@ -1,16 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'zipCode'
+  name: 'zipCode',
 })
 export class ZipCodePipe implements PipeTransform {
-
   transform(value: string, ...args: unknown[]): string {
-    value = value.trim();
-    if (value.length == 8) {
-      return value.substring(0,5) + '-' + value.substring(5);
+    if (value) {
+      if (value.length == 8) {
+        return value.substring(0, 5) + '-' + value.substring(5);
+      }
+      return value;
     }
-    return value;
+    return '';
   }
-
 }

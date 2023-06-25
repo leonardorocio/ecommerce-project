@@ -1,36 +1,48 @@
 <div
-  *ngIf="!addresses.length"
+  *ngIf="!addresses.length || addingAddress"
   class="container-fluid d-flex flex-column border rounded mb-3 p-3"
 >
-  <p class="lead mb-4 fw-bold">Endereço não encontrado! Adicione um novo!</p>
-  <form class="form-group d-flex flex-column justify-content-between">
+  <div class="container-fluid d-flex justify-content-between no-spacing" >
+    <p class="lead mb-4 fw-bold">Adicione um novo endereço!</p>
+    <button *ngIf="addresses.length && addingAddress" class="btn btn-primary" (click)="enableAddAddress()">Cancelar</button>
+  </div>
+  <form
+    (submit)="
+      verifyAndSendAddressForm(cep, street, state, filter)
+    "
+    class="form-group d-flex flex-column justify-content-between"
+    id="form1"
+  >
     <label class="fw-bold" for="cep">CEP:</label>
     <input
       class="form-control"
       type="text"
-      name="cep"
+      name="CEP"
       id="cep"
       placeholder="xxxxx-xxx"
       [ngModel]="zipCode | zipCode"
       (ngModelChange)="zipCode = $event"
+      #cep="ngModel"
       required
     />
     <label class="fw-bold" for="streetWithNumber">Rua e número:</label>
     <input
-      name="streetWithNumber"
+      name="Rua"
       type="text"
       placeholder="Rua dos Teste, 101"
       class="form-control"
       [(ngModel)]="streetWithNumber"
+      #street="ngModel"
       required
     />
     <label class="fw-bold" for="UF">Estado:</label>
     <select
       [(ngModel)]="selectedState"
       (ngModelChange)="changeCities()"
-      id="UF"
+      id="Estado"
       class="form-select form-select-md"
       name="UF"
+      #state="ngModel"
       required
     >
       <option *ngFor="let state of states" [ngValue]="state">
@@ -41,35 +53,32 @@
       <label class="fw-bold" for="city">Cidade:</label>
       <input
         [(ngModel)]="selectedCity"
-        name="city"
+        name="Cidade"
         id="city-input"
-        #filter
+        #filter="ngModel"
         (click)="dropDownService.showDropdownMenu(true)"
         (ngModelChange)="searchCities(selectedCity)"
         class="form-control mb-3"
         list="cities"
         placeholder="Selecione um estado primeiro"
         [disabled]="!selectedState"
-        required
       />
-      <div class="container-fluid d-flex flex-column" *ngIf="dropDownService.showDropdown">
+      <div
+        class="container-fluid d-flex flex-column"
+        *ngIf="dropDownService.showDropdown"
+      >
         <app-dropdown (selectedItemEvent)="selectCity($event)"> </app-dropdown>
         <app-paginator [items]="filteredCities" [pageSize]="5"></app-paginator>
       </div>
     </div>
-    <button
-      class="btn btn-primary mt-3 w-25"
-      (click)="
-        createAddress(zipCode, streetWithNumber, selectedState, selectedCity)
-      "
-    >
+    <button type="submit" form="form1" class="btn btn-primary mt-3 w-25">
       Criar
     </button>
   </form>
 </div>
 
 <div
-  *ngIf="addresses.length"
+  *ngIf="addresses.length && !addingAddress"
   class="container-fluid d-flex flex-column border rounded p-3 mb-3"
 >
   <p class="lead mb-3 fw-bold">Endereço de entrega:</p>
@@ -101,5 +110,18 @@
     <p class="lead">
       <span class="fw-bold">Estado: </span>{{ selectedAddress.state }}
     </p>
+  </div>
+  <div
+    class="address-buttons container-fluid d-flex justify-content-between mt-3"
+  >
+    <button class="btn btn-primary" (click)="enableAddAddress()">
+      Adicionar endereço
+    </button>
+    <div
+      class="delete-update-buttons container-fluid d-flex justify-content-end"
+    >
+      <button class="btn btn-warning">Editar endereço</button>
+      <button class="btn btn-danger">Deletar endereço</button>
+    </div>
   </div>
 </div>
