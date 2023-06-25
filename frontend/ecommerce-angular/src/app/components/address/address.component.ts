@@ -5,25 +5,25 @@ import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-address',
   templateUrl: './address.component.html',
   styleUrls: ['./address.component.css'],
 })
-export class AddressComponent implements OnInit, OnChanges {
+export class AddressComponent implements OnInit {
   constructor(
     public addressService: AddressService,
     public dropDownService: DropdownService,
     private toastr: ToastrService
   ) {}
 
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['addresses']) {
-      this.addresses = changes['addresses'].currentValue;
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes['addresses']) {
+  //     this.addresses = changes['addresses'].currentValue;
+  //   }
+  // }
 
   user: User = JSON.parse(localStorage['user']);
   addresses: Address[] = this.user.addressList;
@@ -39,6 +39,7 @@ export class AddressComponent implements OnInit, OnChanges {
   selectedState!: StateResponse;
   selectedCity: string = '';
   addingAddress: boolean = false;
+  editingAddress: boolean = false;
 
   ngOnInit(): void {
     this.addressService
@@ -55,8 +56,25 @@ export class AddressComponent implements OnInit, OnChanges {
       });
   }
 
-  enableAddAddress() {
-    this.addingAddress = !this.addingAddress;
+  enableAddressForm(
+    option: boolean,
+    operation: 'editing' | 'creating' | 'closing'
+  ) {
+    this.editingAddress = operation === 'editing';
+    if (operation === 'creating') {
+      ({
+        zipCode: this.zipCode,
+        streetWithNumber: this.streetWithNumber,
+        state: this.selectedState,
+        city: this.selectedCity,
+      } = {
+        zipCode: '',
+        streetWithNumber: '',
+        city: '',
+        state: {} as StateResponse,
+      });
+    }
+    this.addingAddress = option;
   }
 
   createAddress(
@@ -65,9 +83,7 @@ export class AddressComponent implements OnInit, OnChanges {
     state: StateResponse,
     city: string
   ) {
-    const userId: number = Number.parseInt(
-      JSON.parse(localStorage['user']).userId
-    );
+    const userId: number = this.user.userId;
     const address = {
       zipCode: zipCode,
       streetWithNumber: streetWithNumber,
@@ -77,9 +93,10 @@ export class AddressComponent implements OnInit, OnChanges {
     } as Address;
     this.addressService.createAddress(address).subscribe((address) => {
       this.addresses.push(address);
+      this.selectedAddress = address;
       localStorage['user'] = JSON.stringify(this.user);
     });
-    this.addingAddress = !this.addingAddress;
+    this.enableAddressForm(false, 'closing');
   }
 
   selectCity(city: CityResponse) {
@@ -92,12 +109,90 @@ export class AddressComponent implements OnInit, OnChanges {
     this.filteredCities = this.addressService.filterCities(this.cities, term);
   }
 
-  verifyAndSendAddressForm(cep: NgModel, street: NgModel, state: NgModel, city: NgModel) {
-    const fields: NgModel[] = [cep, street, state, city].filter((field) => field.errors != null);
+  verifyAndSendAddressForm(
+    cep: NgModel,
+    street: NgModel,
+    state: NgModel,
+    city: NgModel
+  ) {
+    const fields: NgModel[] = [cep, street, state, city].filter(
+      (field) => field.errors != null
+    );
     if (fields.length > 0) {
-      fields.forEach((field) => this.toastr.error(`${field.name} é obrigatório`, 'Erro'))
+      fields.forEach((field) =>
+        this.toastr.error(`${field.name} é obrigatório`, 'Erro')
+      );
     } else {
-      this.createAddress(cep.value, street.value, state.value, city.value);
+      if (this.editingAddress) {
+        this.editAddress(cep.value, street.value, state.value, city.value);
+      } else {
+        this.createAddress(cep.value, street.value, state.value, city.value);
+      }
+    }
+  }
+
+  editAddress(
+    zipCode: string,
+    streetWithNumber: string,
+    state: StateResponse,
+    city: string
+  ) {
+    const addressBody: Address = {
+      zipCode: zipCode,
+      streetWithNumber: streetWithNumber,
+      state: state.nome,
+      city: city,
+      userId: this.user.userId,
+      addressId: this.selectedAddress.addressId,
+    };
+    this.selectedAddress = { ...addressBody };
+    this.addressService
+      .editAddress(this.selectedAddress)
+      .subscribe((editedAddress) => {
+        const addressIndex = this.addresses.findIndex(
+          (address) => address.addressId === editedAddress.addressId
+        );
+        this.addresses[addressIndex] = editedAddress;
+        this.selectedAddress = editedAddress;
+        localStorage['user'] = JSON.stringify(this.user);
+        this.toastr.success('Endereço editado com sucesso!', 'OK');
+      });
+    this.enableAddressForm(false, 'closing');
+  }
+
+  enableEditingAddress(address: Address) {
+    let tempState: string;
+    ({
+      zipCode: this.zipCode,
+      streetWithNumber: this.streetWithNumber,
+      state: tempState,
+      city: this.selectedCity,
+    } = address);
+    this.selectedState =
+      this.states.find((state) => state.nome === tempState) ??
+      ({} as StateResponse);
+    this.enableAddressForm(true, 'editing');
+  }
+
+  async deleteAddress(addressToDelete: Address) {
+    const result = await Swal.fire({
+      title: 'Cuidado!',
+      text: 'Deseja excluir esse endereço?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff0000',
+      confirmButtonText: 'Confirmar',
+    });
+    if (result.value) {
+      this.addressService
+        .deleteAddress(addressToDelete.addressId)
+        .subscribe(() => {
+          this.addresses = this.addresses.filter(
+            (address) => address.addressId !== addressToDelete.addressId
+          );
+          this.selectedAddress = this.addresses[0];
+          localStorage['user'] = JSON.stringify(this.user);
+        });
     }
   }
 }

@@ -4,7 +4,7 @@
 >
   <div class="container-fluid d-flex justify-content-between no-spacing" >
     <p class="lead mb-4 fw-bold">Adicione um novo endereço!</p>
-    <button *ngIf="addresses.length && addingAddress" class="btn btn-primary" (click)="enableAddAddress()">Cancelar</button>
+    <button *ngIf="addresses.length && addingAddress" class="btn btn-primary" (click)="enableAddressForm(false, 'closing')">Cancelar</button>
   </div>
   <form
     (submit)="
@@ -72,7 +72,7 @@
       </div>
     </div>
     <button type="submit" form="form1" class="btn btn-primary mt-3 w-25">
-      Criar
+      Salvar
     </button>
   </form>
 </div>
@@ -87,6 +87,7 @@
     name="address"
     id="address"
     class="form-select form-select-md"
+    #address="ngModel"
   >
     <option *ngFor="let address of addresses" [ngValue]="address">
       {{ address.city }}; {{ address.state }};
@@ -114,14 +115,14 @@
   <div
     class="address-buttons container-fluid d-flex justify-content-between mt-3"
   >
-    <button class="btn btn-primary" (click)="enableAddAddress()">
+    <button class="btn btn-primary" (click)="enableAddressForm(true, 'creating')">
       Adicionar endereço
     </button>
     <div
       class="delete-update-buttons container-fluid d-flex justify-content-end"
     >
-      <button class="btn btn-warning">Editar endereço</button>
-      <button class="btn btn-danger">Deletar endereço</button>
+      <button class="btn btn-warning" (click)="enableEditingAddress(address.value)">Editar endereço</button>
+      <button class="btn btn-danger" (click)="deleteAddress(address.value)">Deletar endereço</button>
     </div>
   </div>
 </div>

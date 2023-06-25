@@ -46,4 +46,16 @@ export class AddressService {
       (city) => city.nome.toLowerCase().indexOf(filter.toLowerCase()) > -1
     );
   }
+
+  deleteAddress(addressId: number): Observable<any> {
+    return this.http.delete<any>(`${this.addressURL}/${addressId}`, this.options).pipe(
+      catchError(this.errorHandling.handleError<any>('deleteAddress', {}))
+    );
+  }
+
+  editAddress(address: Address): Observable<Address> {
+    return this.http.put<Address>(`${this.addressURL}/${address.addressId}`, address, this.options).pipe(
+      catchError(this.errorHandling.handleError<Address>('editAddress', address))
+    );
+  }
 }
