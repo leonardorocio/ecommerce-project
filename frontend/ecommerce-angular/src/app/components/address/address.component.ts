@@ -19,11 +19,6 @@ export class AddressComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes['addresses']) {
-  //     this.addresses = changes['addresses'].currentValue;
-  //   }
-  // }
 
   user: User = JSON.parse(localStorage['user']);
   addresses: Address[] = this.user.addressList;
@@ -187,9 +182,10 @@ export class AddressComponent implements OnInit {
       this.addressService
         .deleteAddress(addressToDelete.addressId)
         .subscribe(() => {
-          this.addresses = this.addresses.filter(
-            (address) => address.addressId !== addressToDelete.addressId
+          const addressIndex = this.addresses.findIndex(
+            (address) => address.addressId === addressToDelete.addressId
           );
+          this.addresses.splice(addressIndex, 1);
           this.selectedAddress = this.addresses[0];
           localStorage['user'] = JSON.stringify(this.user);
         });
