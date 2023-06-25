@@ -54,7 +54,7 @@
             >Número Pedido: {{ order.orderId }}</span
           >
           <span class="lead order-item"
-            >Data de abertura: {{ order.orderedDate }}</span
+            >Data de abertura: {{ order.orderedDate | date }}</span
           >
           <span class="lead order-item"
             >Status: {{ order.closed ? "Fechado" : "Aberto" }}</span
