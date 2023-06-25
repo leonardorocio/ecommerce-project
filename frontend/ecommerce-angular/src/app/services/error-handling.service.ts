@@ -46,7 +46,7 @@ export class ErrorHandlingService {
         if (error.error['fields']) {
           this.toastr.error(this.getFieldsErrors(error), `${operation}: ${error.error['title']}`);
         } else {
-          this.toastr.error(error.error['details'], error.error['title']);
+          this.toastr.error(error.error['details'], `${operation}: ${error.error['title']}`);
         }
       }
 

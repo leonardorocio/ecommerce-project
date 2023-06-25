@@ -7,6 +7,18 @@
   height: 30vh;
 }
 
+.mid-screen {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.screen-height {
+  min-height: 75vh;
+}
+
 .pointer {
   cursor: pointer !important;
 }

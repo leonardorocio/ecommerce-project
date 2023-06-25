@@ -9,5 +9,6 @@ export interface User {
   password: string,
   birthDate: string,
   addressList: Address[],
-  userOrders: Order[]
+  userOrders: Order[],
+  role: string
 }

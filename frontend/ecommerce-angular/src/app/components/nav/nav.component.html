@@ -5,15 +5,17 @@
     >
     <form class="form-inline w-50">
       <input
+        #searchTerm
         class="form-control"
         type="search"
-        placeholder="Search"
+        placeholder="Pressione a tecla enter para buscar"
         aria-label="Search"
+        (keydown.enter)="goToSearchProducts(searchTerm.value)"
       />
     </form>
     <ul class="navbar-nav">
       <li class="nav-item item">
-        <a routerLink="/auth" class="nav-link text-light">Perfil</a>
+        <a routerLink="/profile" class="nav-link text-light">Perfil</a>
       </li>
       <li class="nav-item item">
         <a routerLink="/carrinho" class="nav-link text-light">Carrinho</a>

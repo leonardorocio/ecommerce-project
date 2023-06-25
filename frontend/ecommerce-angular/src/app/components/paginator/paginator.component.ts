@@ -24,7 +24,7 @@ import { PaginatorService } from 'src/app/services/paginator.service';
 export class PaginatorComponent implements OnChanges {
 
   @Input() items: Array<any> = [];
-  @Input() pageSize = 10;
+  @Input() pageSize = 5;
   showingItems: Array<any> = [...this.items];
   currentPage: number = 0;
 
@@ -37,7 +37,6 @@ export class PaginatorComponent implements OnChanges {
         this.items = changes['items'].currentValue;
         this.currentPage = 0;
         this.changePage(1);
-        // this.paginatorService.updateItems(this.items);
       }
     }
 

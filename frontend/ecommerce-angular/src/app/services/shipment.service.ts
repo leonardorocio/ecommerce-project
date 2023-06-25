@@ -16,7 +16,7 @@ export class ShipmentService {
     private http: HttpClient,
   ) {}
 
-  private baseShipmentURL = 'http://localhost:9000/shipment';
+  private baseShipmentURL = 'http://localhost:9000/shipments';
   private correiosAPIURL = 'https://h-apigateway.conectagov.estaleiro.serpro.gov.br/api-cep/v1/consulta/cep/';
   private options = {
     headers: new HttpHeaders({
@@ -26,7 +26,7 @@ export class ShipmentService {
 
   consultZipCode(address: Address): Observable<any> {
     return this.http.get(`${this.correiosAPIURL}/${address.zipCode}`, this.options).pipe(
-      catchError(this.errorHandling.handleError('consultZipCode', ''))
+      catchError(this.errorHandling.handleError<any>('consultZipCode', ''))
     )
   }
 
@@ -40,6 +40,12 @@ export class ShipmentService {
       shipper: shipper,
       order: order
     } as Shipment;
+  }
+
+  postShipment(body: any): Observable<Shipment> {
+    return this.http.post<Shipment>(this.baseShipmentURL, body, this.options).pipe(
+      catchError(this.errorHandling.handleError<Shipment>('postShipment', {} as Shipment))
+    );
   }
 
 

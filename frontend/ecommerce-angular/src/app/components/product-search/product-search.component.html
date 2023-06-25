@@ -1,0 +1,44 @@
+<div
+  class="container-fluid d-flex justify-content-between mt-3 p-3 screen-height"
+>
+  <div class="container-fluid w-25 d-flex flex-column border rounded">
+    <p class="lead fw-bold">Filtre por Categorias</p>
+    <div
+      *ngIf="filter.length"
+      class="d-flex align-items-center justify-content-between mb-3"
+      (click)="selectFilter('')"
+    >
+      <span class="lead">Filtrando por: {{ filter }}</span>
+      <button class="btn btn-outline-danger">Remover</button>
+    </div>
+    <ul class="list-group">
+      <li
+        class="list-group-item pointer"
+        *ngFor="let category of categories"
+        (click)="selectFilter(category.name)"
+      >
+        {{ category.name }}
+      </li>
+    </ul>
+  </div>
+  <div class="container-fluid d-flex align-items-center justify-content-center">
+    <div *ngIf="!isEmpty; else emptySearch" class="container-fluid d-flex flex-column align-items-center">
+      <div
+        class="container-fluid d-flex justify-content-around flex-wrap"
+      >
+        <div *ngFor="let product of showingItems" class="product mt-3">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      </div>
+      <app-paginator [pageSize]="6" [items]="items"></app-paginator>
+    </div>
+    <ng-template #emptySearch>
+      <div
+        class="container-fluid d-flex flex-column align-items-center justify-content-center"
+      >
+        <h1 class="display-3">Produtos não encontrados!</h1>
+        <h1 class="display-3">Procure outro por termo!</h1>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -24,26 +24,38 @@ export class AddressService {
   getStates(): Observable<StateResponse[]> {
     return this.http
       .get<StateResponse[]>(this.locationsURL, this.options)
-      .pipe(catchError(this.errorHandling.handleError('getStates', [])));
+      .pipe(catchError(this.errorHandling.handleError<StateResponse[]>('getStates', [])));
   }
 
   getCitiesFromState(state: string): Observable<CityResponse[]> {
     return this.http
       .get<CityResponse[]>(`${this.locationsURL}/${state}/municipios`)
       .pipe(
-        catchError(this.errorHandling.handleError('getCitiesFromStates', []))
+        catchError(this.errorHandling.handleError<CityResponse[]>('getCitiesFromStates', []))
       );
   }
 
   createAddress(address: Address): Observable<Address> {
     return this.http.post<Address>(this.addressURL, address, this.options).pipe(
-      catchError(this.errorHandling.handleError('createAddress', {} as Address))
+      catchError(this.errorHandling.handleError<Address>('createAddress', {} as Address))
     );
   }
 
   filterCities(cities: CityResponse[], filter: string): CityResponse[] {
     return cities.filter(
       (city) => city.nome.toLowerCase().indexOf(filter.toLowerCase()) > -1
+    );
+  }
+
+  deleteAddress(addressId: number): Observable<any> {
+    return this.http.delete<any>(`${this.addressURL}/${addressId}`, this.options).pipe(
+      catchError(this.errorHandling.handleError<any>('deleteAddress', {}))
+    );
+  }
+
+  editAddress(address: Address): Observable<Address> {
+    return this.http.put<Address>(`${this.addressURL}/${address.addressId}`, address, this.options).pipe(
+      catchError(this.errorHandling.handleError<Address>('editAddress', address))
     );
   }
 }

@@ -1,9 +1,12 @@
 <div class="border rounded container-fluid d-flex flex-column justify-content-center mt-3">
   <div
-    class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3"
+    class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3 "
   >
-    <span class="lead fw-bold">Produtos:</span>
-    <button class="btn p-3 btn-outline-danger" (click)="clearCart(cart.order)">
+    <span *ngIf="cart.items.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
+    <ng-template class="" #noProducts>
+      <span class="lead fw-bold no-spacing">Carrinho não tem nenhum produto!</span>
+    </ng-template>
+    <button class="btn p-3 btn-outline-danger" *ngIf="enableEditing" (click)="clearCart(cart.order)">
       Remover todos os produtos
     </button>
   </div>
@@ -39,11 +42,13 @@
           <p class="lead">Quantidade</p>
           <div class="d-flex align-items-center justify-content-between">
             <i
+            *ngIf="enableEditing"
               class="bi bi-caret-left-fill pointer mr-3"
               (click)="updateQuantity(item, -1, i)"
             ></i>
             <span class="lead">{{ item.quantity }}</span>
             <i
+            *ngIf="enableEditing"
               class="bi bi-caret-right-fill pointer ml-3"
               (click)="updateQuantity(item, 1, i)"
             ></i>
@@ -57,7 +62,7 @@
                 | number : "1.2-2" : "pt"
             }}
           </p>
-          <button class="btn btn-outline-danger" (click)="removeProduct(item)">
+          <button class="btn btn-outline-danger" *ngIf="enableEditing" (click)="removeProduct(item)">
             Remover
           </button>
         </div>

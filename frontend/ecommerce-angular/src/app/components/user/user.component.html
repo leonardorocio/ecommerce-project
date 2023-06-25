@@ -1,1 +1,80 @@
-<p>user works!</p>
+<div class="container-fluid w-75 d-flex flex-column align-items-center">
+  <h3 class="display-3 mt-3">Perfil</h3>
+  <div class="container-fluid d-flex flex-column border rounded mb-5 p-3">
+    <div class="container-fluid d-flex justify-content-between no-spacing">
+      <p class="lead fw-bold">Informações pessoais:</p>
+      <button *ngIf="role === 'ADMIN'" class="btn btn-primary">Administração</button>
+    </div>
+    <form class="form-group">
+      <p class="lead">Tipo: {{ role === "USER" ? "Usuário" : "Administrador" }}</p>
+      <label class="form-label" for="name">Nome: </label>
+      <input
+        class="form-control"
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Fulano da Silva"
+        [(ngModel)]="name"
+      />
+      <label class="form-label mt-3" for="name">Email: </label>
+      <input
+        class="form-control"
+        type="email"
+        name="email"
+        id="email"
+        placeholder="fulano.silva@exemplo.com"
+        [(ngModel)]="email"
+      />
+      <label class="form-label mt-3" for="birthDate"
+        >Data de nascimento:
+      </label>
+      <input
+        class="form-control"
+        type="date"
+        name="birthDate"
+        id="birthDate"
+        [(ngModel)]="birthDate"
+      />
+      <button class="btn btn-primary mt-3">Salvar</button>
+    </form>
+  </div>
+  <app-address class="container-fluid no-spacing"></app-address>
+  <div class="container-fluid d-flex flex-column border rounded">
+    <!-- Histórico de Pedidos -->
+    <p class="lead fw-bold mt-3">Histórico de Pedidos:</p>
+    <ul class="list-group" *ngIf="userOrders.length">
+      <div
+        class="container-fluid d-flex flex-column"
+        *ngFor="let order of userOrders; let i = index"
+      >
+        <li
+          class="list-group-item d-flex justify-content-around align-items-center rounded mb-3 p-3"
+        >
+          <span class="lead order-item"
+            >Número Pedido: {{ order.orderId }}</span
+          >
+          <span class="lead order-item"
+            >Data de abertura: {{ order.orderedDate | date }}</span
+          >
+          <span class="lead order-item"
+            >Status: {{ order.closed ? "Fechado" : "Aberto" }}</span
+          >
+          <button
+            class="btn btn-outline-primary w-25"
+            (click)="selectOrderToShow(i)"
+          >
+            Ver produtos do pedido
+          </button>
+        </li>
+        <div *ngIf="i === selected" class="container-fluid mb-3">
+          <app-cart-product class="mb-3"
+          [user]="user"
+          [cart]="cartService.initializeCart(order)"
+          [enableEditing]="false"
+          ></app-cart-product>
+          <app-cart-summary class="mb-3" [shipment]="order.shipment"  [cart]="cartService.initializeCart(order)"></app-cart-summary>
+        </div>
+      </div>
+    </ul>
+  </div>
+</div>

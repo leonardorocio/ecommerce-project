@@ -5,3 +5,8 @@
   left: 0;
   right: 0;
 }
+
+.no-spacing {
+  margin: 0;
+  padding: 0;
+}

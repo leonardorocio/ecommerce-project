@@ -1,0 +1,8 @@
+<div (click)="goToDetail(product)" class="card">
+  <img [src]="product.productImage" [alt]="product.name" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title text-container">{{ product.name }}</h5>
+    <p class="card-text text-container">{{ product.description }}</p>
+    <a (click)="sendToCart(product)" class="btn btn-primary">Comprar</a>
+  </div>
+</div>

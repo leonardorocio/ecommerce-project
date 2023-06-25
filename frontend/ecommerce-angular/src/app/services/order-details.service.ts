@@ -27,14 +27,13 @@ export class OrderDetailsService {
       quantity: orderDetails.quantity + update
     }
     return this.http.put<OrderDetails>(`${this.baseOrderDetailsURL}/${orderDetails.orderDetailsId}`, body, this.options).pipe(
-      catchError(this.errorHandling.handleError('updateOrderDetails', orderDetails))
+      catchError(this.errorHandling.handleError<OrderDetails>('updateOrderDetails', orderDetails))
     ) as Observable<OrderDetails>;
   }
 
   createOrderDetails(body: any): Observable<OrderDetails> {
-    console.log(body);
     return this.http.post<OrderDetails>(this.baseOrderDetailsURL, body, this.options).pipe(
-      catchError(this.errorHandling.handleError('createOrderDetails', {} as OrderDetails))
+      catchError(this.errorHandling.handleError<OrderDetails>('createOrderDetails', {} as OrderDetails))
     );
   }
 

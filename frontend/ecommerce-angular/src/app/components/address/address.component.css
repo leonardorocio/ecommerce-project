@@ -7,3 +7,12 @@
   background-color: #0d6efd;
   color: white;
 }
+
+.delete-update-buttons {
+  gap: 1rem;
+}
+
+.no-spacing {
+  padding: 0;
+  margin: 0;
+}

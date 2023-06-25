@@ -1,23 +1,32 @@
-<div id="footer" class="container-fluid d-flex justify-content-around bg-dark mt-5 p-4">
-  <div class="contatos text-justify">
+<div
+  id="footer"
+  class="container-fluid d-flex justify-content-between bg-dark mt-5 p-4"
+>
+  <div class="container w-25 d-flex flex-column align-items-center flex-wrap">
     <h5 class="display-6 text-light">Departamentos:</h5>
-    <ul *ngFor="let category of categories">
-      <li>
-        <p class="lead text-light">{{ category.name }}</p>
-      </li>
-    </ul>
+    <li *ngFor="let category of categories" class="list-style-none pointer">
+      <span class="text-light" (click)="selectFilter(category.name)">{{ category.name }}</span>
+    </li>
   </div>
-  <div class="links">
+  <div class="container w-25 d-flex flex-column align-items-center">
     <h5 class="display-6 text-light">Links Úteis:</h5>
-    <p class="lead text-light"><a class="text-light link-decoration-none" routerLink="/dashboard">Perfil </a></p>
-    <p class="lead text-light"><a class="text-light link-decoration-none" routerLink="/carrinho/{{ userId }}">Carrinho </a></p>
+    <p class="lead text-light">
+      <a class="text-light link-decoration-none" routerLink="/dashboard"
+        >Perfil
+      </a>
+    </p>
+    <p class="lead text-light">
+      <a
+        class="text-light link-decoration-none"
+        routerLink="/carrinho/{{ userId }}"
+        >Carrinho
+      </a>
+    </p>
   </div>
 </div>
 
 <div
   class="container-fluid d-flex align-items-center justify-content-center bg-secondary p-1"
 >
-  <span class="text-light"
-    >Ecommerce</span
-  >
+  <span class="text-light">Ecommerce</span>
 </div>
