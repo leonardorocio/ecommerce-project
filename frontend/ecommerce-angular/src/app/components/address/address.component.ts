@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
+import { AlertService } from 'src/app/services/alert.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
 import Swal from 'sweetalert2';
 
@@ -16,9 +17,9 @@ export class AddressComponent implements OnInit {
   constructor(
     public addressService: AddressService,
     public dropDownService: DropdownService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private alert: AlertService
   ) {}
-
 
   user: User = JSON.parse(localStorage['user']);
   addresses: Address[] = this.user.addressList;
@@ -170,15 +171,11 @@ export class AddressComponent implements OnInit {
   }
 
   async deleteAddress(addressToDelete: Address) {
-    const result = await Swal.fire({
-      title: 'Cuidado!',
-      text: 'Deseja excluir esse endereço?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ff0000',
-      confirmButtonText: 'Confirmar',
-    });
-    if (result.value) {
+    const result = await this.alert.warning(
+      'Cuidado!',
+      'Deseja excluir esse endereço?'
+    );
+    if (result) {
       this.addressService
         .deleteAddress(addressToDelete.addressId)
         .subscribe(() => {

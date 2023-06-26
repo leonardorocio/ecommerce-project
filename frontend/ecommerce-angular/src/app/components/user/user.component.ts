@@ -1,27 +1,40 @@
 import { Component } from '@angular/core';
 import { Order } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
+import { AlertService } from 'src/app/services/alert.service';
 import { CartService } from 'src/app/services/cart.service';
 import { DropdownService } from 'src/app/services/dropdown.service';
+import { UserService } from 'src/app/services/user.service';
+import Swal, { SweetAlertOptions } from 'sweetalert2';
 
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
-  styleUrls: ['./user.component.css']
+  styleUrls: ['./user.component.css'],
 })
 export class UserComponent {
-
   user: User = JSON.parse(localStorage['user']);
-  role!: string
+  role!: string;
   name!: string;
   email!: string;
   birthDate!: string;
   userOrders!: Order[];
   selected!: number;
 
-  constructor(public dropDownService: DropdownService, public cartService: CartService) {
-    ({name: this.name, email: this.email, birthDate: this.birthDate, role: this.role, userOrders: this.userOrders} = this.user);
-    this.role = this.role.replace("ROLE_", "");
+  constructor(
+    public dropDownService: DropdownService,
+    public cartService: CartService,
+    private userService: UserService,
+    private alert: AlertService
+  ) {
+    ({
+      name: this.name,
+      email: this.email,
+      birthDate: this.birthDate,
+      role: this.role,
+      userOrders: this.userOrders,
+    } = this.user);
+    this.role = this.role.replace('ROLE_', '');
   }
 
   selectOrderToShow(selected: number) {
@@ -32,4 +45,17 @@ export class UserComponent {
     }
   }
 
+  async updateUser() {
+    const result = await this.alert.question(
+      'Deseja alterar suas informações?'
+    );
+    if (result) {
+      this.userService
+        .updateUser(this.user.userId, this.name, this.birthDate)
+        .subscribe((user) => {
+          this.user = user;
+          localStorage['user'] = JSON.stringify(this.user);
+        });
+    }
+  }
 }

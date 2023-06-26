@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { switchMap, tap } from 'rxjs';
 import { Cart } from 'src/app/models/cart';
 import { Shipment } from 'src/app/models/shipment';
+import { AlertService } from 'src/app/services/alert.service';
 import { CartService } from 'src/app/services/cart.service';
 import { OrderService } from 'src/app/services/order.service';
 import { ShipmentService } from 'src/app/services/shipment.service';
@@ -20,7 +21,8 @@ export class CartSummaryComponent {
     private orderService: OrderService,
     private cartService: CartService,
     private toastr: ToastrService,
-    private shipmentService: ShipmentService
+    private shipmentService: ShipmentService,
+    private alert: AlertService
   ) {}
 
   @Input() cart!: Cart;
@@ -43,14 +45,8 @@ export class CartSummaryComponent {
   }
 
   async finishOrder() {
-    const result = await Swal.fire({
-      title: 'Deseja finalizar a compra?',
-      icon: 'question',
-      showCancelButton: true,
-      confirmButtonColor: '#51A351',
-      confirmButtonText: 'Confirmar',
-    } as SweetAlertOptions);
-    if (result.value) {
+    const result = await this.alert.question('Deseja finalizar a compra?');
+    if (result) {
       const shipmentBody = {
         orderId: this.cart.order.orderId,
         shipperId: this.shipment.shipper.shipperId,

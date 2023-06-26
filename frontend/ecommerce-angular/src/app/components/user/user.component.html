@@ -23,6 +23,7 @@
         name="email"
         id="email"
         placeholder="fulano.silva@exemplo.com"
+        disabled
         [(ngModel)]="email"
       />
       <label class="form-label mt-3" for="birthDate"
@@ -35,7 +36,7 @@
         id="birthDate"
         [(ngModel)]="birthDate"
       />
-      <button class="btn btn-primary mt-3">Salvar</button>
+      <button class="btn btn-primary mt-3" (click)="updateUser()">Salvar</button>
     </form>
   </div>
   <app-address class="container-fluid no-spacing"></app-address>

@@ -23,4 +23,11 @@ export class UserService {
       catchError(this.errorHandlingService.handleError<User>('createUser', {} as User))
     );
   }
+
+  updateUser(id: number, name: string, date: string): Observable<User> {
+    const body = {name: name, date: date};
+    return this.http.patch<User>(`${this.userBaseURL}/${id}`, body, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<User>('updateUser', {} as User))
+    );
+  }
 }
