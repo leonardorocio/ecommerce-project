@@ -30,4 +30,15 @@ export class AlertService {
     } as SweetAlertOptions);
     return result.value;
   }
+
+  async info(title: string, message?: string): Promise<boolean> {
+    const result = await Swal.fire({
+      title: title,
+      message: message ?? '',
+      icon: 'info',
+      confirmButtonColor: '#0D6EFD',
+      confirmButtonText: 'OK',
+    } as SweetAlertOptions);
+    return result.value;
+  }
 }

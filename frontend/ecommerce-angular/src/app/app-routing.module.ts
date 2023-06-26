@@ -6,6 +6,8 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
 import { CartComponent } from './components/cart/cart.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { isAdminGuard } from './routes/is-admin.guard';
 
 const routes: Routes = [
   {
@@ -42,6 +44,12 @@ const routes: Routes = [
     path: 'profile',
     component: UserComponent,
     title: 'Ecommerce - Perfil'
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    title: 'Ecommerce - Admin',
+    canActivate: [isAdminGuard]
   }
 ];
 

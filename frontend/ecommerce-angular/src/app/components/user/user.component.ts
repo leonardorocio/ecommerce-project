@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Route, Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
 import { AlertService } from 'src/app/services/alert.service';
@@ -25,7 +26,8 @@ export class UserComponent {
     public dropDownService: DropdownService,
     public cartService: CartService,
     private userService: UserService,
-    private alert: AlertService
+    private alert: AlertService,
+    private router: Router
   ) {
     ({
       name: this.name,
@@ -57,5 +59,9 @@ export class UserComponent {
           localStorage['user'] = JSON.stringify(this.user);
         });
     }
+  }
+
+  goToAdmin() {
+    this.router.navigate(['/admin'], {state: { userId: this.user.userId}});
   }
 }

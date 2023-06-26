@@ -3,7 +3,7 @@
   <div class="container-fluid d-flex flex-column border rounded mb-5 p-3">
     <div class="container-fluid d-flex justify-content-between no-spacing">
       <p class="lead fw-bold">Informações pessoais:</p>
-      <button *ngIf="role === 'ADMIN'" class="btn btn-primary">Administração</button>
+      <button *ngIf="role === 'ADMIN'" class="btn btn-primary" (click)="goToAdmin()">Administração</button>
     </div>
     <form class="form-group">
       <p class="lead">Tipo: {{ role === "USER" ? "Usuário" : "Administrador" }}</p>
