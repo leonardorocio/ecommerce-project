@@ -2,7 +2,6 @@ package com.ecommerce.backend.controller;
 
 import com.ecommerce.backend.configuration.JWTGenerator;
 import com.ecommerce.backend.models.User;
-import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.*;
 import com.ecommerce.backend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/users")
 @Log4j2
-@Tag(name = "User", description = "Describes the User related operations")
+@Tag(name = "Users", description = "Descreve as operações de usuário")
 @SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
 
@@ -33,48 +32,48 @@ public class UserController {
     private UserService userService;
 
     @GetMapping
-    @Operation(summary = "Returns all the Users in the database",
-            description = "Takes no parameters, returns all the Users in the database")
+    @Operation(summary = "Buscar usuários",
+            description = "Retorna todos os usuários do banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Users"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de usuários"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userService.getUsers());
     }
 
     @PostMapping
-    @Operation(summary = "Creates a User",
-            description = "Takes a UserPostRequestBody, maps to a User and saves in the database")
+    @Operation(summary = "Criar um usuário",
+            description = "Recebe um UserPostRequestBody, mapeia para usuário e salva")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the user saved in the database"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "201", description = "Retorna o usuário criado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos Inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<User> createUser(@Valid @RequestBody UserPostRequestBody userPostRequestBody) {
         return new ResponseEntity<>(userService.createUser(userPostRequestBody), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Returns a User based on id",
-            description = "Takes a user's id and returns the user")
+    @Operation(summary = "Buscar um usuário",
+            description = "Recebe o id do usuário e retorna o usuário associado ao id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the User"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o usuário"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<User> getUserById(@PathVariable Integer id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @PatchMapping("/{id}")
-    @Operation(summary = "Updates a User",
-            description = "Takes the user's id and a UserPatchRequestBody, maps to a User and updates it")
+    @Operation(summary = "Atualiza um usuário",
+            description = "Recebe o id do usuário e um UserPatchRequestBody, mapeia para o usuário e atualiza ele")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User updated successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o usuário atualizado"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos Inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<User> updateUser(@RequestBody @Valid UserPatchRequestBody userPatchRequestBody,
                                            @PathVariable Integer id) {
@@ -82,12 +81,12 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes a User",
-            description = "Takes the user's id and deletes the user")
+    @Operation(summary = "Deletar um usuário",
+            description = "Recebe o id do usuário a ser deletado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
         userService.deleteUser(id);
@@ -95,13 +94,13 @@ public class UserController {
     }
 
     @PatchMapping("/change_password/{id}")
-    @Operation(summary = "Deletes a User",
-            description = "Takes the user's id and a PasswordRequestBody, and changes the user's password")
+    @Operation(summary = "Deletar um usuário",
+            description = "Recebe o id do usuário e um PasswordRequestBody e então atualiza a senha do usuário")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "User password changed successfully"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos Inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<String> changeUserPassword(@RequestBody @Valid PasswordRequestBody passwordRequestBody,
                                                      @PathVariable Integer id) {

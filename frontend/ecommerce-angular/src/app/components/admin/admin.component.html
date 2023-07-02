@@ -1,1 +1,5 @@
-<p>admin works!</p>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let tag of tags">
+    <a (click)="sendToTagEntity(tag.name.toLowerCase())">{{ tag.name }}</a>
+  </li>
+</ul>

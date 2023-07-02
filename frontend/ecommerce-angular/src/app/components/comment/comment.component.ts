@@ -88,14 +88,6 @@ export class CommentComponent implements OnInit {
   }
 
   deleteComment(commentId: number) {
-    // Swal.fire({
-    //   title: 'Cuidado!',
-    //   text: 'Deseja excluir esse comentário?',
-    //   icon: 'warning',
-    //   showCancelButton: true,
-    //   confirmButtonColor: '#ff0000',
-    //   confirmButtonText: 'Confirmar',
-    // })
     this.alert
       .warning('Cuidado', 'Deseja excluir esse comentário?')
       .then((result) => {

@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-@Tag(name = "ProductCategory", description = "Describes the ProductCategory related operations")
+@Tag(name = "Category", description = "Descreve as operações de categoria de produto")
 @SecurityRequirement(name = "Bearer Authentication")
 public class ProductCategoryController {
 
@@ -28,23 +28,23 @@ public class ProductCategoryController {
     private ProductCategoryService productCategoryService;
 
     @GetMapping
-    @Operation(summary = "Returns all the productCategories in the database",
-            description = "Takes no parameters, returns all the productCategories in the database")
+    @Operation(summary = "Buscar categorias",
+            description = "Busca todas as categorias do banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of productCategories"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de categorias"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<ProductCategory>> getProductCategories() {
         return ResponseEntity.ok(productCategoryService.getProductCategories());
     }
 
     @PostMapping
-    @Operation(summary = "Creates a ProductCategory",
-            description = "Takes a ProductCategoryRequestBody, returns the productCategory saved in the database")
+    @Operation(summary = "Criar uma categoria",
+            description = "Recebe um ProductCategoryRequestBody, mapeia para uma categoria e salva")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the productCategory saved in the database"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "201", description = "Retorna a categoria salva"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<ProductCategory> postProductCategory(
             @RequestBody ProductCategoryRequestBody productCategoryRequestBody) {
@@ -52,13 +52,13 @@ public class ProductCategoryController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates a ProductCategory",
-            description = "Takes a  productCategory's id and a ProductCategoryRequestBody, maps to a productCategory and updates in the database")
+    @Operation(summary = "Atualizar uma categoria",
+            description = "Recebe o id de uma categoria e um ProductCategoryRequestBody, mapeia para a categoria do id e atualiza")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the productCategory saved in the database"),
-            @ApiResponse(responseCode = "404", description = "ProductCategory not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna a categoria atualizada"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha na autenticação")
     })
     public ResponseEntity<ProductCategory> updateProductCategory(
             @RequestBody @Valid ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {
@@ -66,12 +66,12 @@ public class ProductCategoryController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes a productCategory from the database",
-            description = "Takes a productCategory's id and then deletes it from the database")
+    @Operation(summary = "Deletar uma categoria",
+            description = "Recebe o id da categoria a ser apagada")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "ProductCategory deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "ProductCategory not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Categoria deletada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Void> deleteProductCategory(
             @RequestBody ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {

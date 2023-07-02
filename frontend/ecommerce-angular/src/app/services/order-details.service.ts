@@ -10,7 +10,7 @@ import { Product } from '../models/product';
 })
 export class OrderDetailsService {
 
-  baseOrderDetailsURL = 'http://localhost:9000/orderDetails'
+  baseOrderDetailsURL = 'http://localhost:9000/details'
 
   constructor(private errorHandling: ErrorHandlingService, private http: HttpClient) { }
 

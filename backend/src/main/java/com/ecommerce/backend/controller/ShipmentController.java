@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/shipments")
-@Tag(name = "Shipment", description = "Describes the Shipment related operations")
+@Tag(name = "Shipments", description = "Descreve as operações de entrega")
 @SecurityRequirement(name = "Bearer Authentication")
 public class ShipmentController {
 
@@ -25,34 +25,34 @@ public class ShipmentController {
     private ShipmentService shipmentService;
 
     @GetMapping
-    @Operation(summary = "Returns all the Shipments in the database",
-            description = "Takes no parameters, returns all the Shipments in the database")
+    @Operation(summary = "Buscar entregas",
+            description = "Retorna todas as entregas no banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shipments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de entregas"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Shipment>> getShipments() {
         return ResponseEntity.ok(shipmentService.getShipments());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Returns a Shipment based on id",
-            description = "Takes a shipment's id, returns the shipment")
+    @Operation(summary = "Buscar uma entrega",
+            description = "Recebe o id de uma entrega e retorna a entrega associada ao id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of Shipments"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna a entrega"),
+            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Shipment> getShipmentById(@PathVariable int id) {
         return ResponseEntity.ok(shipmentService.getShipmentById(id));
     }
 
     @GetMapping("/open")
-    @Operation(summary = "Returns all the on going Shipments in the database",
-            description = "Takes no parameters, returns all the on going Shipments in the database")
+    @Operation(summary = "Buscar entregas em andamento",
+            description = "Retorna todas as entregas em andamento")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of on going Shipments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de entregas em andamento"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Shipment>> getOnGoingShipments() {
         return ResponseEntity.ok(shipmentService.getOnGoingShipments());
@@ -60,29 +60,29 @@ public class ShipmentController {
 
 
     @PostMapping
-    @Operation(summary = "Creates a new Shipment in database",
-            description = "Takes a ShipmentRequestBody, maps to Shipment and saves in the database")
+    @Operation(summary = "Criar uma entrega",
+            description = "Recebe um ShipmentRequestBody, mapeia para entrega e salva")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the Shipment saved in the database"),
-            @ApiResponse(responseCode = "404", description = "Order not found"),
-            @ApiResponse(responseCode = "404", description = "Shipper not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "201", description = "Retorna a entrega criada"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Transportadora não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha na autenticação")
     })
     public ResponseEntity<Shipment> postShipment(@RequestBody @Valid ShipmentRequestBody shipmentRequestBody) {
         return new ResponseEntity<>(shipmentService.postShipment(shipmentRequestBody), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates a Shipment in database",
-            description = "Takes a shipment's id and a ShipmentRequestBody, maps to Shipment and saves in the database")
+    @Operation(summary = "Atualizar uma entrega",
+            description = "Recebe o id da entrega e um ShipmentRequestBody, mapeia para a entrega e atualiza")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Shipment saved in the database"),
-            @ApiResponse(responseCode = "404", description = "Order not found"),
-            @ApiResponse(responseCode = "404", description = "Shipper not found"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna a entrega atualizada"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Transportadora não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Shipment> updateShipment(@Valid @RequestBody ShipmentRequestBody shipmentRequestBody,
                                                    @PathVariable int id) {
@@ -90,12 +90,12 @@ public class ShipmentController {
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes a Shipment",
-                description = "Takes a shipment's id and then deletes it")
+    @Operation(summary = "Deletar uma entrega",
+                description = "Recebe o id da entrega a ser deletada")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Shipment deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "204", description = "Entrega deletada com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Void> deleteShipment(@PathVariable int id) {
         shipmentService.deleteShipment(id);
@@ -104,12 +104,12 @@ public class ShipmentController {
 
 
     @PutMapping("/{id}/close")
-    @Operation(summary = "Closes a Shipment in database",
-            description = "Takes a shipment's id and closes the shipment")
+    @Operation(summary = "Fechar entrega",
+            description = "Recebe o id da entrega a ser fechada")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Shipment closed"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna a entrega fechada"),
+            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Shipment> closeShipment(@PathVariable int id) {
         return ResponseEntity.ok(shipmentService.closeShipment(id));

@@ -17,8 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/orderDetails")
-@Tag(name = "OrderDetails", description = "Describes the OrderDetails related operations")
+@RequestMapping("/details")
+@Tag(name = "Details", description = "Descreve as operações de detalhes de pedido")
 @SecurityRequirement(name = "Bearer Authentication")
 public class OrderDetailsController {
 
@@ -26,49 +26,49 @@ public class OrderDetailsController {
     private OrderDetailsService orderDetailsService;
 
     @GetMapping
-    @Operation(summary = "Returns all the ordersDetails in the database",
-            description = "Takes no parameters, returns all the ordersDetails in the database")
+    @Operation(summary = "Buscar detalhes de pedido",
+            description = "Retorna todos os detalhes de pedido presentes no banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the list of ordersDetails"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de detalhes de pedido"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<OrderDetails>> getOrdersDetails() {
         return ResponseEntity.ok(orderDetailsService.getOrdersDetails());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Returns an orderDetails based on id",
-            description = "Takes an orderDetails's id, returns the orderDetails")
+    @Operation(summary = "Buscar detalhes de pedido",
+            description = "Recebe um id de detalhes de pedido e retorna o detalhes de pedido associado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the orderDetails based on id"),
-            @ApiResponse(responseCode = "404", description = "OrderDetails not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o detalhes de pedido associado a aquele id"),
+            @ApiResponse(responseCode = "404", description = "Detalhes de pedido não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<OrderDetails> getOrdersDetailsById(@PathVariable int id) {
         return ResponseEntity.ok(orderDetailsService.getOrderDetailsById(id));
     }
 
     @PostMapping
-    @Operation(summary = "Creates an OrderDetails",
-            description = "Takes an OrderDetailsRequestBody, maps to an OrderDetails and saves in the database")
+    @Operation(summary = "Criar detalhes de pedido",
+            description = "Recebe um OrderDetailsRequestBody, mapeia para detalhes de pedido e salva no banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the orderDetails saved in the database"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "404", description = "Order not found"),
-            @ApiResponse(responseCode = "404", description = "Product not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "201", description = "Retorna o detalhes de pedido criado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Pedido não encontrado"),
+            @ApiResponse(responseCode = "404", description = "Produto não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<OrderDetails> postOrderDetails(@RequestBody @Valid OrderDetailsRequestBody orderDetailsRequestBody) {
         return new ResponseEntity<>(orderDetailsService.postOrderDetails(orderDetailsRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes an orderDetails based on id",
-            description = "Takes an orderDetails's id, deletes the orderDetails")
+    @Operation(summary = "Deletar um detalhes de pedido",
+            description = "Recebe um id de detalhes de pedido e deleta o detalhes de pedido associado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "OrderDetails deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "OrderDetails not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "204", description = "Detalhes de pedido deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Detalhes de pedido não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Void> deleteOrderDetails(@PathVariable int id) {
         orderDetailsService.deleteOrderDetails(id);
@@ -76,13 +76,13 @@ public class OrderDetailsController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates an orderDetails based on id",
-            description = "Takes an orderDetails's id and an OrderDetailsRequestBody, maps to a OrderDetails and updates the orderDetails")
+    @Operation(summary = "Atualizar um detalhes de pedido",
+            description = "Recebe um OrderDetailsRequestBody, mapeia para o detalhes de pedido do id recebido e atualiza")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the orderDetails updated"),
-            @ApiResponse(responseCode = "404", description = "OrderDetails not found"),
-            @ApiResponse(responseCode = "400", description = "Invalid Arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o detalhe de pedido atualizado"),
+            @ApiResponse(responseCode = "404", description = "Detalhes de pedido não encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<OrderDetails> updateOrderDetails(@Valid @RequestBody OrderDetailsRequestBody orderDetailsRequestBody,
                                                            @PathVariable int id) {

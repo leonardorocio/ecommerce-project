@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Log4j2
-@Tag(name = "Authentication", description = "Describes the login and RefreshToken operations")
+@Tag(name = "Authentication", description = "Descreve as operações de login e de token de usuário")
 public class AuthController {
 
     @Autowired
@@ -49,12 +49,12 @@ public class AuthController {
 
     @PostMapping("/login")
     @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @Operation(summary = "Authenticates the user",
-            description = "Takes a PasswordRequestBody and authenticates them")
+    @Operation(summary = "Autenticar usuário",
+            description = "Recebe um PasswordRequestBody e o autentica")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the user authenticated"),
-            @ApiResponse(responseCode = "400", description = "Invalid arguments"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o usuário autenticado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<TokenResponse> login(@RequestBody @Valid PasswordRequestBody passwordRequestBody) {
         Authentication authentication = authenticationManager.authenticate(
@@ -62,8 +62,6 @@ public class AuthController {
                         passwordRequestBody.getPassword()));
         CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(passwordRequestBody.getEmail());
         String token = jwtGenerator.generateToken(userDetails);
-
-        log.info(userDetails.getUserId());
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getUserId());
         userService.updateUserRefreshToken(userService.getUserById(userDetails.getUserId()), refreshToken);
         return ResponseEntity.ok(
@@ -73,10 +71,10 @@ public class AuthController {
     }
 
     @PostMapping("/refreshtoken")
-    @Operation(summary = "Returns to the user a new accessToken",
-            description = "Takes the user's RefreshToken and then returns the new accessToken")
+    @Operation(summary = "Buscar token renovado",
+            description = "Recebe um token de renovação e devolve um token de acesso renovado")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the AccessToken and RefreshToken"),
+            @ApiResponse(responseCode = "200", description = "Retorna o token de renovação e o token de acesso"),
             @ApiResponse(responseCode = "401", description = "Invalid Token")
     })
     public ResponseEntity<TokenResponse> getRefreshToken(@Valid @RequestBody TokenRequestBody requestBody)  {
