@@ -64,17 +64,16 @@ export class CommentComponent implements OnInit {
         this.toastr.success('Comentário editado com sucesso', 'OK');
       });
     } else {
-      this.commentService
-        .createComment(
-          text,
-          Number.parseInt(rating),
-          this.user.userId,
-          this.product.productId
-        )
-        .subscribe((comment) => {
-          this.comments.unshift(comment);
-          this.toastr.success('Comentário criado com sucesso', 'OK');
-        });
+      const comment = {
+        text: text,
+        rating: Number.parseInt(rating),
+        user_owner: this.user.userId,
+        product_rated: this.product.productId,
+      };
+      this.commentService.createComment(comment).subscribe((comment) => {
+        this.comments.unshift(comment);
+        this.toastr.success('Comentário criado com sucesso', 'OK');
+      });
     }
     this.clearComment();
   }

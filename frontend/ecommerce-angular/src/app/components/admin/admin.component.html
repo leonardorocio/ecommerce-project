@@ -1,5 +1,11 @@
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let tag of tags">
-    <a (click)="sendToTagEntity(tag.name.toLowerCase())">{{ tag.name }}</a>
-  </li>
-</ul>
+<div class="container-fluid d-flex align-items-center flex-column w-75 mt-5 p-3">
+  <h3 class="display-3 mb-5">Administração</h3>
+  <p class="lead fw-bold align-self-start">Escolha uma entidade para gerenciar: </p>
+  <ul class="container-fluid list-group">
+    <li class="list-group-item" *ngFor="let tag of tags">
+      <a (click)="sendToTagEntity(tag.name.toLowerCase())">
+        <span class="lead">{{ tag.name }}</span>
+      </a>
+    </li>
+  </ul>
+</div>

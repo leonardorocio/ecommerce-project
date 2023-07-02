@@ -42,7 +42,7 @@ public class CommentController {
     }
 
     @GetMapping(path = "/product/{id}")
-    @Operation(summary = "Buscar todos os comentários de um usuário",
+    @Operation(summary = "Buscar todos os comentários de um produto",
             description = "Recebe um id de produto e retorna todos os comentários desse produto",
             tags = {"Comment, Product"})
     @ApiResponses(value = {
