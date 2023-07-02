@@ -24,8 +24,7 @@ export class UserService {
     );
   }
 
-  updateUser(id: number, name: string, date: string): Observable<User> {
-    const body = {name: name, date: date};
+  updateUser(id: number, body: any): Observable<User> {
     return this.http.patch<User>(`${this.userBaseURL}/${id}`, body, this.options).pipe(
       catchError(this.errorHandlingService.handleError<User>('updateUser', {} as User))
     );

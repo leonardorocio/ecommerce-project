@@ -51,9 +51,10 @@ export class UserComponent {
     const result = await this.alert.question(
       'Deseja alterar suas informações?'
     );
+    const requestBody = {name: this.name, birthDate: this.birthDate}
     if (result) {
       this.userService
-        .updateUser(this.user.userId, this.name, this.birthDate)
+        .updateUser(this.user.userId, requestBody)
         .subscribe((user) => {
           this.user = user;
           localStorage['user'] = JSON.stringify(this.user);

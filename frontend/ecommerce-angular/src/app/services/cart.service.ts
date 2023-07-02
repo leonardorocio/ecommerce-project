@@ -83,8 +83,13 @@ export class CartService {
   ): Observable<Cart> {
     return new Observable<Cart>((observer) => {
       orderDetails.order = cart.order;
+      const body = {
+        orderId: orderDetails.order.orderId,
+        productId: orderDetails.product.productId,
+        quantity: orderDetails.quantity + update
+      }
       this.orderDetailsService
-        .updateOrderDetails(orderDetails, update)
+        .updateOrderDetails(orderDetails.orderDetailsId, body)
         .subscribe((orderDetails) => {
           cart.items[index] = orderDetails;
           this.updateLocalCart(cart);

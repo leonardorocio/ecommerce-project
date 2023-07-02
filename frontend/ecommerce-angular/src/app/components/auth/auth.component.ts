@@ -6,6 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/models/user';
 import { OrderService } from 'src/app/services/order.service';
 import { JsonPipe } from '@angular/common';
+import { AuthRequestBody } from 'src/app/models/auth';
 
 @Component({
   selector: 'app-auth',
@@ -24,7 +25,11 @@ export class AuthComponent {
   ) {}
 
   login(email: string, password: string) {
-    this.authService.login(email, password).subscribe((data) => {
+    const requestBody: AuthRequestBody = {
+      email: email,
+      password: password
+    };
+    this.authService.login(requestBody).subscribe((data) => {
       if (Object.keys(data).length) {
         Object.keys(data).forEach((e) => {
           const value = data[e as keyof typeof data];

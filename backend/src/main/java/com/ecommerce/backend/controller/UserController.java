@@ -94,7 +94,7 @@ public class UserController {
     }
 
     @PatchMapping("/change_password/{id}")
-    @Operation(summary = "Deletar um usuário",
+    @Operation(summary = "Trocar senha de usuário",
             description = "Recebe o id do usuário e um PasswordRequestBody e então atualiza a senha do usuário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Senha alterada com sucesso"),
