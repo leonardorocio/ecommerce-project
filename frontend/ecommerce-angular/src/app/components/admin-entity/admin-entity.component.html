@@ -1,0 +1,67 @@
+<div
+  class="container-fluid d-flex flex-column justify-content-center align-items-center"
+>
+  <h3 class="display-3 mb-5 mt-5">{{ tag | titlecase }}</h3>
+  <div class="container-fluid d-flex flex-column w-75">
+    <ul class="list-group no-spacing">
+      <ng-container *ngFor="let propertyEntry of methodsMap">
+        <ng-container *ngFor="let method of propertyEntry[1]">
+          <ng-container [ngSwitch]="propertyEntry[0]">
+            <li
+              class="list-group-item list-group-item-primary"
+              *ngSwitchCase="'get'"
+              (click)="selectOperationToShow(method.operationId)"
+            >
+              <p class="lead fw-bold my-auto p-1">
+                {{ method.summary }}
+              </p>
+            </li>
+            <li
+              class="list-group-item list-group-item-warning"
+              *ngSwitchCase="'put'"
+              (click)="selectOperationToShow(method.operationId)"
+            >
+              <p class="lead fw-bold my-auto p-1">
+                {{ method.summary }}
+              </p>
+            </li>
+            <li
+              class="list-group-item list-group-item-secondary"
+              *ngSwitchCase="'patch'"
+              (click)="selectOperationToShow(method.operationId)"
+            >
+              <p class="lead fw-bold my-auto p-1">
+                {{ method.summary }}
+              </p>
+            </li>
+            <li
+              class="list-group-item list-group-item-danger"
+              *ngSwitchCase="'delete'"
+              (click)="selectOperationToShow(method.operationId)"
+            >
+              <p class="lead fw-bold my-auto p-1">
+                {{ method.summary }}
+              </p>
+            </li>
+            <li
+              class="list-group-item list-group-item-success"
+              *ngSwitchCase="'post'"
+              (click)="selectOperationToShow(method.operationId)"
+            >
+              <p class="lead fw-bold my-auto p-1">
+                {{ method.summary }}
+              </p>
+            </li>
+          </ng-container>
+          <ng-container *ngIf="method.operationId === selectedOperation">
+            <app-admin-input
+              [method]="method"
+              [docs]="docs"
+              [tag]="tag"
+            ></app-admin-input>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </ul>
+  </div>
+</div>
