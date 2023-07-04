@@ -85,24 +85,6 @@
     </button>
   </form>
   <div class="container-fluid d-flex flex-column mt-5">
-    <ng-container *ngIf="operationReturnData$ | async">
-      <p class="lead fw-bold">Resposta</p>
-      <ul class="list-group">
-        <ng-container
-          *ngFor="let property of operationReturnData$ | async | keyvalue"
-        >
-          <ng-container *ngIf="property.value === 'object'; else simpleValue">
-          </ng-container>
-          <ng-template #simpleValue>
-            <li class="list-group-item d-flex align-items-center flex-wrap">
-              <span class="lead fw-bold mr-3"
-                >{{ isString(property.key) ?? "" | camelCase }}:</span
-              >
-              <span class="lead">{{ property.value }}</span>
-            </li>
-          </ng-template>
-        </ng-container>
-      </ul>
-    </ng-container>
+    <app-admin-request-response [operationReturnData$]="operationReturnData$"></app-admin-request-response>
   </div>
 </div>

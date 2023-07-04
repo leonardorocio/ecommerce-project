@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 import {
   APIDocs,
@@ -17,7 +18,7 @@ import { ApiDocsService } from 'src/app/services/api-docs.service';
   styleUrls: ['./admin-input.component.css'],
 })
 export class AdminInputComponent {
-  constructor(private apiDocs: ApiDocsService) {}
+  constructor(private apiDocs: ApiDocsService, private toastr: ToastrService) {}
 
   @Input() method!: MethodProperties;
   @Input() docs!: APIDocs;
@@ -43,10 +44,11 @@ export class AdminInputComponent {
     const requestBody = Object.fromEntries(Object.entries(requestForm.value)
       .filter((field) => !field[0].includes('param')));
     const chosenService = this.apiDocs.chooseServiceToCall(this.tag);
-    this.operationReturnData$ = this.apiDocs.executeOperation(operation, parameters, requestBody, chosenService);
+    this.operationReturnData$ = this.apiDocs.executeOperation(operation, parameters, requestBody, chosenService)
+    this.operationReturnData$.subscribe(() => {
+      this.toastr.success(`${operation} concluída com sucesso`, 'OK');
+    });
   }
 
-  isString(property: unknown): string | undefined {
-    return typeof property === 'string' ? property : undefined;
-  }
+
 }

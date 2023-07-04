@@ -1,9 +1,20 @@
-<ul class="list-group">
+<ul *ngIf="show" class="list-group my-3">
   <li
     class="list-group-item custom-dropdown"
     (click)="selectItem(item)"
     *ngFor="let item of items"
   >
-    {{ item.nome }}
+    <ng-container *ngIf="isObject(item.value); else simpleValue">
+      <!-- {{ showItem(item) | camelCase }} -->
+      <p class="lead">{{ item.key | camelCase }}</p>
+      <app-dropdown
+        [propsToShow]="['key', 'value']"
+        [show]="true"
+        [staticItems]="isObject(item.value) | keyvalue"
+      ></app-dropdown>
+    </ng-container>
+    <ng-template #simpleValue>
+        <p class="lead" style="word-break: break-all;">{{ showItem(item) | camelCase }}</p>
+    </ng-template>
   </li>
 </ul>

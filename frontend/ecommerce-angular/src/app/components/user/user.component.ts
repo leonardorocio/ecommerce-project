@@ -4,7 +4,6 @@ import { Order } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { CartService } from 'src/app/services/cart.service';
-import { DropdownService } from 'src/app/services/dropdown.service';
 import { UserService } from 'src/app/services/user.service';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 
@@ -23,7 +22,6 @@ export class UserComponent {
   selected!: number;
 
   constructor(
-    public dropDownService: DropdownService,
     public cartService: CartService,
     private userService: UserService,
     private alert: AlertService,
