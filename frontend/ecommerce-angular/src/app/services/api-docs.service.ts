@@ -73,7 +73,6 @@ export class ApiDocsService {
   }
 
   getRequestBodyFields(requestBody: SchemaProperties) {
-    console.log(Object.entries(requestBody.properties));
     return Object.entries(requestBody.properties);
   }
 

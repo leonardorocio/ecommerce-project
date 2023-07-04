@@ -29,6 +29,6 @@ public class AddressRequestBody {
     private String streetWithNumber;
 
     @NotNull
-    @Schema(name = "userId", description = "UserId from the Address owner", example = "1")
+    @Schema(name = "userId", description = "UserId from the Address owner", example = "1", ref = "User")
     private int userId;
 }

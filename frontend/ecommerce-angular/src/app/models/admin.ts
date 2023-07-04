@@ -65,29 +65,9 @@ export interface PropertyAttributes {
   description: string;
   format: string;
   example: string;
+  $ref: string
 }
 
 export interface Component {
   schemas: Schema;
 }
-
-export type APIResponse =
-  | Observable<Product>
-  | Observable<Shipment>
-  | Observable<Shipper>
-  | Observable<Address>
-  | Observable<User>
-  | Observable<Comment>
-  | Observable<Product[]>
-  | Observable<Comment[]>
-  | Observable<Address[]>
-  | Observable<User[]>
-  | Observable<Category>
-  | Observable<Category[]>
-  | Observable<OrderDetails>
-  | Observable<OrderDetails[]>
-  | Observable<Order>
-  | Observable<Order[]>
-  | Observable<Shipment[]>
-  | Observable<Shipper[]>
-  | Observable<AuthResponseBody>;
