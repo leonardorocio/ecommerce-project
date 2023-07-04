@@ -114,16 +114,4 @@ public class ShipmentController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PutMapping("/{id}/close")
-    @Operation(summary = "Fechar entrega",
-            description = "Recebe o id da entrega a ser fechada")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna a entrega fechada"),
-            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
-            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
-    })
-    public ResponseEntity<Shipment> closeShipment(@PathVariable int id) {
-        return ResponseEntity.ok(shipmentService.closeShipment(id));
-    }
-
 }
