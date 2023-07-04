@@ -10,7 +10,7 @@ import { Product } from '../models/product';
 })
 export class OrderDetailsService {
 
-  baseOrderDetailsURL = 'http://localhost:9000/orderDetails'
+  baseOrderDetailsURL = 'http://localhost:9000/details'
 
   constructor(private errorHandling: ErrorHandlingService, private http: HttpClient) { }
 
@@ -20,14 +20,10 @@ export class OrderDetailsService {
     })
   }
 
-  updateOrderDetails(orderDetails: OrderDetails, update: number): Observable<OrderDetails> {
-    let body = {
-      orderId: orderDetails.order.orderId,
-      productId: orderDetails.product.productId,
-      quantity: orderDetails.quantity + update
-    }
-    return this.http.put<OrderDetails>(`${this.baseOrderDetailsURL}/${orderDetails.orderDetailsId}`, body, this.options).pipe(
-      catchError(this.errorHandling.handleError<OrderDetails>('updateOrderDetails', orderDetails))
+  updateOrderDetails(id: number, body: any): Observable<OrderDetails> {
+
+    return this.http.put<OrderDetails>(`${this.baseOrderDetailsURL}/${id}`, body, this.options).pipe(
+      catchError(this.errorHandling.handleError<OrderDetails>('updateOrderDetails', {} as OrderDetails))
     ) as Observable<OrderDetails>;
   }
 

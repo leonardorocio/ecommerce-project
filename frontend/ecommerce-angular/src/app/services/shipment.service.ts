@@ -33,7 +33,6 @@ export class ShipmentService {
   generateShipmentOption(order: Order, shipper: Shipper): Shipment {
     const date = new Date();
     date.setDate(date.getDate() + (7 - shipper.fixedTax / 10));
-    // this.consultZipCode(address).subscribe((result) => console.log(result));
     return {
       shippingPrice: Number.parseFloat((shipper.fixedTax + (Math.random() * 100) % 50).toPrecision(4)),
       expectedDeliveryDate: date.toISOString().split('T')[0],

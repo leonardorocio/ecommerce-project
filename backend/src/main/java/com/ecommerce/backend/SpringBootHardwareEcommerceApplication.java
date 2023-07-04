@@ -7,6 +7,10 @@ import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguratio
 import org.springframework.boot.autoconfigure.web.servlet.error.ErrorMvcAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Map;
+import java.util.Map.Entry;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.ecommerce.backend.services")
@@ -14,7 +18,7 @@ import org.springframework.context.annotation.ComponentScan;
 public class SpringBootHardwareEcommerceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootHardwareEcommerceApplication.class, args);
+		ApplicationContext applicationContext = SpringApplication.run(SpringBootHardwareEcommerceApplication.class, args);
 	}
 
 }

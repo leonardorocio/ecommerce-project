@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Comment } from 'src/app/models/comment';
 import { Product } from 'src/app/models/product';
 import { User } from 'src/app/models/user';
+import { AlertService } from 'src/app/services/alert.service';
 import { CommentService } from 'src/app/services/comment.service';
 import Swal from 'sweetalert2';
 
@@ -29,14 +30,16 @@ export class CommentComponent implements OnInit {
 
   constructor(
     private commentService: CommentService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private alert: AlertService
   ) {}
 
   ngOnInit(): void {
     this.commentService
       .getCommentsFromProduct(this.product.productId)
       .subscribe((comments) => {
-        const compareId = (commentA: Comment, commentB: Comment) => commentA.userOwner.userId === this.user.userId ? 1 : 0;
+        const compareId = (commentA: Comment, commentB: Comment) =>
+          commentA.userOwner.userId === this.user.userId ? 1 : 0;
         this.comments = comments.sort(compareId);
       });
   }
@@ -61,17 +64,16 @@ export class CommentComponent implements OnInit {
         this.toastr.success('Comentário editado com sucesso', 'OK');
       });
     } else {
-      this.commentService
-        .createComment(
-          text,
-          Number.parseInt(rating),
-          this.user.userId,
-          this.product.productId
-        )
-        .subscribe((comment) => {
-          this.comments.unshift(comment);
-          this.toastr.success('Comentário criado com sucesso', 'OK');
-        });
+      const comment = {
+        text: text,
+        rating: Number.parseInt(rating),
+        user_owner: this.user.userId,
+        product_rated: this.product.productId,
+      };
+      this.commentService.createComment(comment).subscribe((comment) => {
+        this.comments.unshift(comment);
+        this.toastr.success('Comentário criado com sucesso', 'OK');
+      });
     }
     this.clearComment();
   }
@@ -85,24 +87,19 @@ export class CommentComponent implements OnInit {
   }
 
   deleteComment(commentId: number) {
-    Swal.fire({
-      title: 'Cuidado!',
-      text: 'Deseja excluir esse comentário?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ff0000',
-      confirmButtonText: 'Confirmar',
-    }).then((result) => {
-      if (result.value) {
-        this.commentService.deleteComment(commentId).subscribe(() => {
-          this.comments = this.comments.filter(
-            (comment) => commentId !== comment.commentId
-          );
-          this.toastr.success('Comentário excluído com sucesso', 'OK');
-          this.clearComment();
-        });
-      }
-    });
+    this.alert
+      .warning('Cuidado', 'Deseja excluir esse comentário?')
+      .then((result) => {
+        if (result) {
+          this.commentService.deleteComment(commentId).subscribe(() => {
+            this.comments = this.comments.filter(
+              (comment) => commentId !== comment.commentId
+            );
+            this.toastr.success('Comentário excluído com sucesso', 'OK');
+            this.clearComment();
+          });
+        }
+      });
   }
 
   cancelEditing() {

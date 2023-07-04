@@ -1,10 +1,10 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { NgForm, NgModel } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
-import { DropdownService } from 'src/app/services/dropdown.service';
+import { AlertService } from 'src/app/services/alert.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -15,10 +15,9 @@ import Swal from 'sweetalert2';
 export class AddressComponent implements OnInit {
   constructor(
     public addressService: AddressService,
-    public dropDownService: DropdownService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private alert: AlertService
   ) {}
-
 
   user: User = JSON.parse(localStorage['user']);
   addresses: Address[] = this.user.addressList;
@@ -35,6 +34,7 @@ export class AddressComponent implements OnInit {
   selectedCity: string = '';
   addingAddress: boolean = false;
   editingAddress: boolean = false;
+  dropDownShow: boolean = false;
 
   ngOnInit(): void {
     this.addressService
@@ -97,7 +97,7 @@ export class AddressComponent implements OnInit {
   selectCity(city: CityResponse) {
     this.selectedCity = city.nome;
     this.searchCities(this.selectedCity);
-    this.dropDownService.showDropdownMenu(false);
+    this.dropDownShow = false;
   }
 
   searchCities(term: string) {
@@ -114,9 +114,9 @@ export class AddressComponent implements OnInit {
       (field) => field.errors != null
     );
     if (fields.length > 0) {
-      fields.forEach((field) =>
-        this.toastr.error(`${field.name} é obrigatório`, 'Erro')
-      );
+      fields.forEach((field) => {
+        this.toastr.error(`${field.name} é obrigatório`, 'Erro');
+      });
     } else {
       if (this.editingAddress) {
         this.editAddress(cep.value, street.value, state.value, city.value);
@@ -170,15 +170,11 @@ export class AddressComponent implements OnInit {
   }
 
   async deleteAddress(addressToDelete: Address) {
-    const result = await Swal.fire({
-      title: 'Cuidado!',
-      text: 'Deseja excluir esse endereço?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#ff0000',
-      confirmButtonText: 'Confirmar',
-    });
-    if (result.value) {
+    const result = await this.alert.warning(
+      'Cuidado!',
+      'Deseja excluir esse endereço?'
+    );
+    if (result) {
       this.addressService
         .deleteAddress(addressToDelete.addressId)
         .subscribe(() => {

@@ -3,7 +3,7 @@
   <div class="container-fluid d-flex flex-column border rounded mb-5 p-3">
     <div class="container-fluid d-flex justify-content-between no-spacing">
       <p class="lead fw-bold">Informações pessoais:</p>
-      <button *ngIf="role === 'ADMIN'" class="btn btn-primary">Administração</button>
+      <button *ngIf="role === 'ADMIN'" class="btn btn-primary" (click)="goToAdmin()">Administração</button>
     </div>
     <form class="form-group">
       <p class="lead">Tipo: {{ role === "USER" ? "Usuário" : "Administrador" }}</p>
@@ -23,6 +23,7 @@
         name="email"
         id="email"
         placeholder="fulano.silva@exemplo.com"
+        disabled
         [(ngModel)]="email"
       />
       <label class="form-label mt-3" for="birthDate"
@@ -35,7 +36,7 @@
         id="birthDate"
         [(ngModel)]="birthDate"
       />
-      <button class="btn btn-primary mt-3">Salvar</button>
+      <button class="btn btn-primary mt-3" (click)="updateUser()">Salvar</button>
     </form>
   </div>
   <app-address class="container-fluid no-spacing"></app-address>

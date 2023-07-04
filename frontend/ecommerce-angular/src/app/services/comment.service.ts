@@ -22,18 +22,7 @@ export class CommentService {
     }),
   };
 
-  createComment(
-    text: string,
-    rating: number,
-    userId: number,
-    productId: number
-  ): Observable<Comment> {
-    let comment = {
-      text: text,
-      rating: rating,
-      user_owner: userId,
-      product_rated: productId,
-    };
+  createComment(comment: any): Observable<Comment> {
     return this.http
       .post<Comment>(`${this.baseCommentURL}`, comment, this.options)
       .pipe(
@@ -67,10 +56,16 @@ export class CommentService {
 
   getCommentsFromProduct(productId: number): Observable<Comment[]> {
     return this.http
-      .get<Comment[]>(`${this.baseCommentURL}/product/${productId}`, this.options)
+      .get<Comment[]>(
+        `${this.baseCommentURL}/product/${productId}`,
+        this.options
+      )
       .pipe(
         catchError(
-          this.errorHandling.handleError<Comment[]>('getCommentsFromProduct', [])
+          this.errorHandling.handleError<Comment[]>(
+            'getCommentsFromProduct',
+            []
+          )
         )
       );
   }

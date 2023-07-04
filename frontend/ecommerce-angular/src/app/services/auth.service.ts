@@ -17,11 +17,7 @@ export class AuthService {
     headers: new HttpHeaders('Content-Type: application/json')
   };
 
-  login(email: string, password: string): Observable<AuthResponseBody> {
-    let requestBody: AuthRequestBody = {
-      email: email,
-      password: password
-    };
+  login(requestBody: any): Observable<AuthResponseBody> {
     return this.http.post<AuthResponseBody>(`${this.authURL}/login`, requestBody, this.httpOptions).pipe(
       catchError(this.errorHandling.handleError<AuthResponseBody>('login', {} as AuthResponseBody))
     );

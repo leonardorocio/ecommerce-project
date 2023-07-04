@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/address")
-@Tag(name = "Address", description = "Describes the address related operations")
+@Tag(name = "Address", description = "Descreve as operações de endereço")
 @SecurityRequirement(name = "Bearer Authentication")
 public class AddressController {
 
@@ -26,48 +26,48 @@ public class AddressController {
     private AddressService addressService;
 
     @GetMapping
-    @Operation(summary = "Returns all the addresses in the database",
-            description = "Returns all the addresses in the database")
+    @Operation(summary = "Buscar todos os endereços",
+            description = "Retorna todos os endereços do banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns all the addresses"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna todos os endereços"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Address>> getAddresses() {
         return ResponseEntity.ok(addressService.getAddresses());
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Returns one address by it's ID",
-            description = "The parameter 'id' is the id of the address you are searching")
+    @Operation(summary = "Buscar um endereço",
+            description = "Recebe um id de endereço e retorna o endereço associado ao id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns all the addresses"),
-            @ApiResponse(responseCode = "404", description = "Address not found with this id"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna o endereço associado ao id"),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Address> getAddressById(@PathVariable int id) {
         return ResponseEntity.ok(addressService.getAddressById(id));
     }
 
     @PostMapping
-    @Operation(summary = "Creates a new address",
-            description = "Receives an AddressRequestBody, maps it to an User and then saves in the database")
+    @Operation(summary = "Criar um novo endereço",
+            description = "Recebe um AddressRequestBody, mapeia para um endereço e salva no banco de dados")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Returns the addresses saved in the database"),
-            @ApiResponse(responseCode = "400", description = "Invalid arguments"),
-            @ApiResponse(responseCode = "404", description = "User not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "201", description = "Retorna o endereço criado"),
+            @ApiResponse(responseCode = "400", description = "Argumentos inválidos"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Address> createAddress(@Valid @RequestBody AddressRequestBody addressRequestBody) {
         return new ResponseEntity<>(addressService.createAddress(addressRequestBody), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes an address from the database",
-            description = "Receives an the id of the address you want to delete")
+    @Operation(summary = "Deletar um endereço",
+            description = "Recebe o id do endereço que deseja deletar")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Address deleted successfully"),
-            @ApiResponse(responseCode = "404", description = "Address not found with this id"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "204", description = "Endereço deletado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Void> deleteAddress(@PathVariable int id) {
         addressService.deleteAddress(id);
@@ -75,13 +75,12 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates an address from the database",
-            description = "Receives an the id of the address you want to update and " +
-                    "an AddressRequestBody to map the changes to the current Address")
+    @Operation(summary = "Atualizar um endereço",
+            description = "Recebe um id e um AddressRequestBody, mapeia para o endereço daquele id e atualiza o endereço ")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Address updated successfully"),
-            @ApiResponse(responseCode = "404", description = "Address not found with this id"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Endereço atualizado com sucesso"),
+            @ApiResponse(responseCode = "404", description = "Endereço não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Address> updateAddress(@Valid @RequestBody AddressRequestBody addressRequestBody,
                                                  @PathVariable int id) {

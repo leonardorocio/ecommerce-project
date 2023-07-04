@@ -7,9 +7,7 @@
     <button *ngIf="addresses.length && addingAddress" class="btn btn-primary" (click)="enableAddressForm(false, 'closing')">Cancelar</button>
   </div>
   <form
-    (submit)="
-      verifyAndSendAddressForm(cep, street, state, filter)
-    "
+    #addressForm="ngForm"
     class="form-group d-flex flex-column justify-content-between"
     id="form1"
   >
@@ -56,7 +54,7 @@
         name="Cidade"
         id="city-input"
         #filter="ngModel"
-        (click)="dropDownService.showDropdownMenu(true)"
+        (click)="dropDownShow = !dropDownShow"
         (ngModelChange)="searchCities(selectedCity)"
         class="form-control mb-3"
         list="cities"
@@ -65,13 +63,12 @@
       />
       <div
         class="container-fluid d-flex flex-column"
-        *ngIf="dropDownService.showDropdown"
       >
-        <app-dropdown (selectedItemEvent)="selectCity($event)"> </app-dropdown>
-        <app-paginator [items]="filteredCities" [pageSize]="5"></app-paginator>
+        <app-dropdown [show]="dropDownShow" [propsToShow]="['nome']" (selectedItemEvent)="selectCity($event)"> </app-dropdown>
+        <app-paginator *ngIf="dropDownShow" [items]="filteredCities" [pageSize]="5"></app-paginator>
       </div>
     </div>
-    <button type="submit" form="form1" class="btn btn-primary mt-3 w-25">
+    <button type="button" (click)="verifyAndSendAddressForm(cep, street, state, filter)" class="btn btn-primary mt-3 w-25">
       Salvar
     </button>
   </form>

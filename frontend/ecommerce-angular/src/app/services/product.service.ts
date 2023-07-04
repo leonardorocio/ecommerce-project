@@ -43,6 +43,12 @@ export class ProductService {
     )
   }
 
+  updateProduct(id: number, requestBody: any): Observable<Product> {
+    return this.http.put<Product>(`${this.productsURL}/${id}`, requestBody, this.httpOptions).pipe(
+      catchError(this.errorHandling.handleError<Product>('updateProduct', {} as Product))
+    );
+  }
+
   searchProduct(term: string): Observable<Product[]> {
     this.httpOptions.params = this.httpOptions.params.set("name", term);
     return this.http.get<Product[]>(`${this.productsURL}/search`, this.httpOptions).pipe(
