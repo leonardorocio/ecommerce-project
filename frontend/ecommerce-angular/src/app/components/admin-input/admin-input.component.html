@@ -10,7 +10,7 @@
     (ngSubmit)="submitForm(method.operationId, requestForm)"
     class="form-group"
   >
-    <ng-container *ngIf="hasParameters(method)">
+    <ng-container *ngIf="hasParameters">
       <p class="lead fw-bold">Parâmetros</p>
       <ng-container *ngFor="let parameter of method.parameters">
         <ng-container
@@ -41,13 +41,33 @@
         </ng-template>
       </ng-container>
     </ng-container>
-    <ng-container *ngIf="hasRequestBody(method)">
+    <ng-container *ngIf="hasRequestBody">
       <p class="lead fw-bold">Corpo da requisição</p>
-      <ng-container *ngFor="let field of requestBody.properties | keyvalue">
+      <ng-container
+        *ngFor="let field of requestBody.properties | keyvalue; let i = index"
+      >
+        <ng-container *ngIf="field.value.$ref">
+          <div class="mt-3">
+            <label [for]="field.key" class="form-label">{{
+              field.key | camelCase
+            }}</label>
+            <select
+              [id]="field.key"
+              class="form-select form-select-md"
+              [name]="field.key"
+              ngModel
+              required
+            >
+            <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
+              <option *ngFor="let ref of getRef(field.key)" [ngValue]="ref.id">
+                {{ ref.name ?? ref.id }}
+              </option>
+            </select>
+          </div>
+        </ng-container>
         <ng-container
           *ngIf="
-            field.value.type === 'integer' || field.value.type === 'number';
-            else stringRequestInput
+            field.value.type === 'integer' || field.value.type === 'number'
           "
         >
           <div class="mt-3">
@@ -64,7 +84,7 @@
             />
           </div>
         </ng-container>
-        <ng-template #stringRequestInput>
+        <ng-container *ngIf="field.value.type === 'string'">
           <div class="mt-3">
             <label [for]="field.key" class="form-label">{{
               field.key | camelCase
@@ -77,7 +97,7 @@
               [id]="field.key"
             />
           </div>
-        </ng-template>
+        </ng-container>
       </ng-container>
     </ng-container>
     <button class="btn btn-primary w-25 mt-3" type="submit" form="requestForm">
@@ -85,6 +105,8 @@
     </button>
   </form>
   <div class="container-fluid d-flex flex-column mt-5">
-    <app-admin-request-response [operationReturnData$]="operationReturnData$"></app-admin-request-response>
+    <app-admin-request-response
+      [operationReturnData$]="operationReturnData$"
+    ></app-admin-request-response>
   </div>
 </div>

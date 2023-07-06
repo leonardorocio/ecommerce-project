@@ -21,7 +21,7 @@ export class FooterComponent implements OnInit {
 
   ngOnInit(): void {
     this.categoryService
-      .getCategories()
+      .getProductCategories()
       .subscribe((categories) => (this.categories = categories));
   }
 

@@ -58,7 +58,7 @@ export class CartSummaryComponent {
         .pipe(
           tap((shipment) => (this.cart.order.shipment = shipment)),
           switchMap((shipment) =>
-            this.orderService.finishOrder(this.cart.order.orderId)
+            this.orderService.closeOrder(this.cart.order.orderId)
           )
         )
         .subscribe((order) => {

@@ -19,13 +19,31 @@ export class OrderService {
     })
   }
 
-  getOrderFromUser(userId: number): Observable<Order[]> {
+  getOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(this.baseOrderURL, this.options).pipe(
+      catchError(this.errorHandling.handleError<Order[]>('getOrders', []))
+    )
+  }
+
+  getOrderById(id: number): Observable<Order> {
+    return this.http.get<Order>(`${this.baseOrderURL}/${id}`, this.options).pipe(
+      catchError(this.errorHandling.handleError<Order>('getOrders', {} as Order))
+    )
+  }
+
+  getUsersOrders(userId: number): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseOrderURL}/user/${userId}`, this.options).pipe(
       catchError(this.errorHandling.handleError<Order[]>('getOrderFromUser', []))
     )
   }
 
-  createOrder(userId: number): Observable<Order> {
+  getOpenOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.baseOrderURL}/open`, this.options).pipe(
+      catchError(this.errorHandling.handleError<Order[]>('getOpenOrders', []))
+    )
+  }
+
+  postOrder(userId: number): Observable<Order> {
     return this.http.post<Order>(this.baseOrderURL, { customerId: userId }, this.options).pipe(
       catchError(this.errorHandling.handleError<Order>('createOrder', {} as Order))
     ) as Observable<Order>;
@@ -37,7 +55,7 @@ export class OrderService {
     );
   }
 
-  finishOrder(orderId: number): Observable<Order> {
+  closeOrder(orderId: number): Observable<Order> {
     return this.http.put<Order>(`${this.baseOrderURL}/${orderId}/close`, {} as Order, this.options).pipe(
       catchError(this.errorHandling.handleError<Order>('finishOrder', {} as Order))
     );

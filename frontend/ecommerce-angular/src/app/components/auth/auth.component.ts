@@ -30,6 +30,7 @@ export class AuthComponent {
       password: password
     };
     this.authService.login(requestBody).subscribe((data) => {
+      console.log(data);
       if (Object.keys(data).length) {
         Object.keys(data).forEach((e) => {
           const value = data[e as keyof typeof data];

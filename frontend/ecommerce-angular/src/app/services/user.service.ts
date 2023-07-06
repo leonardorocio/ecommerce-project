@@ -18,15 +18,39 @@ export class UserService {
     })
   }
 
+  getUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.userBaseURL, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<User[]>('getUsers', []))
+    );
+  }
+
+  getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.userBaseURL}/${id}`, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<User>('getUserById', {} as User))
+    )
+  }
+
   createUser(user: User): Observable<User> {
     return this.http.post<User>(this.userBaseURL, user, this.options).pipe(
       catchError(this.errorHandlingService.handleError<User>('createUser', {} as User))
     );
   }
 
-  updateUser(id: number, body: any): Observable<User> {
+  updateUser(body: any, id : number): Observable<User> {
     return this.http.patch<User>(`${this.userBaseURL}/${id}`, body, this.options).pipe(
       catchError(this.errorHandlingService.handleError<User>('updateUser', {} as User))
+    );
+  }
+
+  deleteUser(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.userBaseURL}/${id}`, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<void>('updateUser'))
+    );
+  }
+
+  changeUserPassword(body: any, id : number): Observable<string> {
+    return this.http.patch<string>(`${this.userBaseURL}/change_password/${id}`, body, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<string>('updateUser', ''))
     );
   }
 }

@@ -17,10 +17,30 @@ export class CategoryService {
 
   constructor(private errorHandling: ErrorHandlingService, private http: HttpClient) {}
 
-  getCategories(): Observable<Category[]> {
+  getProductCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(this.categoryURL, this.httpOptions).pipe(
       catchError(this.errorHandling.handleError<Category[]>('getCategories', []))
     );
   }
+
+  postProductCategory(requestBody: {}): Observable<Category> {
+    return this.http.post<Category>(this.categoryURL, requestBody, this.httpOptions).pipe(
+      catchError(this.errorHandling.handleError<Category>('postProductCategory', {} as Category))
+    )
+  }
+
+  updateProductCategory(requestBody: {}, id: number) {
+    return this.http.put<Category>(`${this.categoryURL}/${id}`, requestBody, this.httpOptions).pipe(
+      catchError(this.errorHandling.handleError<Category>('updateProductCategory', {} as Category))
+    )
+  }
+
+  deleteProductCategory(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.categoryURL}/${id}`, this.httpOptions).pipe(
+      catchError(this.errorHandling.handleError<void>('postProductCategory'))
+    )
+  }
+
+
 
 }

@@ -142,7 +142,7 @@ export class AddressComponent implements OnInit {
     };
     this.selectedAddress = { ...addressBody };
     this.addressService
-      .editAddress(this.selectedAddress)
+      .updateAddress(this.selectedAddress)
       .subscribe((editedAddress) => {
         const addressIndex = this.addresses.findIndex(
           (address) => address.addressId === editedAddress.addressId

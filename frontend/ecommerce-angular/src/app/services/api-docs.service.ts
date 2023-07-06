@@ -80,9 +80,11 @@ export class ApiDocsService {
     let service: any;
     switch (tagName) {
       case 'details':
+      case 'orderdetails':
         service = new OrderDetailsService(this.errorHandling, this.http);
         break;
       case 'order':
+      case 'orders':
         service = new OrderService(this.errorHandling, this.http);
         break;
       case 'address':
@@ -101,6 +103,7 @@ export class ApiDocsService {
         service = new UserService(this.errorHandling, this.http);
         break;
       case 'category':
+      case 'productcategorys':
         service = new CategoryService(this.errorHandling, this.http);
         break;
       case 'products':
@@ -132,8 +135,8 @@ export class ApiDocsService {
     } else if (!objectIsEmpty(parameters) && !objectIsEmpty(requestBody)) {
       operationReturn = service.constructor.prototype[operationId].call(
         service,
+        requestBody,
         ...parameters,
-        requestBody
       );
     } else {
       operationReturn =

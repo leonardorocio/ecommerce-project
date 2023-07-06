@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import {
   APIDocs,
   MethodProperties,
-  Parameters,
   PropertyAttributes,
   SchemaProperties,
-  Tag,
 } from 'src/app/models/admin';
 import { ApiDocsService } from 'src/app/services/api-docs.service';
 
@@ -17,7 +15,7 @@ import { ApiDocsService } from 'src/app/services/api-docs.service';
   templateUrl: './admin-input.component.html',
   styleUrls: ['./admin-input.component.css'],
 })
-export class AdminInputComponent {
+export class AdminInputComponent implements OnInit {
   constructor(private apiDocs: ApiDocsService, private toastr: ToastrService) {}
 
   @Input() method!: MethodProperties;
@@ -25,29 +23,63 @@ export class AdminInputComponent {
   @Input() tag!: string;
   requestBody!: SchemaProperties;
   operationReturnData$!: Observable<any>;
+  hasRequestBody!: boolean;
+  hasParameters!: boolean;
+  refsMap: Map<string, any[]> = new Map<string, any[]>();
+  currentRef!: any;
 
-  hasRequestBody(method: MethodProperties): boolean {
-    const hasRequestBody = Object.keys(method).includes('requestBody');
-    if (hasRequestBody) {
-      this.requestBody = this.apiDocs.getRequestBody(this.docs, method);
+  ngOnInit(): void {
+    this.hasRequestBody = Object.keys(this.method).includes('requestBody');
+    this.hasParameters = Object.keys(this.method).includes('parameters');
+    this.fetchRequestBodyAndRefs();
+  }
+
+  getRef(key: string): any[] {
+    return this.refsMap.get(key) ?? [];
+  }
+
+  fetchRequestBodyAndRefs() {
+    if (this.hasRequestBody) {
+      this.requestBody = this.apiDocs.getRequestBody(this.docs, this.method);
+      this.getRefs(this.requestBody);
     }
-    return hasRequestBody;
+  }
+
+  getOperationNameFromRef(ref: string): string {
+    let returnRef: string;
+    switch (ref) {
+      case 'ProductCategorys':
+        returnRef = 'ProductCategories';
+        break;
+      case 'Address':
+        returnRef = 'Addresses';
+        break;
+      default:
+        returnRef = ref;
+        break;
+    }
+    return 'get' + returnRef;
   }
 
   getRefs(requestBody: SchemaProperties) {
-    let [ref, value] = Object.entries(requestBody.properties).filter(
-      (field) => field[1].$ref !== undefined && field[1].$ref !== null
-    )[0];
-    value.$ref = value.$ref.split('/')[value.$ref.length - 1];
-    const chosenService = this.apiDocs.chooseServiceToCall(
-      value.$ref.toLowerCase()
-    );
-    value.$ref = value.$ref.endsWith('s') ? value.$ref : value.$ref + 's';
-    this.apiDocs.executeOperation(value.$ref, [], {}, chosenService);
-  }
-
-  hasParameters(method: MethodProperties): boolean {
-    return Object.keys(method).includes('parameters');
+    Object.entries(requestBody.properties).forEach((field, index) => {
+      let [key, value] = field;
+      if (value.$ref !== undefined && value.$ref !== null) {
+        value.$ref = value.$ref.split('/').pop() ?? '';
+        value.$ref = value.$ref.endsWith('s') ? value.$ref : value.$ref + 's';
+        console.log(value.$ref.toLowerCase());
+        const chosenService = this.apiDocs.chooseServiceToCall(
+          value.$ref.toLowerCase()
+        );
+        console.log(chosenService);
+        console.log(this.getOperationNameFromRef(value.$ref));
+        this.apiDocs
+          .executeOperation(this.getOperationNameFromRef(value.$ref), [], {}, chosenService)
+          .subscribe((data) => {
+            this.refsMap.set(key, data);
+          });
+      }
+    });
   }
 
   submitForm(operation: string, requestForm: NgForm) {
@@ -93,7 +125,6 @@ export class AdminInputComponent {
         })
       );
     this.operationReturnData$.subscribe((data) => {
-      console.log(data);
       this.toastr.success(`${operation} concluída com sucesso`, 'OK');
     });
   }

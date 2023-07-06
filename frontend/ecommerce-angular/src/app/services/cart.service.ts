@@ -68,7 +68,7 @@ export class CartService {
 
   createOrder(user: User): Observable<Order> {
     return new Observable<Order>((observer) => {
-      this.orderService.createOrder(user.userId).subscribe((order) => {
+      this.orderService.postOrder(user.userId).subscribe((order) => {
         observer.next(order);
         observer.complete();
       });
@@ -89,7 +89,7 @@ export class CartService {
         quantity: orderDetails.quantity + update
       }
       this.orderDetailsService
-        .updateOrderDetails(orderDetails.orderDetailsId, body)
+        .updateOrderDetails(body, orderDetails.orderDetailsId)
         .subscribe((orderDetails) => {
           cart.items[index] = orderDetails;
           this.updateLocalCart(cart);
@@ -155,7 +155,7 @@ export class CartService {
           quantity: 1,
         };
         this.orderDetailsService
-          .createOrderDetails(body)
+          .postOrderDetails(body)
           .subscribe((orderDetails) => {
             cart.items.push(orderDetails);
             this.updateLocalCart(cart);

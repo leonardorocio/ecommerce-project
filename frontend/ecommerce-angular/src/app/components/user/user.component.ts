@@ -52,7 +52,7 @@ export class UserComponent {
     const requestBody = {name: this.name, birthDate: this.birthDate}
     if (result) {
       this.userService
-        .updateUser(this.user.userId, requestBody)
+        .updateUser(requestBody, this.user.userId)
         .subscribe((user) => {
           this.user = user;
           localStorage['user'] = JSON.stringify(this.user);

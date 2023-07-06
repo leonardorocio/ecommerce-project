@@ -36,7 +36,7 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.commentService
-      .getCommentsFromProduct(this.product.productId)
+      .getCommentsByProduct(this.product.productId)
       .subscribe((comments) => {
         const compareId = (commentA: Comment, commentB: Comment) =>
           commentA.userOwner.userId === this.user.userId ? 1 : 0;
@@ -58,7 +58,7 @@ export class CommentComponent implements OnInit {
         user_owner: this.user.userId,
         product_rated: this.product.productId,
       };
-      this.commentService.editComment(newComment).subscribe((comment) => {
+      this.commentService.updateComment(newComment, this.editedCommentId).subscribe((comment) => {
         this.comments[this.editedCommentIndex] = comment;
         this.editing = false;
         this.toastr.success('Comentário editado com sucesso', 'OK');
@@ -70,7 +70,7 @@ export class CommentComponent implements OnInit {
         user_owner: this.user.userId,
         product_rated: this.product.productId,
       };
-      this.commentService.createComment(comment).subscribe((comment) => {
+      this.commentService.postComment(comment).subscribe((comment) => {
         this.comments.unshift(comment);
         this.toastr.success('Comentário criado com sucesso', 'OK');
       });
