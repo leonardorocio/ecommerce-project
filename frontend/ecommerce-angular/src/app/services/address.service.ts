@@ -66,7 +66,7 @@ export class AddressService {
   }
 
   updateAddress(address: Address): Observable<Address> {
-    return this.http.put<Address>(`${this.addressURL}/${address.addressId}`, address, this.options).pipe(
+    return this.http.put<Address>(`${this.addressURL}/${address.id}`, address, this.options).pipe(
       catchError(this.errorHandling.handleError<Address>('editAddress', address))
     );
   }

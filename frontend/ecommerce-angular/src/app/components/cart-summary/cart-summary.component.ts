@@ -30,7 +30,7 @@ export class CartSummaryComponent {
 
   orderTotalPrice(): number {
     return (this.cart.order.totalPrice =
-      this.cart.items.reduce<number>(
+      this.cart.order.orderDetailsList.reduce<number>(
         (acc, orderDetails) =>
           orderDetails.quantity *
             orderDetails.product.price *
@@ -48,8 +48,8 @@ export class CartSummaryComponent {
     const result = await this.alert.question('Deseja finalizar a compra?');
     if (result) {
       const shipmentBody = {
-        orderId: this.cart.order.orderId,
-        shipperId: this.shipment.shipper.shipperId,
+        orderId: this.cart.order.id,
+        shipperId: this.shipment.shipper.id,
         shippingPrice: this.shipment.shippingPrice,
         expectedDeliveryDate: this.shipment.expectedDeliveryDate,
       };
@@ -58,7 +58,7 @@ export class CartSummaryComponent {
         .pipe(
           tap((shipment) => (this.cart.order.shipment = shipment)),
           switchMap((shipment) =>
-            this.orderService.closeOrder(this.cart.order.orderId)
+            this.orderService.closeOrder(this.cart.order.id)
           )
         )
         .subscribe((order) => {

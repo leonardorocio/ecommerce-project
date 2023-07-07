@@ -57,7 +57,7 @@ public class OrderService {
     public Orders updateOrder(OrderRequestBody orderRequestBody, int id) {
         Orders originalOrders = getOrderById(id);
         Orders updatedOrders = orderMapper.mapToOrder(orderRequestBody);
-        updatedOrders.setOrderId(originalOrders.getOrderId());
+        updatedOrders.setId(originalOrders.getId());
         return orderRepository.save(updatedOrders);
     }
 

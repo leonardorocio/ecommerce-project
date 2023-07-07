@@ -2,7 +2,7 @@
   <div
     class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3 "
   >
-    <span *ngIf="cart.items.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
+    <span *ngIf="cart.order.orderDetailsList.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
     <ng-template class="" #noProducts>
       <span class="lead fw-bold no-spacing">Carrinho não tem nenhum produto!</span>
     </ng-template>
@@ -12,7 +12,7 @@
   </div>
   <ul class="no-spacing">
     <li
-      *ngFor="let item of cart.items; index as i"
+      *ngFor="let item of cart.order.orderDetailsList; index as i"
       class="border rounded no-spacing mb-3 list-group-item"
     >
       <div

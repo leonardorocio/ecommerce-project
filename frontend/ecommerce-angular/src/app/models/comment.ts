@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 export interface Comment {
-  commentId: number,
+  id: number,
   rating: number,
   text: string,
   userOwner: User

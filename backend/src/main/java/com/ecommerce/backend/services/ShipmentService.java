@@ -49,13 +49,12 @@ public class ShipmentService {
             throw new BadRequestException("Não é possível atualizar entrega já efetuada");
         }
         Shipment updatedShipment = shipmentMapper.mapToShipment(shipmentRequestBody);
-        updatedShipment.setShipmentId(originalShipment.getShipmentId());
+        updatedShipment.setId(originalShipment.getId());
         return shipmentRepository.save(updatedShipment);
     }
 
     public void deleteShipment(int id) {
         Shipment toDeleteShipment = getShipmentById(id);
-        log.info(toDeleteShipment.getShipmentId());
         shipmentRepository.delete(toDeleteShipment);
     }
 

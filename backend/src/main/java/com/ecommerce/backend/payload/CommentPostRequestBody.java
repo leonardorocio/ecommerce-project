@@ -22,10 +22,10 @@ public class CommentPostRequestBody {
     private Integer rating;
 
     @NotNull
-    @Schema(name = "product_rated", description = "The ID of the Product you are rating", example = "1")
+    @Schema(name = "product_rated", description = "The ID of the Product you are rating", example = "1", ref = "Product")
     private Integer product_rated;
 
     @NotNull
-    @Schema(name = "user_owner", description = "The ID of the User which owns the comment", example = "1")
+    @Schema(name = "user_owner", description = "The ID of the User which owns the comment", example = "1", ref = "User")
     private Integer user_owner;
 }

@@ -19,7 +19,7 @@ public class Address {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer addressId;
+    private Integer id;
 
     @NotNull
     private String zipCode;
@@ -34,7 +34,7 @@ public class Address {
     private String streetWithNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "userId")
+    @JoinColumn(name = "user", referencedColumnName = "id")
     @JsonIgnore
     @NotNull
     private User user;

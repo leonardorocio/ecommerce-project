@@ -13,7 +13,7 @@ export class ProductCardComponent {
   @Input() product!: Product;
 
   goToDetail(product: Product) {
-    this.router.navigateByUrl(`/produto/${product.productId}`, {
+    this.router.navigateByUrl(`/produto/${product.id}`, {
       state: product,
     });
   }

@@ -13,11 +13,11 @@ import lombok.NoArgsConstructor;
 public class OrderDetailsRequestBody {
 
     @NotNull
-    @Schema(name = "orderId", description = "The ID of the Order related to the OrderDetails", example = "1")
+    @Schema(name = "orderId", description = "The ID of the Order related to the OrderDetails", example = "1", ref = "Orders")
     private int orderId;
 
     @NotNull
-    @Schema(name = "productId", description = "The ID of the Product related to the OrderDetails", example = "1")
+    @Schema(name = "productId", description = "The ID of the Product related to the OrderDetails", example = "1", ref = "Product")
     private int productId;
 
     @NotNull

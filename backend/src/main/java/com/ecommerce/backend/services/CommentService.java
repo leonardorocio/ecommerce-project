@@ -58,7 +58,7 @@ public class CommentService {
     public Comment updateComment(CommentPostRequestBody commentPostRequestBody, Integer id) {
         Comment oldComment = getCommentById(id);
         Comment newComment = commentMapper.mapToComment(commentPostRequestBody);
-        newComment.setCommentId(oldComment.getCommentId());
+        newComment.setId(oldComment.getId());
         return commentRepository.save(newComment);
     }
 }

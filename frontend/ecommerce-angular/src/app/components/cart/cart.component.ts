@@ -29,8 +29,8 @@ export class CartComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
       this.cart = fetchedCart;
-      this.hasProducts = this.cart.order.orderDetailsId.length > 0;
-      if (history.state['productId']) {
+      this.hasProducts = this.cart.order.orderDetailsList.length > 0;
+      if (history.state['id']) {
         this.cartService
           .addProductToCart(this.cart)
           .subscribe((updatedCart) => {
@@ -43,8 +43,8 @@ export class CartComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     var changes!: boolean;
-    if (this.cart != undefined) {
-      changes = this.cart.items.length > 0;
+    if (this.cart.order.orderDetailsList != undefined) {
+      changes = this.cart.order.orderDetailsList.length > 0;
     }
     if (changes != this.hasProducts) {
       this.hasProducts = changes;

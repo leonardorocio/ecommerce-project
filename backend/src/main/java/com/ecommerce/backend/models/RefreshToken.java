@@ -20,7 +20,7 @@ public class RefreshToken {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer refreshTokenId;
+    private Integer id;
 
 
     @OneToOne(mappedBy = "token")

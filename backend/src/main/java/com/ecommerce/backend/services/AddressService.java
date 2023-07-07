@@ -50,7 +50,7 @@ public class AddressService {
     public Address updateAddress(AddressRequestBody addressRequestBody, int id) {
         Address address = getAddressById(id);
         Address updatedAddress = addressMapper.mapToAddress(addressRequestBody);
-        updatedAddress.setAddressId(address.getAddressId());
+        updatedAddress.setId(address.getId());
         return addressRepository.save(updatedAddress);
     }
 }

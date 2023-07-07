@@ -33,7 +33,7 @@ public class ShipmentMapper {
                     .orders(order)
                     .shipper(shipper)
                     .build();
-            orderService.updateOrderTotalPrice(order.getOrderId(), shipment.getShippingPrice());
+            orderService.updateOrderTotalPrice(order.getId(), shipment.getShippingPrice());
             return shipment;
         }
         return null;

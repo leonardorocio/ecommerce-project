@@ -23,11 +23,11 @@ public class ShipmentRequestBody {
 
     @NotNull
     @Schema(name = "orderId", description = "The Id of the Order related to the Shipment",
-            example = "1")
+            example = "1", ref = "Orders")
     private int orderId;
 
     @NotNull
     @Schema(name = "shipperId", description = "The Id of the Shipper related to the Shipment",
-            example = "1")
+            example = "1", ref = "Shipper")
     private int shipperId;
 }

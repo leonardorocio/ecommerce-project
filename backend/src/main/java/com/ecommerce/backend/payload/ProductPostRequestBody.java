@@ -31,7 +31,7 @@ public class ProductPostRequestBody {
     double discount;
 
     @NotNull
-    @Schema(name = "category_id", description = "The ID of the Category related to the Product", example = "1")
+    @Schema(name = "category_id", description = "The ID of the Category related to the Product", example = "1", ref = "ProductCategory")
     int category_id;
 
     @NotNull

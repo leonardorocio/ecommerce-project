@@ -2,7 +2,7 @@ import { Order } from "./order";
 import { Shipper } from "./shipper";
 
 export interface Shipment {
-  shipmentId: number,
+  id: number,
   delivered: boolean,
   shippingPrice: number,
   expectedDeliveryDate: string,

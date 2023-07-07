@@ -19,7 +19,7 @@ public class OrderMapper {
 
     public Orders mapToOrder(OrderRequestBody orderRequestBody) {
             Orders mappedOrders = Orders.builder()
-                    .orderDetailsId(Collections.emptyList())
+                    .orderDetailsList(Collections.emptyList())
                     .orderedDate(LocalDate.now())
                     .closed(false)
                     .customer(userService.getUserById(orderRequestBody.getCustomerId()))

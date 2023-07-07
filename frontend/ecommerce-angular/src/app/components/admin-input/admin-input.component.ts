@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, filter, switchMap } from 'rxjs';
 import {
   APIDocs,
   MethodProperties,
@@ -125,7 +125,9 @@ export class AdminInputComponent implements OnInit {
         })
       );
     this.operationReturnData$.subscribe((data) => {
-      this.toastr.success(`${operation} concluída com sucesso`, 'OK');
+      if (typeof data === 'object' && Object.keys(data).length > 0) {
+        this.toastr.success(`${operation} concluída com sucesso`, 'OK');
+      }
     });
   }
 }

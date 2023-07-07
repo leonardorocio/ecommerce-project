@@ -78,7 +78,7 @@ export class AddressComponent implements OnInit {
     state: StateResponse,
     city: string
   ) {
-    const userId: number = this.user.userId;
+    const userId: number = this.user.id;
     const address = {
       zipCode: zipCode,
       streetWithNumber: streetWithNumber,
@@ -137,15 +137,15 @@ export class AddressComponent implements OnInit {
       streetWithNumber: streetWithNumber,
       state: state.nome,
       city: city,
-      userId: this.user.userId,
-      addressId: this.selectedAddress.addressId,
+      userId: this.user.id,
+      id: this.selectedAddress.id,
     };
     this.selectedAddress = { ...addressBody };
     this.addressService
       .updateAddress(this.selectedAddress)
       .subscribe((editedAddress) => {
         const addressIndex = this.addresses.findIndex(
-          (address) => address.addressId === editedAddress.addressId
+          (address) => address.id === editedAddress.id
         );
         this.addresses[addressIndex] = editedAddress;
         this.selectedAddress = editedAddress;
@@ -176,10 +176,10 @@ export class AddressComponent implements OnInit {
     );
     if (result) {
       this.addressService
-        .deleteAddress(addressToDelete.addressId)
+        .deleteAddress(addressToDelete.id)
         .subscribe(() => {
           const addressIndex = this.addresses.findIndex(
-            (address) => address.addressId === addressToDelete.addressId
+            (address) => address.id === addressToDelete.id
           );
           this.addresses.splice(addressIndex, 1);
           this.selectedAddress = this.addresses[0];

@@ -39,8 +39,11 @@ public class ProductCategoryService {
 
     public ProductCategory updateProductCategory(ProductCategoryRequestBody productCategoryRequestBody, Integer id) {
         ProductCategory productCategory = getCategoryById(id);
-        productCategory.setName(productCategory.getName());
-        return productCategoryRepository.save(productCategory);
+        ProductCategory newCategory = ProductCategory.builder()
+                .name(productCategoryRequestBody.getName())
+                .build();
+        newCategory.setId(productCategory.getId());
+        return productCategoryRepository.save(newCategory);
     }
 
     public void deleteProductCategory(Integer id) {
