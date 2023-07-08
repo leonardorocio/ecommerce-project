@@ -22,12 +22,18 @@ export class CommentService {
     }),
   };
 
+  getComments(): Observable<Comment[]> {
+    return this.http.get<Comment[]>(this.baseCommentURL, this.options).pipe(
+      catchError(this.errorHandling.handleError<Comment[]>('getComments', []))
+    );
+  }
+
   postComment(comment: any): Observable<Comment> {
     return this.http
       .post<Comment>(`${this.baseCommentURL}`, comment, this.options)
       .pipe(
         catchError(
-          this.errorHandling.handleError('createComment', {} as Comment)
+          this.errorHandling.handleError<Comment>('createComment', {} as Comment)
         )
       );
   }

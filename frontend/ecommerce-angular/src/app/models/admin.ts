@@ -25,6 +25,7 @@ export interface MethodProperties {
 
 export interface Parameters {
   name: string;
+  in: string;
   schema: {
     type: string;
     default: string;

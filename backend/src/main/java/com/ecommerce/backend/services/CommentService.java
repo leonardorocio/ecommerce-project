@@ -36,6 +36,10 @@ public class CommentService {
         );
     }
 
+    public List<Comment> getComments() {
+        return commentRepository.findAll();
+    }
+
     public List<Comment> getCommentsByUser(Integer id) {
         User user = userService.getUserById(id);
         return user.getComments();

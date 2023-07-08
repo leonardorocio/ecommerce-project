@@ -30,7 +30,6 @@ export class AdminEntityComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     public apiDocs: ApiDocsService,
-    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {

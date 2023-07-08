@@ -14,37 +14,72 @@
       <p class="lead fw-bold">Parâmetros</p>
       <ng-container *ngFor="let parameter of method.parameters">
         <ng-container
-          *ngIf="parameter.schema.type === 'integer'; else stringParameterInput"
+          *ngIf="
+            paramMap.get(parameter.name) !== undefined;
+            else simpleParameterInput
+          "
         >
-          <label [for]="parameter.name" class="form-label">{{
-            parameter.name | camelCase
-          }}</label>
-          <input
-            class="form-control"
-            type="number"
-            ngModel
-            [name]="'param_' + parameter.name"
-            [id]="'param_' + parameter.name"
-          />
+          <div class="mt-3">
+            <label [for]="'param_' + parameter.name" class="form-label">{{
+              parameter.name | camelCase
+            }}</label>
+            <select
+              [id]="'param_' + parameter.name"
+              class="form-select form-select-md"
+              [name]="'param_' + parameter.name"
+              ngModel
+              required
+            >
+              <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
+              <option
+                *ngFor="let param of getParamRef(parameter.name)"
+                [ngValue]="param.id"
+              >
+                {{ param.id + ": " + param.name ?? param.id }}
+              </option>
+            </select>
+          </div>
         </ng-container>
-        <ng-template #stringParameterInput>
-          <label [for]="parameter.name" class="form-label">{{
-            parameter.name | camelCase
-          }}</label>
-          <input
-            class="form-control"
-            ngModel
-            type="text"
-            [name]="'param_' + parameter.name"
-            [id]="'param_' + parameter.name"
-          />
+        <ng-template #simpleParameterInput>
+          <ng-container
+            *ngIf="
+              parameter.schema.type === 'integer';
+              else stringParameterInput
+            "
+          >
+            <label [for]="parameter.name" class="form-label">{{
+              parameter.name | camelCase
+            }}</label>
+            <input
+              class="form-control"
+              type="number"
+              ngModel
+              [name]="'param_' + parameter.name"
+              [id]="'param_' + parameter.name"
+            />
+          </ng-container>
+          <ng-template #stringParameterInput>
+            <label [for]="parameter.name" class="form-label">{{
+              parameter.name | camelCase
+            }}</label>
+            <input
+              class="form-control"
+              ngModel
+              type="text"
+              [name]="'param_' + parameter.name"
+              [id]="'param_' + parameter.name"
+            />
+          </ng-template>
         </ng-template>
       </ng-container>
     </ng-container>
     <ng-container *ngIf="hasRequestBody">
       <p class="lead fw-bold">Corpo da requisição</p>
       <ng-container
-        *ngFor="let field of requestBody.properties | keyvalue; let i = index"
+        *ngFor="
+          let field of requestBody.properties | keyvalue : originalOrder;
+          let i = index
+        "
       >
         <ng-container *ngIf="field.value.$ref">
           <div class="mt-3">
@@ -58,7 +93,7 @@
               ngModel
               required
             >
-            <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
+              <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
               <option *ngFor="let ref of getRef(field.key)" [ngValue]="ref.id">
                 {{ ref.name ?? ref.id }}
               </option>

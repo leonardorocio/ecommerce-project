@@ -1,7 +1,8 @@
+import { KeyValue } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, filter, switchMap } from 'rxjs';
+import { Observable, filter, share, switchMap } from 'rxjs';
 import {
   APIDocs,
   MethodProperties,
@@ -26,12 +27,48 @@ export class AdminInputComponent implements OnInit {
   hasRequestBody!: boolean;
   hasParameters!: boolean;
   refsMap: Map<string, any[]> = new Map<string, any[]>();
+  paramMap: Map<string, any[]> = new Map<string, any[]>();
   currentRef!: any;
+  chosenService!: Function;
+
+  originalOrder = (
+    a: KeyValue<string, any>,
+    b: KeyValue<string, any>
+  ): number => {
+    return 0;
+  };
 
   ngOnInit(): void {
     this.hasRequestBody = Object.keys(this.method).includes('requestBody');
     this.hasParameters = Object.keys(this.method).includes('parameters');
+    this.chosenService = this.apiDocs.chooseServiceToCall(this.tag);
+    this.getParamRefs();
     this.fetchRequestBodyAndRefs();
+  }
+
+  getParamRefs() {
+    if (this.hasParameters) {
+      this.method.parameters.forEach((parameter) => {
+        if (parameter.in === 'path' && parameter.name.includes('id')) {
+          let operation = this.tag.at(0)?.toUpperCase() + this.tag.substring(1);
+          operation = operation.endsWith('s') ? operation : operation + 's';
+          this.apiDocs
+            .executeOperation(
+              this.getFetchOperationNameFromRefOrTag(operation),
+              [],
+              {},
+              this.chosenService
+            )
+            .subscribe((data) => {
+              this.paramMap.set(parameter.name, data);
+            });
+        }
+      });
+    }
+  }
+
+  getParamRef(key: string): any[] {
+    return this.paramMap.get(key) ?? [];
   }
 
   getRef(key: string): any[] {
@@ -45,14 +82,18 @@ export class AdminInputComponent implements OnInit {
     }
   }
 
-  getOperationNameFromRef(ref: string): string {
+  getFetchOperationNameFromRefOrTag(ref: string): string {
     let returnRef: string;
     switch (ref) {
       case 'ProductCategorys':
+      case 'Categorys':
         returnRef = 'ProductCategories';
         break;
       case 'Address':
         returnRef = 'Addresses';
+        break;
+      case 'Details':
+        returnRef = 'OrderDetails';
         break;
       default:
         returnRef = ref;
@@ -67,14 +108,16 @@ export class AdminInputComponent implements OnInit {
       if (value.$ref !== undefined && value.$ref !== null) {
         value.$ref = value.$ref.split('/').pop() ?? '';
         value.$ref = value.$ref.endsWith('s') ? value.$ref : value.$ref + 's';
-        console.log(value.$ref.toLowerCase());
         const chosenService = this.apiDocs.chooseServiceToCall(
           value.$ref.toLowerCase()
         );
-        console.log(chosenService);
-        console.log(this.getOperationNameFromRef(value.$ref));
         this.apiDocs
-          .executeOperation(this.getOperationNameFromRef(value.$ref), [], {}, chosenService)
+          .executeOperation(
+            this.getFetchOperationNameFromRefOrTag(value.$ref),
+            [],
+            {},
+            chosenService
+          )
           .subscribe((data) => {
             this.refsMap.set(key, data);
           });
@@ -83,7 +126,6 @@ export class AdminInputComponent implements OnInit {
   }
 
   submitForm(operation: string, requestForm: NgForm) {
-    console.log(requestForm.value);
     const parameters = Object.entries(requestForm.value)
       .filter((field) => field[0].includes('param'))
       .map((field) => field[1]);
@@ -92,11 +134,15 @@ export class AdminInputComponent implements OnInit {
         (field) => !field[0].includes('param')
       )
     );
-    const chosenService = this.apiDocs.chooseServiceToCall(this.tag);
-    this.executeOperation(operation, parameters, requestBody, chosenService);
+    this.executeOperationFromForm(
+      operation,
+      parameters,
+      requestBody,
+      this.chosenService
+    );
   }
 
-  executeOperation(
+  executeOperationFromForm(
     operation: string,
     parameters: any[],
     requestBody: {},
@@ -105,6 +151,7 @@ export class AdminInputComponent implements OnInit {
     this.operationReturnData$ = this.apiDocs
       .executeOperation(operation, parameters, requestBody, chosenService)
       .pipe(
+        share(),
         switchMap((data) => {
           return new Observable<any>((observer) => {
             if (data === null || data === undefined) {
@@ -124,8 +171,10 @@ export class AdminInputComponent implements OnInit {
           });
         })
       );
+
     this.operationReturnData$.subscribe((data) => {
-      if (typeof data === 'object' && Object.keys(data).length > 0) {
+      this.getParamRefs();
+      if (( Object.keys(data).length > 0)) {
         this.toastr.success(`${operation} concluída com sucesso`, 'OK');
       }
     });
