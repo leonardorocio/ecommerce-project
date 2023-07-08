@@ -19,7 +19,7 @@ public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderId;
+    private Integer id;
 
     @Column
     @NotNull
@@ -30,7 +30,7 @@ public class Orders {
     private double totalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_orders", referencedColumnName = "userId")
+    @JoinColumn(name = "user_orders", referencedColumnName = "id")
     @NotNull
     @JsonIgnore
     private User customer;
@@ -40,7 +40,7 @@ public class Orders {
     private boolean closed;
 
     @OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
-    private List<OrderDetails> orderDetailsId;
+    private List<OrderDetails> orderDetailsList;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Shipment shipment;

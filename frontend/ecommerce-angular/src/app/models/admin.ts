@@ -1,13 +1,3 @@
-import { Observable } from 'rxjs';
-import { Address } from './address';
-import { Category } from './category';
-import { OrderDetails, Order } from './order';
-import { Product } from './product';
-import { Shipment } from './shipment';
-import { Shipper } from './shipper';
-import { User } from './user';
-import { AuthResponseBody } from './auth';
-
 export interface APIDocs {
   tags: Tag[];
   paths: Path;
@@ -35,6 +25,7 @@ export interface MethodProperties {
 
 export interface Parameters {
   name: string;
+  in: string;
   schema: {
     type: string;
     default: string;

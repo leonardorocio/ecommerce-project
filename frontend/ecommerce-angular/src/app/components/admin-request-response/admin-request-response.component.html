@@ -2,7 +2,7 @@
 <ul class="list-group">
   <ng-container
     *ngFor="
-      let property of operationReturnData$ | async | keyvalue;
+      let property of operationReturnData$ | async | keyvalue : originalOrder;
       let i = index
     "
   >
@@ -32,7 +32,7 @@
         <app-dropdown
           [show]="dropDownShow && selected === i"
           [propsToShow]="['key', 'value']"
-          [staticItems]="isObject(property.value) | keyvalue"
+          [staticItems]="isObject(property.value) | keyvalue : originalOrder"
         ></app-dropdown>
       </ng-container>
       <ng-template #simpleValue>

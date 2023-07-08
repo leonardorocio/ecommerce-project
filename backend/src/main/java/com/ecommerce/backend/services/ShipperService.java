@@ -50,7 +50,7 @@ public class ShipperService {
     public Shipper updateShipper(ShipperRequestBody shipperRequestBody, int id) {
         Shipper originalShipper = getShipperById(id);
         Shipper updatedShipper = shipperMapper.mapToShipper(shipperRequestBody);
-        updatedShipper.setShipperId(originalShipper.getShipperId());
+        updatedShipper.setId(originalShipper.getId());
         return shipperRepository.save(updatedShipper);
     }
 }

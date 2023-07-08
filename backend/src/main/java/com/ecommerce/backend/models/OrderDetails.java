@@ -16,20 +16,20 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderDetailsId;
+    private Integer id;
 
     @Column
     @NotNull
     private Integer quantity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id", referencedColumnName = "orderId")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     @JsonIgnore
     @NotNull
     private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "productId")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @NotNull
     private Product product;
 }

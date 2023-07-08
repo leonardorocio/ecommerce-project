@@ -20,7 +20,7 @@ public class Shipper {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer shipperId;
+    private Integer id;
 
     @NotNull
     private String name;

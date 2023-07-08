@@ -3,7 +3,7 @@ import { Comment } from "./comment";
 import { Order } from "./order";
 
 export interface User {
-  userId: number,
+  id: number,
   name: string,
   email: string,
   password: string,

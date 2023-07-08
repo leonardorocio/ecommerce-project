@@ -1,3 +1,4 @@
+import { KeyValue } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -28,5 +29,9 @@ export class AdminRequestResponseComponent {
       this.selected = -1;
       this.dropDownShow = false;
     }
+  }
+
+  originalOrder = (a: KeyValue<string,any>, b: KeyValue<string,any>): number => {
+    return 0;
   }
 }

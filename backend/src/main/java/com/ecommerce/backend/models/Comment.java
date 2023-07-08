@@ -21,7 +21,7 @@ public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentId;
+    private Integer id;
 
     @NotNull
     @NotBlank
@@ -33,13 +33,13 @@ public class Comment {
     private Integer rating;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id", referencedColumnName = "productId")
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     @JsonIgnore
     @NotNull
     private Product productRated;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "userId")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @NotNull
     private User userOwner;
 }

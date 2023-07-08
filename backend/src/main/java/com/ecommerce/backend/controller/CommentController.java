@@ -28,6 +28,18 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
 
+    @GetMapping
+    @Operation(summary = "Buscar todos os comentários",
+            description = "Retorna todos os comentários no banco de dados",
+            tags = {"Comment, User"})
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna os comentários"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Comment>> getComments() {
+        return ResponseEntity.ok(commentService.getComments());
+    }
+
     @GetMapping(path = "/user/{id}")
     @Operation(summary = "Buscar todos os comentários de um usuário",
             description = "Recebe um id de usuário e retorna todos os comentários desse usuário",

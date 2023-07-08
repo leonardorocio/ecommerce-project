@@ -69,7 +69,6 @@ public class UserService {
     @Transactional(rollbackOn = Exception.class)
     public void deleteUser(Integer id) {
         User user = getUserById(id);
-//        refreshTokenService.deleteByUserId(id);
         userRepository.delete(user);
     }
 

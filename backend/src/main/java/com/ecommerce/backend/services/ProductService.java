@@ -50,7 +50,7 @@ public class ProductService {
     public Product updateProduct(ProductPostRequestBody productPostRequestBody, Integer id) {
         Product currentProduct = getProductById(id);
         Product newProduct = productMapper.mapToProduct(productPostRequestBody);
-        newProduct.setProductId(currentProduct.getProductId());
+        newProduct.setId(currentProduct.getId());
         return productRepository.save(newProduct);
     }
 

@@ -22,17 +22,23 @@ export class CommentService {
     }),
   };
 
-  createComment(comment: any): Observable<Comment> {
+  getComments(): Observable<Comment[]> {
+    return this.http.get<Comment[]>(this.baseCommentURL, this.options).pipe(
+      catchError(this.errorHandling.handleError<Comment[]>('getComments', []))
+    );
+  }
+
+  postComment(comment: any): Observable<Comment> {
     return this.http
       .post<Comment>(`${this.baseCommentURL}`, comment, this.options)
       .pipe(
         catchError(
-          this.errorHandling.handleError('createComment', {} as Comment)
+          this.errorHandling.handleError<Comment>('createComment', {} as Comment)
         )
       );
   }
 
-  editComment(comment: any): Observable<Comment> {
+  updateComment(comment: any, id: number): Observable<Comment> {
     return this.http
       .put<Comment>(
         `${this.baseCommentURL}/${comment.commentId}`,
@@ -54,18 +60,25 @@ export class CommentService {
       );
   }
 
-  getCommentsFromProduct(productId: number): Observable<Comment[]> {
+  getCommentsByProduct(id: number): Observable<Comment[]> {
     return this.http
-      .get<Comment[]>(
-        `${this.baseCommentURL}/product/${productId}`,
-        this.options
-      )
+      .get<Comment[]>(`${this.baseCommentURL}/product/${id}`, this.options)
       .pipe(
         catchError(
           this.errorHandling.handleError<Comment[]>(
             'getCommentsFromProduct',
             []
           )
+        )
+      );
+  }
+
+  getCommentsByUser(id: number): Observable<Comment[]> {
+    return this.http
+      .get<Comment[]>(`${this.baseCommentURL}/users/${id}`, this.options)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Comment[]>('getCommentsFromUser', [])
         )
       );
   }

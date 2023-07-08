@@ -19,7 +19,7 @@ public class Shipment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer shipmentId;
+    private Integer id;
 
     @Column
     @NotNull
@@ -33,13 +33,13 @@ public class Shipment {
     @NotNull
     private LocalDate expectedDeliveryDate;
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shipment_order", referencedColumnName = "orderId")
+    @JoinColumn(name = "shipment_order", referencedColumnName = "id")
     @NotNull
     @JsonIgnore
     private Orders orders;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shipper", referencedColumnName = "shipperId")
+    @JoinColumn(name = "shipper", referencedColumnName = "id")
     @NotNull
     private Shipper shipper;
 }

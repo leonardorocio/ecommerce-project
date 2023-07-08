@@ -27,7 +27,7 @@ public class User {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private Integer userId;
+    private Integer id;
 
     @NotNull
     @NotBlank
@@ -57,7 +57,7 @@ public class User {
     private List<Address> addressList;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "refresh_token", referencedColumnName = "refreshTokenId")
+    @JoinColumn(name = "refresh_token", referencedColumnName = "id")
     private RefreshToken token;
 
     @Enumerated(EnumType.STRING)

@@ -19,6 +19,7 @@ public class SpringBootHardwareEcommerceApplication {
 
 	public static void main(String[] args) {
 		ApplicationContext applicationContext = SpringApplication.run(SpringBootHardwareEcommerceApplication.class, args);
+
 	}
 
 }

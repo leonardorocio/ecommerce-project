@@ -34,7 +34,7 @@ public class OrderController {
             @ApiResponse(responseCode = "200", description = "Retorna a lista de pedidos"),
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
-    public ResponseEntity<List<Orders>> getOrder() {
+    public ResponseEntity<List<Orders>> getOrders() {
         return ResponseEntity.ok(orderService.getOrders());
     }
 

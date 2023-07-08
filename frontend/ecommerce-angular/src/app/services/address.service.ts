@@ -35,7 +35,19 @@ export class AddressService {
       );
   }
 
-  createAddress(address: Address): Observable<Address> {
+  getAddresses(): Observable<Address[]> {
+    return this.http.get<Address[]>(this.addressURL, this.options).pipe(
+      catchError(this.errorHandling.handleError<Address[]>('getAddresses', []))
+    )
+  }
+
+  getAddressById(id: number) {
+    return this.http.get<Address>(`${this.addressURL}/${id}`, this.options).pipe(
+      catchError(this.errorHandling.handleError<Address>('getAddressById', {} as Address))
+    )
+  }
+
+  createAddress(address: any): Observable<Address> {
     return this.http.post<Address>(this.addressURL, address, this.options).pipe(
       catchError(this.errorHandling.handleError<Address>('createAddress', {} as Address))
     );
@@ -53,8 +65,8 @@ export class AddressService {
     );
   }
 
-  editAddress(address: Address): Observable<Address> {
-    return this.http.put<Address>(`${this.addressURL}/${address.addressId}`, address, this.options).pipe(
+  updateAddress(address: Address): Observable<Address> {
+    return this.http.put<Address>(`${this.addressURL}/${address.id}`, address, this.options).pipe(
       catchError(this.errorHandling.handleError<Address>('editAddress', address))
     );
   }

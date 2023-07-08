@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
       .subscribe((products) => (this.products = products.slice(0, 5)));
 
     this.categoryService
-      .getCategories()
+      .getProductCategories()
       .subscribe((categories) => (this.categories = categories));
   }
 

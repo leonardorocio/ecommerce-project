@@ -38,7 +38,7 @@ export class ProductSearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.categoryService.getCategories().subscribe((categories) => {
+    this.categoryService.getProductCategories().subscribe((categories) => {
       this.categories = categories;
     });
     this.productService.searchTerms.pipe(

@@ -9,7 +9,6 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class ProductService {
-
   searchTerms = new BehaviorSubject<string>('');
 
   private productsURL: string = 'http://localhost:9000/products';
@@ -18,8 +17,8 @@ export class ProductService {
       'Content-Type': 'application/json',
     }),
     params: new HttpParams({
-      fromString: ""
-    })
+      fromString: '',
+    }),
   };
 
   constructor(
@@ -34,26 +33,81 @@ export class ProductService {
   getProducts(): Observable<Product[]> {
     return this.http
       .get<Product[]>(this.productsURL, this.httpOptions)
-      .pipe(catchError(this.errorHandling.handleError<Product[]>('getProducts', [])));
+      .pipe(
+        catchError(this.errorHandling.handleError<Product[]>('getProducts', []))
+      );
+  }
+
+  getProductsSortedByDiscount(): Observable<Product[]> {
+    return this.http
+      .get<Product[]>(`${this.productsURL}/discounted`, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Product[]>(
+            'getProductsSortedByDiscount',
+            []
+          )
+        )
+      );
+  }
+
+  createProduct(requestBody: any) {
+    return this.http
+      .post<Product>(this.productsURL, requestBody, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Product>(
+            'createProduct',
+            {} as Product
+          )
+        )
+      );
   }
 
   getProductById(productId: number): Observable<Product> {
-    return this.http.get<Product>(`${this.productsURL}/${productId}`, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<Product>('getProductById', {} as Product))
-    )
+    return this.http
+      .get<Product>(`${this.productsURL}/${productId}`, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Product>(
+            'getProductById',
+            {} as Product
+          )
+        )
+      );
   }
 
-  updateProduct(id: number, requestBody: any): Observable<Product> {
-    return this.http.put<Product>(`${this.productsURL}/${id}`, requestBody, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<Product>('updateProduct', {} as Product))
-    );
+  updateProduct(requestBody: any, id: number): Observable<Product> {
+    return this.http
+      .put<Product>(`${this.productsURL}/${id}`, requestBody, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Product>(
+            'updateProduct',
+            {} as Product
+          )
+        )
+      );
   }
+
+  deleteProduct(id: number) {
+    return this.http
+      .delete<void>(`${this.productsURL}/${id}`, this.httpOptions)
+      .pipe(catchError(this.errorHandling.handleError<void>('deleteProduct')));
+  }
+
+  // filterProductByCategory(requestBody: any) {
+  //   return this.http.get<Product[]>(`${this.productsURL}/filter`, requestBody)
+  // }
 
   searchProduct(term: string): Observable<Product[]> {
-    this.httpOptions.params = this.httpOptions.params.set("name", term);
-    return this.http.get<Product[]>(`${this.productsURL}/search`, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<Product[]>('searchProduct', []))
-    );
+    this.httpOptions.params = this.httpOptions.params.set('name', term);
+    return this.http
+      .get<Product[]>(`${this.productsURL}/search`, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Product[]>('searchProduct', [])
+        )
+      );
   }
-
 }

@@ -3,17 +3,17 @@ import { User } from "./user";
 import { Shipment } from "./shipment";
 
 export interface OrderDetails {
-  orderDetailsId: number
+  id: number
   order: Order,
   product: Product,
   quantity: number
 }
 
 export interface Order {
-  orderId: number,
+  id: number,
   orderedDate: string,
   totalPrice: number,
-  orderDetailsId: OrderDetails[],
+  orderDetailsList: OrderDetails[],
   closed: boolean,
   shipment: Shipment
 }

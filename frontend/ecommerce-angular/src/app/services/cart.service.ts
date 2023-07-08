@@ -37,14 +37,14 @@ export class CartService {
   }
 
   initializeCart(order: Order): Cart {
+    console.log(order);
     let cart: Cart = {
-      items: [],
       order: {} as Order,
     };
     if (order != null && order != undefined) {
-      cart.items = order.orderDetailsId;
       cart.order = order;
     }
+    console.log(cart);
     this.updateLocalCart(cart);
     return cart;
   }
@@ -55,7 +55,7 @@ export class CartService {
       user.userOrders.pop();
     } else {
       const orderIndex = user.userOrders.findIndex(
-        (o) => o.orderId === cart.order.orderId
+        (o) => o.id === cart.order.id
       );
       if (orderIndex != -1) {
         user.userOrders[orderIndex] = cart.order;
@@ -67,8 +67,9 @@ export class CartService {
   }
 
   createOrder(user: User): Observable<Order> {
+    console.log(user.id);
     return new Observable<Order>((observer) => {
-      this.orderService.createOrder(user.userId).subscribe((order) => {
+      this.orderService.postOrder(user.id).subscribe((order) => {
         observer.next(order);
         observer.complete();
       });
@@ -84,14 +85,14 @@ export class CartService {
     return new Observable<Cart>((observer) => {
       orderDetails.order = cart.order;
       const body = {
-        orderId: orderDetails.order.orderId,
-        productId: orderDetails.product.productId,
+        orderId: orderDetails.order.id,
+        productId: orderDetails.product.id,
         quantity: orderDetails.quantity + update
       }
       this.orderDetailsService
-        .updateOrderDetails(orderDetails.orderDetailsId, body)
+        .updateOrderDetails(body, orderDetails.id)
         .subscribe((orderDetails) => {
-          cart.items[index] = orderDetails;
+          cart.order.orderDetailsList[index] = orderDetails;
           this.updateLocalCart(cart);
           observer.next(cart);
           observer.complete();
@@ -106,7 +107,7 @@ export class CartService {
     );
     if (result) {
       cart = {} as Cart;
-      this.orderService.deleteOrder(order.orderId).subscribe(() => {
+      this.orderService.deleteOrder(order.id).subscribe(() => {
         this.updateLocalCart(cart);
         history.replaceState({}, '');
         window.location.reload();
@@ -117,7 +118,7 @@ export class CartService {
 
   removeProduct(cart: Cart, orderDetails: OrderDetails): Observable<Cart> {
     return new Observable<Cart>((observer) => {
-      if (cart.items.length == 1) {
+      if (cart.order.orderDetailsList.length == 1) {
         this.clearCart(cart, cart.order);
       } else {
         this.alert
@@ -128,10 +129,10 @@ export class CartService {
           .then((result) => {
             if (result) {
               this.orderDetailsService
-                .deleteOrderDetails(orderDetails.orderDetailsId)
+                .deleteOrderDetails(orderDetails.id)
                 .subscribe(() => {
-                  cart.items = cart.items.filter((o) => o !== orderDetails);
-                  cart.order.orderDetailsId = cart.items;
+                  cart.order.orderDetailsList = cart.order.orderDetailsList.filter((o) => o !== orderDetails);
+                  cart.order.orderDetailsList = cart.order.orderDetailsList;
                   this.updateLocalCart(cart);
                   observer.next(cart);
                   observer.complete();
@@ -145,19 +146,19 @@ export class CartService {
   addProductToCart(cart: Cart): Observable<Cart> {
     return new Observable<Cart>((observer) => {
       let { navigationId: _, ...product } = history.state;
-      let orderDetailsFiltered = cart.items.filter(
+      let orderDetailsFiltered = cart.order.orderDetailsList.filter(
         (item) => JSON.stringify(item.product) === JSON.stringify(product)
       )[0];
-      if (!cart.items.includes(orderDetailsFiltered)) {
+      if (!cart.order.orderDetailsList.includes(orderDetailsFiltered)) {
         let body = {
-          orderId: cart.order.orderId,
-          productId: (product as Product).productId,
+          orderId: cart.order.id,
+          productId: (product as Product).id,
           quantity: 1,
         };
         this.orderDetailsService
-          .createOrderDetails(body)
+          .postOrderDetails(body)
           .subscribe((orderDetails) => {
-            cart.items.push(orderDetails);
+            cart.order.orderDetailsList.push(orderDetails);
             this.updateLocalCart(cart);
             observer.next(cart);
             observer.complete();
@@ -167,7 +168,7 @@ export class CartService {
           cart,
           orderDetailsFiltered,
           1,
-          cart.items.indexOf(orderDetailsFiltered)
+          cart.order.orderDetailsList.indexOf(orderDetailsFiltered)
         ).subscribe((cart) => {
           observer.next(cart);
           observer.complete();

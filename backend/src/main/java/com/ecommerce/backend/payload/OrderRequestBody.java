@@ -16,6 +16,6 @@ import java.util.List;
 public class OrderRequestBody {
 
     @NotNull
-    @Schema(name = "customerId", description = "The ID of the User related to the Order", example = "1")
+    @Schema(name = "customerId", description = "The ID of the User related to the Order", example = "1", ref = "User")
     private int customerId;
 }

@@ -11,9 +11,9 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Integer> {
 
-    @Query("SELECT comment FROM Comment comment WHERE comment.userOwner.userId = ?1")
+    @Query("SELECT comment FROM Comment comment WHERE comment.userOwner.id = ?1")
     public Optional<List<Comment>> getCommentsByUser(Integer id);
 
-    @Query("SELECT comment FROM Comment comment WHERE comment.productRated.productId = ?1")
+    @Query("SELECT comment FROM Comment comment WHERE comment.productRated.id = ?1")
     public Optional<List<Comment>> getCommentsByProduct(Integer id);
 }

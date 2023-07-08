@@ -1,5 +1,5 @@
 export interface Shipper {
-  shipperId: number,
+  id: number,
   name: string,
   fixedTax: number
 }

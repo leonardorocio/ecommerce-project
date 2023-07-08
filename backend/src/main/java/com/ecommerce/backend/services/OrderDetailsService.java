@@ -44,7 +44,7 @@ public class OrderDetailsService {
     public OrderDetails updateOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody, int id) {
         OrderDetails originalOrderDetails = getOrderDetailsById(id);
         OrderDetails updatedOrderDetails = orderDetailsMapper.mapToUpdateOrderDetails(orderDetailsRequestBody);
-        updatedOrderDetails.setOrderDetailsId(originalOrderDetails.getOrderDetailsId());
+        updatedOrderDetails.setId(originalOrderDetails.getId());
         return orderDetailsRepository.save(updatedOrderDetails);
     }
 

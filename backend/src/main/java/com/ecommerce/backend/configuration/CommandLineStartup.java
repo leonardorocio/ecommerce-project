@@ -6,29 +6,30 @@ import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
-public class CommandLineStartup implements CommandLineRunner {
+public class CommandLineStartup implements ApplicationListener<ApplicationReadyEvent> {
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public void run(String... args) throws Exception {
-        User user = User.builder()
-                .name("Admin")
-                .email("admin.admin@admin.com")
-                .password(new BCryptPasswordEncoder().encode("admin123"))
-                .birthDate(LocalDate.now())
-                .role(Role.ROLE_ADMIN)
-                .build();
-        if (!userRepository.existsByEmail(user.getEmail())) {
+    public void onApplicationEvent(ApplicationReadyEvent event) {
+        if (userRepository.count() == 0) {
+            User user = User.builder()
+                    .name("Admin")
+                    .email("admin.admin@admin.com")
+                    .password(new BCryptPasswordEncoder().encode("admin123"))
+                    .birthDate(LocalDate.now())
+                    .role(Role.ROLE_ADMIN)
+                    .build();
             userRepository.save(user);
-        };
+        }
     }
-
 }

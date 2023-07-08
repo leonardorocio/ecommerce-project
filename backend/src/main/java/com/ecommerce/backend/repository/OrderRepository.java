@@ -17,6 +17,6 @@ public interface OrderRepository extends JpaRepository<Orders, Integer> {
     Optional<List<Orders>> findAllOpenOrders();
 
     @Modifying
-    @Query("update Orders ord set ord.totalPrice = :total_price where ord.orderId = :id")
+    @Query("update Orders ord set ord.totalPrice = :total_price where ord.id = :id")
     void updateTotalPrice(@Param("id") int id, @Param("total_price") double totalPrice);
 }

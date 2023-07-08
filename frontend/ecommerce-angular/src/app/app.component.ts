@@ -1,8 +1,7 @@
 import { Component, DoCheck, OnInit } from '@angular/core';
-import { CategoryService } from './services/category.service';
-import { Category } from './models/category';
+
 import { UserService } from './services/user.service';
-import { tap, defaultIfEmpty, last, map, filter } from 'rxjs';
+
 
 @Component({
   selector: 'app-root',

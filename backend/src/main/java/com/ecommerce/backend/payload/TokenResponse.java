@@ -26,7 +26,7 @@ public class TokenResponse {
     @Schema(name = "expiryDate", description = "The token's expiry date", example = "2023-06-01 20:13:32")
     private Instant expiryDate;
 
-    @Schema(name = "user", description = "The access token's user owner", example = "")
+    @Schema(name = "user", description = "The access token's user owner")
     private User user;
 
     public TokenResponse(String accessToken, String refreshToken) {

@@ -36,10 +36,10 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.commentService
-      .getCommentsFromProduct(this.product.productId)
+      .getCommentsByProduct(this.product.id)
       .subscribe((comments) => {
         const compareId = (commentA: Comment, commentB: Comment) =>
-          commentA.userOwner.userId === this.user.userId ? 1 : 0;
+          commentA.userOwner.id === this.user.id ? 1 : 0;
         this.comments = comments.sort(compareId);
       });
   }
@@ -55,10 +55,10 @@ export class CommentComponent implements OnInit {
         commentId: this.editedCommentId,
         text: this.currentText,
         rating: this.currentRating,
-        user_owner: this.user.userId,
-        product_rated: this.product.productId,
+        user_owner: this.user.id,
+        product_rated: this.product.id,
       };
-      this.commentService.editComment(newComment).subscribe((comment) => {
+      this.commentService.updateComment(newComment, this.editedCommentId).subscribe((comment) => {
         this.comments[this.editedCommentIndex] = comment;
         this.editing = false;
         this.toastr.success('Comentário editado com sucesso', 'OK');
@@ -67,10 +67,10 @@ export class CommentComponent implements OnInit {
       const comment = {
         text: text,
         rating: Number.parseInt(rating),
-        user_owner: this.user.userId,
-        product_rated: this.product.productId,
+        user_owner: this.user.id,
+        product_rated: this.product.id,
       };
-      this.commentService.createComment(comment).subscribe((comment) => {
+      this.commentService.postComment(comment).subscribe((comment) => {
         this.comments.unshift(comment);
         this.toastr.success('Comentário criado com sucesso', 'OK');
       });
@@ -80,7 +80,7 @@ export class CommentComponent implements OnInit {
 
   editComment(comment: Comment, index: number) {
     this.editing = true;
-    this.editedCommentId = comment.commentId;
+    this.editedCommentId = comment.id;
     this.currentRating = comment.rating;
     this.currentText = comment.text;
     this.editedCommentIndex = index;
@@ -93,7 +93,7 @@ export class CommentComponent implements OnInit {
         if (result) {
           this.commentService.deleteComment(commentId).subscribe(() => {
             this.comments = this.comments.filter(
-              (comment) => commentId !== comment.commentId
+              (comment) => commentId !== comment.id
             );
             this.toastr.success('Comentário excluído com sucesso', 'OK');
             this.clearComment();
