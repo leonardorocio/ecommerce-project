@@ -34,7 +34,7 @@ export class AuthComponent {
       if (Object.keys(data).length) {
         Object.keys(data).forEach((e) => {
           const value = data[e as keyof typeof data];
-          localStorage.setItem(
+          sessionStorage.setItem(
             e,
             typeof value == 'string' ? value : JSON.stringify(value)
           );

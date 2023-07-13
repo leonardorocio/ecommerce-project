@@ -50,7 +50,7 @@ export class CartService {
   }
 
   updateLocalCart(cart: Cart) {
-    const user: User = JSON.parse(localStorage['user']);
+    const user: User = JSON.parse(sessionStorage['user']);
     if (cart.order == null && cart.order == undefined) {
       user.userOrders.pop();
     } else {
@@ -63,7 +63,7 @@ export class CartService {
         user.userOrders.push(cart.order);
       }
     }
-    localStorage['user'] = JSON.stringify(user);
+    sessionStorage['user'] = JSON.stringify(user);
   }
 
   createOrder(user: User): Observable<Order> {

@@ -13,7 +13,7 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent {
-  user: User = JSON.parse(localStorage['user']);
+  user: User = JSON.parse(sessionStorage['user']);
   role!: string;
   name!: string;
   email!: string;
@@ -55,7 +55,7 @@ export class UserComponent {
         .updateUser(requestBody, this.user.id)
         .subscribe((user) => {
           this.user = user;
-          localStorage['user'] = JSON.stringify(this.user);
+          sessionStorage['user'] = JSON.stringify(this.user);
         });
     }
   }

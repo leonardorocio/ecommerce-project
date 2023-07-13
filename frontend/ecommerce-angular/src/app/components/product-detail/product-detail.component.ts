@@ -12,7 +12,7 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailComponent implements OnInit {
   product!: Product;
-  user: User = JSON.parse(localStorage['user']);
+  user: User = JSON.parse(sessionStorage['user']);
 
   constructor(
     private titleService: Title,

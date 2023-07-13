@@ -19,7 +19,7 @@ export class AddressComponent implements OnInit {
     private alert: AlertService
   ) {}
 
-  user: User = JSON.parse(localStorage['user']);
+  user: User = JSON.parse(sessionStorage['user']);
   addresses: Address[] = this.user.addressList;
   states!: StateResponse[];
   cities!: CityResponse[];
@@ -89,7 +89,7 @@ export class AddressComponent implements OnInit {
     this.addressService.createAddress(address).subscribe((address) => {
       this.addresses.push(address);
       this.selectedAddress = address;
-      localStorage['user'] = JSON.stringify(this.user);
+      sessionStorage['user'] = JSON.stringify(this.user);
     });
     this.enableAddressForm(false, 'closing');
   }
@@ -149,7 +149,7 @@ export class AddressComponent implements OnInit {
         );
         this.addresses[addressIndex] = editedAddress;
         this.selectedAddress = editedAddress;
-        localStorage['user'] = JSON.stringify(this.user);
+        sessionStorage['user'] = JSON.stringify(this.user);
         this.toastr.success('Endereço editado com sucesso!', 'OK');
       });
     this.enableAddressForm(false, 'closing');
@@ -183,7 +183,7 @@ export class AddressComponent implements OnInit {
           );
           this.addresses.splice(addressIndex, 1);
           this.selectedAddress = this.addresses[0];
-          localStorage['user'] = JSON.stringify(this.user);
+          sessionStorage['user'] = JSON.stringify(this.user);
         });
     }
   }

@@ -15,7 +15,6 @@ import { User } from 'src/app/models/user';
 export class DashboardComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
-  private user: User = JSON.parse(localStorage['user']);
 
   constructor(
     private productService: ProductService,

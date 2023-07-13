@@ -2,7 +2,6 @@ import { Component, DoCheck, OnInit } from '@angular/core';
 
 import { UserService } from './services/user.service';
 
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,13 +14,14 @@ export class AppComponent implements DoCheck {
   userId!: number;
 
   ngDoCheck(): void {
-    if (localStorage['user'] !== undefined) {
-      const localStorageData: number = Number.parseInt(
-        JSON.parse(localStorage['user']).userId
-      );
-      if (localStorageData !== this.userId) {
-        this.userId = localStorageData;
-      }
+    const sessionStorageData: number =
+      sessionStorage['user'] !== undefined
+        ? Number.parseInt(
+            JSON.parse(sessionStorage.getItem('user') ?? '').userId
+          )
+        : -1;
+    if (sessionStorageData !== this.userId) {
+      this.userId = sessionStorageData;
     }
   }
 }

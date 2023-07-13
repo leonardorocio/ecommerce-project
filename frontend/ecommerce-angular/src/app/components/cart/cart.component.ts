@@ -21,7 +21,7 @@ export class CartComponent implements OnInit, DoCheck {
     private orderService: OrderService
   ) {}
 
-  user: User = JSON.parse(localStorage['user']);
+  user: User = JSON.parse(sessionStorage['user']);
   hasProducts = false;
   cart!: Cart;
   shipment!: Shipment;
