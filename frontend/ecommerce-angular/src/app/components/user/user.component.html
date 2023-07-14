@@ -39,7 +39,7 @@
       <button class="btn btn-primary mt-3" (click)="updateUser()">Salvar</button>
     </form>
   </div>
-  <app-address class="container-fluid no-spacing"></app-address>
+  <app-address [user]="user" class="container-fluid no-spacing"></app-address>
   <div class="container-fluid d-flex flex-column border rounded">
     <!-- Histórico de Pedidos -->
     <p class="lead fw-bold mt-3">Histórico de Pedidos:</p>

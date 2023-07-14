@@ -1,6 +1,6 @@
 .product {
   width: 30%;
-  cursor: pointer !important;
+  list-style-type: none;
 }
 
 .product img {

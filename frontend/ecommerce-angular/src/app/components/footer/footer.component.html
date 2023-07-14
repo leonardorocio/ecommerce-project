@@ -2,13 +2,18 @@
   id="footer"
   class="container-fluid d-flex justify-content-between bg-dark mt-5 p-4"
 >
-  <div class="container w-25 d-flex flex-column align-items-center flex-wrap">
+  <div
+    class="container-fluid d-flex flex-column align-items-center flex-wrap-reverse"
+  >
     <h5 class="display-6 text-light">Departamentos:</h5>
+
     <li *ngFor="let category of categories" class="list-style-none pointer">
-      <span class="text-light" (click)="selectFilter(category.name)">{{ category.name }}</span>
+      <span class="text-light" (click)="selectFilter(category.name)">{{
+        category.name
+      }}</span>
     </li>
   </div>
-  <div class="container w-25 d-flex flex-column align-items-center">
+  <div class="container-fluid d-flex flex-column align-items-center">
     <h5 class="display-6 text-light">Links Úteis:</h5>
     <p class="lead text-light">
       <a class="text-light link-decoration-none" routerLink="/dashboard"

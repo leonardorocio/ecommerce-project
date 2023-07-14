@@ -14,7 +14,10 @@ const redirectToDashboard = async () => {
 };
 
 export const isAdminGuard: CanActivateFn = (route, state) => {
-  const user: User = JSON.parse(localStorage['user'] ?? '');
-  return user.role === 'ROLE_ADMIN' ? true : redirectToDashboard();
+  var user: User = {} as User;
+  if (sessionStorage['user'] !== undefined) {
+    user = JSON.parse(sessionStorage['user']);
+  }
+  return Object.keys(user).length > 0 && user.role === 'ROLE_ADMIN' ? true : redirectToDashboard();
 };
 

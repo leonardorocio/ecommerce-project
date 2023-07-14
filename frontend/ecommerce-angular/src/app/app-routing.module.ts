@@ -10,6 +10,7 @@ import { AdminComponent } from './components/admin/admin.component';
 import { isAdminGuard } from './routes/is-admin.guard';
 import { AdminEntityComponent } from './components/admin-entity/admin-entity.component';
 import { AdminInputComponent } from './components/admin-input/admin-input.component';
+import { isLoggedGuard } from './routes/is-logged.guard';
 
 const routes: Routes = [
   {
@@ -36,6 +37,7 @@ const routes: Routes = [
     path: 'carrinho',
     component: CartComponent,
     title: 'Ecommerce - Carrinho',
+    canActivate: [isLoggedGuard]
   },
   {
     path: 'search',
@@ -46,6 +48,7 @@ const routes: Routes = [
     path: 'profile',
     component: UserComponent,
     title: 'Ecommerce - Perfil',
+    canActivate: [isLoggedGuard]
   },
   {
     path: 'admin',
@@ -56,10 +59,12 @@ const routes: Routes = [
   {
     path: 'admin/:type',
     component: AdminEntityComponent,
+    canActivate: [isAdminGuard],
   },
   {
     path: 'admin/:type/:method',
-    component: AdminInputComponent
+    component: AdminInputComponent,
+    canActivate: [isAdminGuard],
   }
 ];
 

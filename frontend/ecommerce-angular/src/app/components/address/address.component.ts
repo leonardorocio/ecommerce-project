@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
@@ -19,8 +19,8 @@ export class AddressComponent implements OnInit {
     private alert: AlertService
   ) {}
 
-  user: User = JSON.parse(sessionStorage['user']);
-  addresses: Address[] = this.user.addressList;
+  @Input() user!: User;
+  addresses!: Address[];
   states!: StateResponse[];
   cities!: CityResponse[];
   filteredCities!: CityResponse[];
@@ -37,6 +37,7 @@ export class AddressComponent implements OnInit {
   dropDownShow: boolean = false;
 
   ngOnInit(): void {
+    this.addresses = this.user !== undefined && this.user !== null ? this.user.addressList : [];
     this.addressService
       .getStates()
       .subscribe((states) => (this.states = states));

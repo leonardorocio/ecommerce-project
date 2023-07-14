@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { Order } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
@@ -12,8 +12,8 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
 })
-export class UserComponent {
-  user: User = JSON.parse(sessionStorage['user']);
+export class UserComponent implements OnInit {
+  user!: User;
   role!: string;
   name!: string;
   email!: string;
@@ -21,21 +21,26 @@ export class UserComponent {
   userOrders!: Order[];
   selected!: number;
 
+  ngOnInit(): void {
+    if (sessionStorage['user'] !== undefined) {
+      this.user = JSON.parse(sessionStorage['user']);
+      ({
+        name: this.name,
+        email: this.email,
+        birthDate: this.birthDate,
+        role: this.role,
+        userOrders: this.userOrders,
+      } = this.user);
+      this.role = this.role.replace('ROLE_', '');
+    }
+  }
+
   constructor(
     public cartService: CartService,
     private userService: UserService,
     private alert: AlertService,
     private router: Router
-  ) {
-    ({
-      name: this.name,
-      email: this.email,
-      birthDate: this.birthDate,
-      role: this.role,
-      userOrders: this.userOrders,
-    } = this.user);
-    this.role = this.role.replace('ROLE_', '');
-  }
+  ) {}
 
   selectOrderToShow(selected: number) {
     if (this.selected !== selected) {
@@ -49,7 +54,7 @@ export class UserComponent {
     const result = await this.alert.question(
       'Deseja alterar suas informações?'
     );
-    const requestBody = {name: this.name, birthDate: this.birthDate}
+    const requestBody = { name: this.name, birthDate: this.birthDate };
     if (result) {
       this.userService
         .updateUser(requestBody, this.user.id)
@@ -61,6 +66,6 @@ export class UserComponent {
   }
 
   goToAdmin() {
-    this.router.navigate(['/admin'], {state: { userId: this.user.id}});
+    this.router.navigate(['/admin'], { state: { userId: this.user.id } });
   }
 }

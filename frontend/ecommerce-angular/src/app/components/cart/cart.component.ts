@@ -7,6 +7,7 @@ import { CartService } from 'src/app/services/cart.service';
 import { Cart } from 'src/app/models/cart';
 import { OrderService } from 'src/app/services/order.service';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Component({
   selector: 'app-cart',
@@ -16,17 +17,19 @@ import Swal, { SweetAlertOptions } from 'sweetalert2';
 export class CartComponent implements OnInit, DoCheck {
   constructor(
     private router: Router,
-    private toastr: ToastrService,
+    private alert: AlertService,
     private cartService: CartService,
-    private orderService: OrderService
   ) {}
 
-  user: User = JSON.parse(sessionStorage['user']);
+  user!: User;
   hasProducts = false;
   cart!: Cart;
   shipment!: Shipment;
 
   ngOnInit(): void {
+    if (sessionStorage['user'] !== undefined) {
+      this.user = JSON.parse(sessionStorage['user']);
+    }
     this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
       this.cart = fetchedCart;
       this.hasProducts = this.cart.order.orderDetailsList.length > 0;

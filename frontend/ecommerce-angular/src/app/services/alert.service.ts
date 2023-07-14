@@ -10,7 +10,7 @@ export class AlertService {
   async question(title: string, message?: string): Promise<boolean> {
     const result = await Swal.fire({
       title: title,
-      message: message ?? '',
+      text: message ?? '',
       icon: 'question',
       showCancelButton: true,
       confirmButtonColor: '#51A351',
@@ -22,7 +22,7 @@ export class AlertService {
   async warning(title: string, message?: string): Promise<boolean> {
     const result = await Swal.fire({
       title: title,
-      message: message ?? '',
+      text: message ?? '',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#ff0000',
@@ -34,7 +34,7 @@ export class AlertService {
   async info(title: string, message?: string): Promise<boolean> {
     const result = await Swal.fire({
       title: title,
-      message: message ?? '',
+      text: message ?? '',
       icon: 'info',
       confirmButtonColor: '#0D6EFD',
       confirmButtonText: 'OK',

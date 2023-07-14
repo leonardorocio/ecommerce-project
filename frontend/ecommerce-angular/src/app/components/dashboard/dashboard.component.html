@@ -9,14 +9,14 @@
   </div>
 
   <h6 class="display-5 mt-3 mb-4">Departamentos</h6>
-  <div class="container-fluid d-flex justify-content-around align-items-center">
-    <ul *ngFor="let category of categories" class="product">
+  <div class="container-fluid d-flex justify-content-around align-items-center flex-wrap">
+    <li *ngFor="let category of categories" class="product my-3">
       <div class="card">
         <div class="card-body">
           <h5 class="card-title text-center pointer" (click)="goToSearchProducts(category.name)">{{ category.name }}</h5>
         </div>
       </div>
-    </ul>
+    </li>
   </div>
 </div>
 
