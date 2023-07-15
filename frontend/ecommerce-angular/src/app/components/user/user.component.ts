@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Order } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
 import { AlertService } from 'src/app/services/alert.service';
@@ -22,8 +23,8 @@ export class UserComponent implements OnInit {
   selected!: number;
 
   ngOnInit(): void {
-    if (sessionStorage['user'] !== undefined) {
-      this.user = JSON.parse(sessionStorage['user']);
+    if (this.cookieService.check("user")) {
+      this.user = JSON.parse(this.cookieService.get("user"));
       ({
         name: this.name,
         email: this.email,
@@ -39,7 +40,8 @@ export class UserComponent implements OnInit {
     public cartService: CartService,
     private userService: UserService,
     private alert: AlertService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
 
   selectOrderToShow(selected: number) {
@@ -60,7 +62,8 @@ export class UserComponent implements OnInit {
         .updateUser(requestBody, this.user.id)
         .subscribe((user) => {
           this.user = user;
-          sessionStorage['user'] = JSON.stringify(this.user);
+          this.cookieService.set("user", JSON.stringify(this.user));
+          // sessionStorage['user'] = JSON.stringify(this.user);
         });
     }
   }

@@ -68,7 +68,9 @@ export class AdminInputComponent implements OnInit {
   }
 
   getParamRef(key: string): any[] {
-    return this.paramMap.get(key) ?? [];
+    const refList = this.paramMap.get(key) ?? [];
+    refList.sort((a, b) => a.id - b.id);
+    return refList;
   }
 
   getRef(key: string): any[] {
@@ -126,6 +128,7 @@ export class AdminInputComponent implements OnInit {
   }
 
   submitForm(operation: string, requestForm: NgForm) {
+    console.log(requestForm.value);
     const parameters = Object.entries(requestForm.value)
       .filter((field) => field[0].includes('param'))
       .map((field) => field[1]);

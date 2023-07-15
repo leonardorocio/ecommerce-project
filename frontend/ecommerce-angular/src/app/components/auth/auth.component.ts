@@ -7,6 +7,7 @@ import { User } from 'src/app/models/user';
 import { OrderService } from 'src/app/services/order.service';
 import { JsonPipe } from '@angular/common';
 import { AuthRequestBody } from 'src/app/models/auth';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-auth',
@@ -21,7 +22,8 @@ export class AuthComponent {
     private toastr: ToastrService,
     private userService: UserService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private cookieService: CookieService
   ) {}
 
   login(email: string, password: string) {
@@ -30,14 +32,14 @@ export class AuthComponent {
       password: password
     };
     this.authService.login(requestBody).subscribe((data) => {
-      console.log(data);
       if (Object.keys(data).length) {
         Object.keys(data).forEach((e) => {
           const value = data[e as keyof typeof data];
-          sessionStorage.setItem(
-            e,
-            typeof value == 'string' ? value : JSON.stringify(value)
-          );
+          this.cookieService.set(e, typeof value == 'string' ? value : JSON.stringify(value));
+          // sessionStorage.setItem(
+          //   e,
+          //   typeof value == 'string' ? value : JSON.stringify(value)
+          // );
         });
         this.toastr.success(
           'Redirecionando...',

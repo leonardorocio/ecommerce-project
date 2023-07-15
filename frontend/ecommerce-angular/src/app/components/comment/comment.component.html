@@ -53,7 +53,7 @@
         class="container-fluid d-flex align-items-center justify-content-between no-spacing"
       >
         <p class="lead fw-bold">{{ comment.userOwner.name }}</p>
-        <div *ngIf="comment.userOwner.id === user.id">
+        <div *ngIf="comment.userOwner.id === user?.id">
           <button
             class="btn btn-outline-primary edit-button"
             (click)="editComment(comment, i)"

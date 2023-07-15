@@ -1,4 +1,4 @@
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, Router, mapToCanMatch } from '@angular/router';
 import { User } from '../models/user';
 import { inject } from '@angular/core';
 import { AlertService } from '../services/alert.service';

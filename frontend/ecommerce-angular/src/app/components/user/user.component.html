@@ -51,13 +51,13 @@
         <li
           class="list-group-item d-flex justify-content-around align-items-center rounded mb-3 p-3"
         >
-          <span class="lead order-item"
+          <span class="lead order-item w-25"
             >Número Pedido: {{ order.id }}</span
           >
-          <span class="lead order-item"
-            >Data de abertura: {{ order.orderedDate | date }}</span
+          <span class="lead order-item w-25"
+            >Data: {{ order.orderedDate | date }}</span
           >
-          <span class="lead order-item"
+          <span class="lead order-item w-25"
             >Status: {{ order.closed ? "Fechado" : "Aberto" }}</span
           >
           <button

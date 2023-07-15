@@ -37,7 +37,7 @@ const routes: Routes = [
     path: 'carrinho',
     component: CartComponent,
     title: 'Ecommerce - Carrinho',
-    canActivate: [isLoggedGuard]
+    canActivate: [isLoggedGuard],
   },
   {
     path: 'search',

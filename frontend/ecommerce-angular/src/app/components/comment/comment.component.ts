@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 })
 export class CommentComponent implements OnInit {
   @Input() product!: Product;
-  @Input() user!: User;
+  @Input() user?: User;
   comments!: Comment[];
   editing: boolean = false;
   currentText: string = '';
@@ -39,7 +39,7 @@ export class CommentComponent implements OnInit {
       .getCommentsByProduct(this.product.id)
       .subscribe((comments) => {
         const compareId = (commentA: Comment, commentB: Comment) =>
-          commentA.userOwner.id === this.user.id ? 1 : 0;
+          commentA.userOwner.id === this.user?.id ? 1 : 0;
         this.comments = comments.sort(compareId);
       });
   }
@@ -55,19 +55,21 @@ export class CommentComponent implements OnInit {
         commentId: this.editedCommentId,
         text: this.currentText,
         rating: this.currentRating,
-        user_owner: this.user.id,
+        user_owner: this.user?.id,
         product_rated: this.product.id,
       };
-      this.commentService.updateComment(newComment, this.editedCommentId).subscribe((comment) => {
-        this.comments[this.editedCommentIndex] = comment;
-        this.editing = false;
-        this.toastr.success('Comentário editado com sucesso', 'OK');
-      });
+      this.commentService
+        .updateComment(newComment, this.editedCommentId)
+        .subscribe((comment) => {
+          this.comments[this.editedCommentIndex] = comment;
+          this.editing = false;
+          this.toastr.success('Comentário editado com sucesso', 'OK');
+        });
     } else {
       const comment = {
         text: text,
         rating: Number.parseInt(rating),
-        user_owner: this.user.id,
+        user_owner: this.user?.id,
         product_rated: this.product.id,
       };
       this.commentService.postComment(comment).subscribe((comment) => {

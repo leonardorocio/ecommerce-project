@@ -7,6 +7,7 @@ import { Order, OrderDetails } from '../models/order';
 import { Observable } from 'rxjs';
 import { Product } from '../models/product';
 import { AlertService } from './alert.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,8 @@ export class CartService {
   constructor(
     private orderService: OrderService,
     private orderDetailsService: OrderDetailsService,
-    private alert: AlertService
+    private alert: AlertService,
+    private cookieService: CookieService
   ) {}
 
   fetchCart(user: User): Observable<Cart> {
@@ -23,7 +25,7 @@ export class CartService {
       const openOrder: Order = user.userOrders.filter(
         (order) => !order.closed
       )[0];
-      if (openOrder != null && openOrder != undefined) {
+      if (openOrder != null && openOrder != undefined && Object.keys(openOrder).length > 0) {
         const cart: Cart = this.initializeCart(openOrder);
         observer.next(cart);
         observer.complete();
@@ -37,20 +39,19 @@ export class CartService {
   }
 
   initializeCart(order: Order): Cart {
-    console.log(order);
     let cart: Cart = {
       order: {} as Order,
     };
     if (order != null && order != undefined) {
       cart.order = order;
     }
-    console.log(cart);
     this.updateLocalCart(cart);
     return cart;
   }
 
   updateLocalCart(cart: Cart) {
-    const user: User = JSON.parse(sessionStorage['user']);
+    // this.cookieService.set("user", JSON.stringify(this.user));
+    const user: User = JSON.parse(this.cookieService.get("user"));
     if (cart.order == null && cart.order == undefined) {
       user.userOrders.pop();
     } else {
@@ -63,11 +64,11 @@ export class CartService {
         user.userOrders.push(cart.order);
       }
     }
-    sessionStorage['user'] = JSON.stringify(user);
+    this.cookieService.set("user", JSON.stringify(user));
+    // sessionStorage['user'] = JSON.stringify(user);
   }
 
   createOrder(user: User): Observable<Order> {
-    console.log(user.id);
     return new Observable<Order>((observer) => {
       this.orderService.postOrder(user.id).subscribe((order) => {
         observer.next(order);

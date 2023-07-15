@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { NgForm, NgModel } from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { Address, CityResponse, StateResponse } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
@@ -16,7 +17,8 @@ export class AddressComponent implements OnInit {
   constructor(
     public addressService: AddressService,
     private toastr: ToastrService,
-    private alert: AlertService
+    private alert: AlertService,
+    private cookieService: CookieService
   ) {}
 
   @Input() user!: User;
@@ -24,9 +26,7 @@ export class AddressComponent implements OnInit {
   states!: StateResponse[];
   cities!: CityResponse[];
   filteredCities!: CityResponse[];
-  selectedAddress: Address = this.addresses[0]
-    ? this.addresses[0]
-    : ({} as Address);
+  selectedAddress!: Address;
 
   zipCode!: string;
   streetWithNumber!: string;
@@ -37,7 +37,11 @@ export class AddressComponent implements OnInit {
   dropDownShow: boolean = false;
 
   ngOnInit(): void {
-    this.addresses = this.user !== undefined && this.user !== null ? this.user.addressList : [];
+    this.addresses = this.user.addressList;
+    // this.addresses = this.user !== undefined && this.user !== null ? this.user.addressList : [];
+    this.selectedAddress = this.addresses[0]
+    ? this.addresses[0]
+    : ({} as Address);
     this.addressService
       .getStates()
       .subscribe((states) => (this.states = states));
@@ -90,7 +94,8 @@ export class AddressComponent implements OnInit {
     this.addressService.createAddress(address).subscribe((address) => {
       this.addresses.push(address);
       this.selectedAddress = address;
-      sessionStorage['user'] = JSON.stringify(this.user);
+      this.cookieService.set("user", JSON.stringify(this.user));
+      // sessionStorage['user'] = JSON.stringify(this.user);
     });
     this.enableAddressForm(false, 'closing');
   }
@@ -150,7 +155,8 @@ export class AddressComponent implements OnInit {
         );
         this.addresses[addressIndex] = editedAddress;
         this.selectedAddress = editedAddress;
-        sessionStorage['user'] = JSON.stringify(this.user);
+        this.cookieService.set("user", JSON.stringify(this.user));
+        // sessionStorage['user'] = JSON.stringify(this.user);
         this.toastr.success('Endereço editado com sucesso!', 'OK');
       });
     this.enableAddressForm(false, 'closing');
@@ -184,7 +190,8 @@ export class AddressComponent implements OnInit {
           );
           this.addresses.splice(addressIndex, 1);
           this.selectedAddress = this.addresses[0];
-          sessionStorage['user'] = JSON.stringify(this.user);
+          this.cookieService.set("user", JSON.stringify(this.user));
+          // sessionStorage['user'] = JSON.stringify(this.user);
         });
     }
   }

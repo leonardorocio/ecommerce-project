@@ -73,8 +73,7 @@ public class ProductCategoryController {
             @ApiResponse(responseCode = "404", description = "Categoria não encontrada"),
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
-    public ResponseEntity<Void> deleteProductCategory(
-            @RequestBody ProductCategoryRequestBody productCategoryRequestBody, @PathVariable Integer id) {
+    public ResponseEntity<Void> deleteProductCategory(@PathVariable Integer id) {
         productCategoryService.deleteProductCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

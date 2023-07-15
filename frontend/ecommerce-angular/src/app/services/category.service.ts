@@ -37,7 +37,7 @@ export class CategoryService {
 
   deleteProductCategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.categoryURL}/${id}`, this.httpOptions).pipe(
-      catchError(this.errorHandling.handleError<void>('postProductCategory'))
+      catchError(this.errorHandling.handleError<void>('deleteProductCategory'))
     )
   }
 

@@ -8,6 +8,7 @@ import { Cart } from 'src/app/models/cart';
 import { OrderService } from 'src/app/services/order.service';
 import Swal, { SweetAlertOptions } from 'sweetalert2';
 import { AlertService } from 'src/app/services/alert.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +20,7 @@ export class CartComponent implements OnInit, DoCheck {
     private router: Router,
     private alert: AlertService,
     private cartService: CartService,
+    private cookieService: CookieService
   ) {}
 
   user!: User;
@@ -27,21 +29,21 @@ export class CartComponent implements OnInit, DoCheck {
   shipment!: Shipment;
 
   ngOnInit(): void {
-    if (sessionStorage['user'] !== undefined) {
-      this.user = JSON.parse(sessionStorage['user']);
+    if (this.cookieService.check("user")) {
+      this.user = JSON.parse(this.cookieService.get("user"));
+      this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
+        this.cart = fetchedCart;
+        this.hasProducts = this.cart.order.orderDetailsList.length > 0;
+        if (history.state['id']) {
+          this.cartService
+            .addProductToCart(this.cart)
+            .subscribe((updatedCart) => {
+              this.cart = updatedCart;
+              history.replaceState({}, '');
+            });
+        }
+      });
     }
-    this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
-      this.cart = fetchedCart;
-      this.hasProducts = this.cart.order.orderDetailsList.length > 0;
-      if (history.state['id']) {
-        this.cartService
-          .addProductToCart(this.cart)
-          .subscribe((updatedCart) => {
-            this.cart = updatedCart;
-            history.replaceState({}, '');
-          });
-      }
-    });
   }
 
   ngDoCheck(): void {
@@ -57,7 +59,6 @@ export class CartComponent implements OnInit, DoCheck {
   goToDashboard() {
     this.router.navigateByUrl('/dashboard#home');
   }
-
 
   cartUpdate(cart: Cart) {
     this.cart = cart;

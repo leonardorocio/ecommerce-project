@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Product } from 'src/app/models/product';
 import { User } from 'src/app/models/user';
 import { ProductService } from 'src/app/services/product.service';
@@ -12,16 +13,18 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductDetailComponent implements OnInit {
   product!: Product;
-  user: User = JSON.parse(sessionStorage['user']);
+  user?: User;
 
   constructor(
     private titleService: Title,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private productService: ProductService
+    private productService: ProductService,
+    private cookieService: CookieService
   ) {}
 
   ngOnInit(): void {
+    this.user = this.cookieService.check("user") ? JSON.parse(this.cookieService.get("user")) : undefined;
     const productId = this.activatedRoute.snapshot.params['id'];
     this.productService.getProductById(productId).subscribe(
       (product) => {

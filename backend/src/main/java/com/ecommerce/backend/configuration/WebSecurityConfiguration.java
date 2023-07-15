@@ -55,6 +55,7 @@ public class WebSecurityConfiguration {
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
                 .requestMatchers("/v3/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/comments/product/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/shipments").permitAll()
                 .requestMatchers(HttpMethod.GET, "/shipper/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
