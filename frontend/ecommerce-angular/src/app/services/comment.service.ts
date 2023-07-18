@@ -60,26 +60,4 @@ export class CommentService {
       );
   }
 
-  getCommentsByProduct(id: number): Observable<Comment[]> {
-    return this.http
-      .get<Comment[]>(`${this.baseCommentURL}/product/${id}`, this.options)
-      .pipe(
-        catchError(
-          this.errorHandling.handleError<Comment[]>(
-            'getCommentsFromProduct',
-            []
-          )
-        )
-      );
-  }
-
-  getCommentsByUser(id: number): Observable<Comment[]> {
-    return this.http
-      .get<Comment[]>(`${this.baseCommentURL}/users/${id}`, this.options)
-      .pipe(
-        catchError(
-          this.errorHandling.handleError<Comment[]>('getCommentsFromUser', [])
-        )
-      );
-  }
 }

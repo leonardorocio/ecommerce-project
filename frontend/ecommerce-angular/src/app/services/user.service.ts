@@ -3,6 +3,8 @@ import { User } from '../models/user';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ErrorHandlingService } from './error-handling.service';
 import { Observable, Subject, catchError, defaultIfEmpty, filter, of } from 'rxjs';
+import { Order } from '../models/order';
+import { Favorite } from '../models/favorite';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +53,28 @@ export class UserService {
   changeUserPassword(body: any, id : number): Observable<string> {
     return this.http.patch<string>(`${this.userBaseURL}/change_password/${id}`, body, this.options).pipe(
       catchError(this.errorHandlingService.handleError<string>('updateUser', ''))
+    );
+  }
+
+  getUsersOrders(userId: number): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.userBaseURL}/${userId}/orders`, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<Order[]>('getOrderFromUser', []))
+    )
+  }
+
+  getCommentsByUser(id: number): Observable<Comment[]> {
+    return this.http
+      .get<Comment[]>(`${this.userBaseURL}/${id}/comments`, this.options)
+      .pipe(
+        catchError(
+          this.errorHandlingService.handleError<Comment[]>('getCommentsFromUser', [])
+        )
+      );
+  }
+
+  getUsersFavorites(id: number): Observable<Favorite[]> {
+    return this.http.get<Favorite[]>(`${this.userBaseURL}/${id}/favorite`, this.options).pipe(
+      catchError(this.errorHandlingService.handleError<Favorite[]>('getUsersFavorites', []))
     );
   }
 }

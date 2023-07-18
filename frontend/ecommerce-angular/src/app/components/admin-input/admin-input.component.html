@@ -5,6 +5,7 @@
   <p class="lead">{{ method.description }}</p>
 
   <form
+    ngNativeValidate
     #requestForm="ngForm"
     id="requestForm"
     (ngSubmit)="submitForm(method.operationId, requestForm)"
@@ -27,15 +28,16 @@
               [id]="'param_' + parameter.name"
               class="form-select form-select-md"
               [name]="'param_' + parameter.name"
+              (ngModelChange)="setSelectedParamModel($event)"
               ngModel
               required
             >
               <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
               <option
                 *ngFor="let param of getParamRef(parameter.name)"
-                [ngValue]="param.id"
+                [ngValue]="param"
               >
-                {{ param.id + ": " + param.name ?? param.id }}
+                {{ param.id + ": " + (param.name ?? "Código") }}
               </option>
             </select>
           </div>
@@ -56,6 +58,7 @@
               ngModel
               [name]="'param_' + parameter.name"
               [id]="'param_' + parameter.name"
+              required
             />
           </ng-container>
           <ng-template #stringParameterInput>
@@ -68,6 +71,7 @@
               type="text"
               [name]="'param_' + parameter.name"
               [id]="'param_' + parameter.name"
+              required
             />
           </ng-template>
         </ng-template>
@@ -94,8 +98,8 @@
               required
             >
               <!-- Uso ref.id porque é de certeza que na api o atributo de identificação é id pra todas as entidades -->
-              <option *ngFor="let ref of getRef(field.key)" [ngValue]="ref.id">
-                {{ ref.name ?? ref.id }}
+              <option *ngFor="let ref of getRef(field.key)" [ngValue]="ref">
+                {{ ref.id + ": " + (ref.name ?? "Código") }}
               </option>
             </select>
           </div>
@@ -115,7 +119,9 @@
               [id]="field.key"
               class="form-control"
               [placeholder]="field.value.example"
+              [ngModel]="getAttributeFromSelectedParam(field.key)"
               ngModel
+              required
             />
           </div>
         </ng-container>
@@ -128,8 +134,10 @@
               class="form-control"
               type="text"
               ngModel
+              [ngModel]="getAttributeFromSelectedParam(field.key)"
               [name]="field.key"
               [id]="field.key"
+              required
             />
           </div>
         </ng-container>

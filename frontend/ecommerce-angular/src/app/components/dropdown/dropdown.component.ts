@@ -18,7 +18,7 @@ import { PaginatorService } from 'src/app/services/paginator.service';
 export class DropdownComponent implements OnInit {
   constructor(private paginatorService: PaginatorService) {}
 
-  items!: Array<any>;
+  items?: Array<any>;
 
   @Input() show!: boolean;
   @Input() staticItems?: any;

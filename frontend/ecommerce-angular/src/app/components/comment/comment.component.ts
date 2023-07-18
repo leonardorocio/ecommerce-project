@@ -11,6 +11,7 @@ import { Product } from 'src/app/models/product';
 import { User } from 'src/app/models/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { CommentService } from 'src/app/services/comment.service';
+import { ProductService } from 'src/app/services/product.service';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -29,13 +30,14 @@ export class CommentComponent implements OnInit {
   editedCommentIndex!: number;
 
   constructor(
+    private productService: ProductService,
     private commentService: CommentService,
     private toastr: ToastrService,
     private alert: AlertService
   ) {}
 
   ngOnInit(): void {
-    this.commentService
+    this.productService
       .getCommentsByProduct(this.product.id)
       .subscribe((comments) => {
         const compareId = (commentA: Comment, commentB: Comment) =>

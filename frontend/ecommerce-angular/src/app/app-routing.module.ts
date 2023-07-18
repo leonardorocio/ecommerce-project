@@ -11,6 +11,7 @@ import { isAdminGuard } from './routes/is-admin.guard';
 import { AdminEntityComponent } from './components/admin-entity/admin-entity.component';
 import { AdminInputComponent } from './components/admin-input/admin-input.component';
 import { isLoggedGuard } from './routes/is-logged.guard';
+import { FavoritesComponent } from './components/favorites/favorites.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,11 @@ const routes: Routes = [
     path: 'admin/:type/:method',
     component: AdminInputComponent,
     canActivate: [isAdminGuard],
+  },
+  {
+    path: 'favorites',
+    component: FavoritesComponent,
+    canActivate: [isLoggedGuard]
   }
 ];
 

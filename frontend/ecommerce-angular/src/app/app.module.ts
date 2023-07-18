@@ -31,12 +31,13 @@ import { AdminEntityComponent } from './components/admin-entity/admin-entity.com
 import { AdminInputComponent } from './components/admin-input/admin-input.component';
 import { CamelCasePipe } from './pipes/camel-case.pipe';
 import { AdminRequestResponseComponent } from './components/admin-request-response/admin-request-response.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent, ProductSearchComponent, ProductCardComponent, CartSummaryComponent, AdminComponent, AdminEntityComponent, AdminInputComponent, CamelCasePipe, AdminRequestResponseComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent, ProductSearchComponent, ProductCardComponent, CartSummaryComponent, AdminComponent, AdminEntityComponent, AdminInputComponent, CamelCasePipe, AdminRequestResponseComponent, FavoritesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

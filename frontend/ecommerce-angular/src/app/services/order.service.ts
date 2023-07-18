@@ -31,12 +31,6 @@ export class OrderService {
     )
   }
 
-  getUsersOrders(userId: number): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.baseOrderURL}/user/${userId}`, this.options).pipe(
-      catchError(this.errorHandling.handleError<Order[]>('getOrderFromUser', []))
-    )
-  }
-
   getOpenOrders(): Observable<Order[]> {
     return this.http.get<Order[]>(`${this.baseOrderURL}/open`, this.options).pipe(
       catchError(this.errorHandling.handleError<Order[]>('getOpenOrders', []))

@@ -20,14 +20,7 @@ import { ShipperService } from './shipper.service';
 import { UserService } from './user.service';
 import { CategoryService } from './category.service';
 import { ProductService } from './product.service';
-import { Product } from '../models/product';
-import { Shipment } from '../models/shipment';
-import { Shipper } from '../models/shipper';
-import { Address } from '../models/address';
-import { User } from '../models/user';
-import { Comment } from '../models/comment';
-import { Category } from '../models/category';
-import { Order, OrderDetails } from '../models/order';
+import { FavoriteService } from './favorite.service';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +46,7 @@ export class ApiDocsService {
 
   filterPaths(docs: APIDocs, tagName: string) {
     return Object.entries(docs.paths)
-      .filter((path) => path[0].includes(tagName))
+      .filter((path) => path[0].startsWith('/' + tagName))
       .map((path) => path[1]);
   }
 
@@ -109,6 +102,9 @@ export class ApiDocsService {
       case 'products':
         service = new ProductService(this.errorHandling, this.http);
         break;
+      case 'favorites':
+        service = new FavoriteService(this.errorHandling, this.http);
+        break;
     }
     return service;
   }
@@ -136,7 +132,7 @@ export class ApiDocsService {
       operationReturn = service.constructor.prototype[operationId].call(
         service,
         requestBody,
-        ...parameters,
+        ...parameters
       );
     } else {
       operationReturn =

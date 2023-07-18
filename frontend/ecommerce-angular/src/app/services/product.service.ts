@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ErrorHandlingService } from './error-handling.service';
 import { Product } from '../models/product';
+import { Comment } from '../models/comment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, Subject, catchError, tap } from 'rxjs';
 import { AuthService } from './auth.service';
@@ -107,6 +108,19 @@ export class ProductService {
       .pipe(
         catchError(
           this.errorHandling.handleError<Product[]>('searchProduct', [])
+        )
+      );
+  }
+
+  getCommentsByProduct(id: number): Observable<Comment[]> {
+    return this.http
+      .get<Comment[]>(`${this.productsURL}/${id}/comments`, this.httpOptions)
+      .pipe(
+        catchError(
+          this.errorHandling.handleError<Comment[]>(
+            'getCommentsFromProduct',
+            []
+          )
         )
       );
   }

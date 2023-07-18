@@ -28,8 +28,8 @@ export class AdminInputComponent implements OnInit {
   hasParameters!: boolean;
   refsMap: Map<string, any[]> = new Map<string, any[]>();
   paramMap: Map<string, any[]> = new Map<string, any[]>();
-  currentRef!: any;
   chosenService!: Function;
+  selectedParamModel?: any;
 
   originalOrder = (
     a: KeyValue<string, any>,
@@ -67,10 +67,20 @@ export class AdminInputComponent implements OnInit {
     }
   }
 
+  setSelectedParamModel(param: any) {
+    this.selectedParamModel = param;
+  }
+
+  getAttributeFromSelectedParam(attribute: string) {
+    return this.selectedParamModel?.[
+      attribute as keyof typeof this.selectedParamModel
+    ];
+  }
+
   getParamRef(key: string): any[] {
-    const refList = this.paramMap.get(key) ?? [];
-    refList.sort((a, b) => a.id - b.id);
-    return refList;
+    const paramList = this.paramMap.get(key) ?? [];
+    paramList.sort((a, b) => a.id - b.id);
+    return paramList;
   }
 
   getRef(key: string): any[] {
@@ -128,14 +138,20 @@ export class AdminInputComponent implements OnInit {
   }
 
   submitForm(operation: string, requestForm: NgForm) {
-    console.log(requestForm.value);
     const parameters = Object.entries(requestForm.value)
       .filter((field) => field[0].includes('param'))
-      .map((field) => field[1]);
+      .map((field) =>
+        typeof field[1] === 'object' ? (field[1] as any)?.id : field[1]
+      );
     const requestBody = Object.fromEntries(
-      Object.entries(requestForm.value).filter(
-        (field) => !field[0].includes('param')
-      )
+      Object.entries(requestForm.value)
+        .filter((field) => !field[0].includes('param'))
+        .map((field) => {
+          if (typeof field[1] === 'object') {
+            field[1] = (field[1] as any)?.id;
+          }
+          return field;
+        })
     );
     this.executeOperationFromForm(
       operation,
@@ -158,6 +174,7 @@ export class AdminInputComponent implements OnInit {
         switchMap((data) => {
           return new Observable<any>((observer) => {
             if (data === null || data === undefined) {
+              this.toastr.success(`${operation} concluída com sucesso`, 'OK');
               observer.next(data);
               observer.complete();
             }
@@ -177,7 +194,7 @@ export class AdminInputComponent implements OnInit {
 
     this.operationReturnData$.subscribe((data) => {
       this.getParamRefs();
-      if (( Object.keys(data).length > 0)) {
+      if (Object.keys(data ?? {}).length > 0) {
         this.toastr.success(`${operation} concluída com sucesso`, 'OK');
       }
     });
