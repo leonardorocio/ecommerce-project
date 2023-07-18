@@ -3,3 +3,14 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.no-spacing {
+  padding: 0;
+  margin: 0;
+}
+
+.red-heart-icon {
+  color: red;
+  cursor: pointer !important;
+}
+

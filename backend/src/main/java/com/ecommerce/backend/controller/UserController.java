@@ -1,8 +1,14 @@
 package com.ecommerce.backend.controller;
 
 import com.ecommerce.backend.configuration.JWTGenerator;
+import com.ecommerce.backend.models.Comment;
+import com.ecommerce.backend.models.Favorite;
+import com.ecommerce.backend.models.Orders;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.payload.*;
+import com.ecommerce.backend.services.CommentService;
+import com.ecommerce.backend.services.FavoriteService;
+import com.ecommerce.backend.services.OrderService;
 import com.ecommerce.backend.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,10 +32,13 @@ import java.util.Map;
 @Log4j2
 @Tag(name = "Users", description = "Descreve as operações de usuário")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+    private final CommentService commentService;
+
+    private final OrderService orderService;
 
     @GetMapping
     @Operation(summary = "Buscar usuários",
@@ -106,5 +115,41 @@ public class UserController {
                                                      @PathVariable Integer id) {
         userService.updateUserPassword(passwordRequestBody, id);
         return ResponseEntity.ok("User password changed successfully");
+    }
+
+    @GetMapping(path = "/{id}/comments")
+    @Operation(summary = "Buscar todos os comentários de um usuário",
+            description = "Recebe um id de usuário e retorna todos os comentários desse usuário")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna os comentários do usuário"),
+            @ApiResponse(responseCode = "400", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Comment>> getCommentsByUser(@PathVariable Integer id) {
+        return ResponseEntity.ok(commentService.getCommentsByUser(id));
+    }
+
+    @GetMapping("/{id}/orders")
+    @Operation(summary = "Buscar pedidos do usuário",
+            description = "Recebe um id de usuário e retorna todos os seus pedidos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna lista de pedidos do usuário"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Orders>> getUsersOrders(@PathVariable int id) {
+        return ResponseEntity.ok(orderService.getOrdersByUser(id));
+    }
+
+    @GetMapping("/{id}/favorite")
+    @Operation(summary = "Buscar produtos favoritos do do usuário",
+            description = "Recebe um id de usuário e retorna todos os seus produtos favoritos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna lista de produtos favoritos do usuário"),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Favorite>> getUsersFavorites(@PathVariable int id) {
+        return ResponseEntity.ok(userService.getUsersFavorite(id));
     }
 }

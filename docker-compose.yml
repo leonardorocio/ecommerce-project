@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql
-    container_name: ecommerce-app-database
+    container_name: ecommerce-mysql-app
     environment:
 
       MYSQL_DATABASE: 'ecommerce_v2'
@@ -22,6 +22,7 @@ services:
       - ecommerce-app_data:/var/lib/mysql
 
   backend:
+    container_name: ecommerce-spring-app
     image: leonardorocio/ecommerce-spring-app:latest
     environment:
       MYSQL_HOST: 'db'
@@ -34,6 +35,7 @@ services:
     
   
   frontend:
+    container_name: ecommerce-angular-app
     image: leonardorocio/ecommerce-angular-app:latest
     ports:
       - 80:80

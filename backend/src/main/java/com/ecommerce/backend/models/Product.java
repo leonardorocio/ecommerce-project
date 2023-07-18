@@ -55,6 +55,10 @@ public class Product {
     @JsonIgnore
     private List<Comment> comments;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Favorite> favoriteList;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productCategory")
     @NotNull

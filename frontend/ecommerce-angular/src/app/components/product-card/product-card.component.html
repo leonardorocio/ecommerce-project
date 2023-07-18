@@ -1,8 +1,13 @@
-<div (click)="goToDetail(product)" class="card">
+<div  class="card">
   <img [src]="product.productImage" [alt]="product.name" class="card-img-top">
-  <div class="card-body">
+  <div class="card-body d-flex flex-column">
     <h5 class="card-title text-container">{{ product.name }}</h5>
-    <p class="card-text text-container">{{ product.description }}</p>
-    <a (click)="sendToCart(product)" class="btn btn-primary">Comprar</a>
+    <p class="card-text text-container">Preço: R$ {{ product.price | number:'1.2-2' }}</p>
+    <p class="card-text text-container" *ngIf="product.discount !== 1">Desconto: {{ (1-product.discount) * 100 }}%</p>
+    <div class="container-fluid d-flex justify-content-between align-items-center no-spacing">
+      <a (click)="sendToCart(product)" class="btn btn-primary">Comprar</a>
+      <fa-icon (click)="favoriteProduct(product)" *ngIf="isUserFavorite" [icon]="faHeart" size="lg" class="red-heart-icon"></fa-icon>
+      <fa-icon (click)="favoriteProduct(product)" *ngIf="!isUserFavorite" [icon]="faHeartRegular" size="lg" class="red-heart-icon"></fa-icon>
+    </div>
   </div>
 </div>

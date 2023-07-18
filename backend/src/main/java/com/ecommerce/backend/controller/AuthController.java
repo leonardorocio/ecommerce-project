@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @Log4j2
-@Tag(name = "Authentication", description = "Descreve as operações de login e de token de usuário")
+@Tag(name = "Auth", description = "Descreve as operações de login e de token de usuário")
 public class AuthController {
 
     @Autowired

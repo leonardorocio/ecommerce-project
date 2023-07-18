@@ -30,40 +30,13 @@ public class CommentController {
 
     @GetMapping
     @Operation(summary = "Buscar todos os comentários",
-            description = "Retorna todos os comentários no banco de dados",
-            tags = {"Comment, User"})
+            description = "Retorna todos os comentários no banco de dados")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Retorna os comentários"),
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Comment>> getComments() {
         return ResponseEntity.ok(commentService.getComments());
-    }
-
-    @GetMapping(path = "/user/{id}")
-    @Operation(summary = "Buscar todos os comentários de um usuário",
-            description = "Recebe um id de usuário e retorna todos os comentários desse usuário",
-            tags = {"Comment, User"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna os comentários do usuário"),
-            @ApiResponse(responseCode = "400", description = "Usuário não encontrado"),
-            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
-    })
-    public ResponseEntity<List<Comment>> getCommentsByUser(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getCommentsByUser(id));
-    }
-
-    @GetMapping(path = "/product/{id}")
-    @Operation(summary = "Buscar todos os comentários de um produto",
-            description = "Recebe um id de produto e retorna todos os comentários desse produto",
-            tags = {"Comment, Product"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna os comentários do produto"),
-            @ApiResponse(responseCode = "400", description = "Produto não encontrado"),
-            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
-    })
-    public ResponseEntity<List<Comment>> getCommentsByProduct(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getCommentsByProduct(id));
     }
 
     @PostMapping

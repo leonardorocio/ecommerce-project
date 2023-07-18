@@ -32,6 +32,7 @@ import { AdminInputComponent } from './components/admin-input/admin-input.compon
 import { CamelCasePipe } from './pipes/camel-case.pipe';
 import { AdminRequestResponseComponent } from './components/admin-request-response/admin-request-response.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 registerLocaleData(pt);
 
@@ -48,6 +49,7 @@ registerLocaleData(pt);
       preventDuplicates: true
     }),
     BrowserAnimationsModule,
+    FontAwesomeModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

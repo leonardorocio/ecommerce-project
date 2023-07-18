@@ -3,6 +3,7 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.mapper.PatchMapper;
 import com.ecommerce.backend.mapper.UserMapper;
+import com.ecommerce.backend.models.Favorite;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.models.RefreshToken;
 import com.ecommerce.backend.models.User;
@@ -25,26 +26,20 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class UserService {
 
     @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    private ProductService productService;
+    private final UserMapper userMapper;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private PatchMapper patchMapper;
-
-    @Autowired
-    @Lazy
-    private RefreshTokenService refreshTokenService;
+    private final PatchMapper patchMapper;
 
     public List<User> getUsers() {
         return userRepository.findAll();
@@ -75,6 +70,11 @@ public class UserService {
     public void updateUserRefreshToken(User user, RefreshToken token) {
         user.setToken(token);
         userRepository.save(user);
+    }
+
+    public List<Favorite> getUsersFavorite(Integer id) {
+        User user = this.getUserById(id);
+        return user.getFavoriteList();
     }
 
     @Transactional(rollbackOn = Exception.class)

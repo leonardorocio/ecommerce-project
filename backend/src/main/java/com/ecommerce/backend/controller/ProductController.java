@@ -1,9 +1,11 @@
 package com.ecommerce.backend.controller;
 
 
+import com.ecommerce.backend.models.Comment;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
+import com.ecommerce.backend.services.CommentService;
 import com.ecommerce.backend.services.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,6 +29,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping
     @Operation(summary = "Buscar produtos",
@@ -122,6 +127,18 @@ public class ProductController {
     public ResponseEntity<Void> deleteProduct(@PathVariable Integer id) {
         productService.deleteProduct(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping(path = "/{id}/comments")
+    @Operation(summary = "Buscar todos os comentários de um produto",
+            description = "Recebe um id de produto e retorna todos os comentários desse produto")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna os comentários do produto"),
+            @ApiResponse(responseCode = "400", description = "Produto não encontrado"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Comment>> getCommentsByProduct(@PathVariable Integer id) {
+        return ResponseEntity.ok(commentService.getCommentsByProduct(id));
     }
 
 }

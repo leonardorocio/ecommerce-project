@@ -4,7 +4,7 @@
     <h6 class="display-5 mt-3 mb-4">Destaques</h6>
     <div class="container-fluid d-flex justify-content-around align-items-center flex-wrap">
       <div *ngFor="let product of products" class="product mt-3">
-        <app-product-card [product]="product"></app-product-card>
+        <app-product-card [userFavorite]="isFavorite(product)" [product]="product"></app-product-card>
       </div>
   </div>
 

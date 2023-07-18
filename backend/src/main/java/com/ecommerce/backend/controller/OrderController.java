@@ -50,19 +50,6 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id));
     }
 
-    @GetMapping("/user/{id}")
-    @Operation(summary = "Buscar pedidos do usuário",
-            description = "Recebe um id de usuário e retorna todos os seus pedidos",
-            tags = {"Order", "User"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Retorna lista de pedidos do usuário"),
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
-            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
-    })
-    public ResponseEntity<List<Orders>> getUsersOrders(@PathVariable int id) {
-        return ResponseEntity.ok(orderService.getOrdersByUser(id));
-    }
-
     @GetMapping("/open")
     @Operation(summary = "Buscar pedidos abertos",
             description = "Retorna todos os pedidos abertos no banco de dados")
