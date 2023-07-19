@@ -4,6 +4,7 @@ import com.ecommerce.backend.models.Role;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.services.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -14,10 +15,10 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 
 @Component
+@RequiredArgsConstructor
 public class CommandLineStartup implements ApplicationListener<ApplicationReadyEvent> {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {

@@ -33,7 +33,12 @@ public class Product {
     @NotNull
     @NotBlank
     @Column
-    private String description;
+    private String shortDescription;
+
+    @NotNull
+    @NotBlank
+    @Column(columnDefinition = "TEXT")
+    private String detailedDescription;
 
     @NotNull
     @Column
@@ -63,6 +68,11 @@ public class Product {
     @JoinColumn(name = "productCategory")
     @NotNull
     private ProductCategory productCategory;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "brand_id", referencedColumnName = "id")
+    @NotNull
+    private Brand brand;
 
     @NotNull
     @Column(length = 512)

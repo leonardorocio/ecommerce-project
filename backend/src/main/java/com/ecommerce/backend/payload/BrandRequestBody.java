@@ -10,16 +10,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PasswordRequestBody {
+public class BrandRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "email", description = "User's email", example = "test.testing2000@example.com")
-    private String email;
+    @Schema(name = "name", description = "Brand's name", example = "Nvidia")
+    private String name;
 
     @NotNull
     @NotBlank
-    @Schema(name = "password", description = "User's password", example = "example123")
-    private String password;
-
+    @Schema(name = "brandLogoImage", description = "Brand's logo image", example = "firebase storage link")
+    private String brandLogoImage;
 }

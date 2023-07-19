@@ -4,21 +4,23 @@ import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
 import com.ecommerce.backend.services.ProductCategoryService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ProductMapper {
 
-    @Autowired
-    private ProductCategoryService productCategoryService;
+    private final ProductCategoryService productCategoryService;
 
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
             Product product = Product.builder()
                     .productImage(productPostRequestBody.getImageURL())
                     .price(productPostRequestBody.getPrice())
-                    .description(productPostRequestBody.getDescription())
+                    .shortDescription(productPostRequestBody.getShortDescription())
+                    .detailedDescription(productPostRequestBody.getDetailedDescription())
                     .name(productPostRequestBody.getName())
                     .stock(productPostRequestBody.getStock())
                     .discount(productPostRequestBody.getDiscount())

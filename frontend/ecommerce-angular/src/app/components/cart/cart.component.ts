@@ -15,7 +15,7 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
 })
-export class CartComponent implements OnInit, DoCheck {
+export class CartComponent implements OnInit {
   constructor(
     private router: Router,
     private alert: AlertService,
@@ -29,8 +29,8 @@ export class CartComponent implements OnInit, DoCheck {
   shipment!: Shipment;
 
   ngOnInit(): void {
-    if (this.cookieService.check("user")) {
-      this.user = JSON.parse(this.cookieService.get("user"));
+    if (this.cookieService.check('user')) {
+      this.user = JSON.parse(this.cookieService.get('user'));
       this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
         this.cart = fetchedCart;
         this.hasProducts = this.cart.order.orderDetailsList.length > 0;
@@ -39,6 +39,7 @@ export class CartComponent implements OnInit, DoCheck {
             .addProductToCart(this.cart)
             .subscribe((updatedCart) => {
               this.cart = updatedCart;
+              this.hasProducts = this.cart.order.orderDetailsList.length > 0;
               history.replaceState({}, '');
             });
         }
@@ -46,22 +47,8 @@ export class CartComponent implements OnInit, DoCheck {
     }
   }
 
-  ngDoCheck(): void {
-    var changes!: boolean;
-    if (this.cart.order.orderDetailsList != undefined) {
-      changes = this.cart.order.orderDetailsList.length > 0;
-    }
-    if (changes != this.hasProducts) {
-      this.hasProducts = changes;
-    }
-  }
-
   goToDashboard() {
     this.router.navigateByUrl('/dashboard#home');
-  }
-
-  cartUpdate(cart: Cart) {
-    this.cart = cart;
   }
 
   selectShipment(shipment: Shipment) {

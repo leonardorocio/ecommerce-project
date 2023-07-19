@@ -1,45 +1,34 @@
 package com.ecommerce.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.List;
 
-@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Builder
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Address {
+public class Brand {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
-    private String zipCode;
+    @Column(unique = true)
+    private String name;
 
     @NotNull
-    private String city;
+    @Column(length = 512)
+    private String brandLogoImage;
 
-    @NotNull
-    private String state;
-
-    @NotNull
-    private String street;
-
-    @NotNull
-    private Integer number;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
     @JsonIgnore
-    @NotNull
-    private User user;
-
+    private List<Product> productList;
 }

@@ -9,6 +9,7 @@ import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.models.User;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,28 +17,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class OrderService {
 
-    @Autowired
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
-    @Autowired
-    private OrderMapper orderMapper;
-
-    @Autowired
-    private PatchMapper patchMapper;
-
-    @Autowired
-    private UserService userService;
+    private final OrderMapper orderMapper;
 
     public List<Orders> getOrders() {
         return orderRepository.findAll();
-    }
-
-    // Talvez mandar para user service?
-    public List<Orders> getOrdersByUser(int userId) {
-        User user = userService.getUserById(userId);
-        return user.getUserOrders();
     }
 
     public List<Orders> getOpenOrders() {

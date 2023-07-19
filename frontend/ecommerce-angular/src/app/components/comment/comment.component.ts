@@ -1,9 +1,7 @@
 import {
   Component,
   Input,
-  OnChanges,
   OnInit,
-  SimpleChanges,
 } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Comment } from 'src/app/models/comment';
@@ -12,7 +10,6 @@ import { User } from 'src/app/models/user';
 import { AlertService } from 'src/app/services/alert.service';
 import { CommentService } from 'src/app/services/comment.service';
 import { ProductService } from 'src/app/services/product.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-comment',

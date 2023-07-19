@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 @Component
+@RequiredArgsConstructor
 public class UserMapper {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public User mapToUser(UserPostRequestBody userPostRequestBody) {
         if (validateUser(userPostRequestBody)) {
@@ -28,6 +29,7 @@ public class UserMapper {
                     .birthDate(userPostRequestBody.getBirthDate())
                     .password(passwordEncoder.encode(userPostRequestBody.getPassword()))
                     .role(Role.ROLE_USER)
+                    .accountCreationDate(LocalDate.now())
                     .build();
             return user;
         }

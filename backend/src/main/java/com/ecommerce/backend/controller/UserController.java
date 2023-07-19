@@ -36,9 +36,6 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
-    private final CommentService commentService;
-
-    private final OrderService orderService;
 
     @GetMapping
     @Operation(summary = "Buscar usuários",
@@ -126,7 +123,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Comment>> getCommentsByUser(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getCommentsByUser(id));
+        return ResponseEntity.ok(userService.getCommentsByUser(id));
     }
 
     @GetMapping("/{id}/orders")
@@ -138,7 +135,7 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Orders>> getUsersOrders(@PathVariable int id) {
-        return ResponseEntity.ok(orderService.getOrdersByUser(id));
+        return ResponseEntity.ok(userService.getUsersOrders(id));
     }
 
     @GetMapping("/{id}/favorite")

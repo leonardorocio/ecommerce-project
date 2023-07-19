@@ -25,13 +25,10 @@ import java.util.List;
 @RequestMapping("/products")
 @Tag(name = "Products", description = "Descreve as operações de produto")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private CommentService commentService;
+    private final ProductService productService;
 
     @GetMapping
     @Operation(summary = "Buscar produtos",
@@ -138,7 +135,7 @@ public class ProductController {
             @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<List<Comment>> getCommentsByProduct(@PathVariable Integer id) {
-        return ResponseEntity.ok(commentService.getCommentsByProduct(id));
+        return ResponseEntity.ok(productService.getCommentsByProduct(id));
     }
 
 }

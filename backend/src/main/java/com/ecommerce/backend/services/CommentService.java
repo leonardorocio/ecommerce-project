@@ -17,18 +17,12 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class CommentService {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private CommentMapper commentMapper;
+    private final CommentMapper commentMapper;
 
     public Comment getCommentById(Integer id) {
         return commentRepository.findById(id).orElseThrow(
@@ -38,16 +32,6 @@ public class CommentService {
 
     public List<Comment> getComments() {
         return commentRepository.findAll();
-    }
-
-    public List<Comment> getCommentsByUser(Integer id) {
-        User user = userService.getUserById(id);
-        return user.getComments();
-    }
-
-    public List<Comment> getCommentsByProduct(Integer id) {
-        Product product = productService.getProductById(id);
-        return product.getComments();
     }
 
     public Comment createComment(CommentPostRequestBody commentPostRequestBody) {

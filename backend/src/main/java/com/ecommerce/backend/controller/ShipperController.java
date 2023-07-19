@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,10 @@ import java.util.List;
 @RequestMapping("/shipper")
 @Tag(name = "Shipper", description = "Descreve as operações de Transportadora")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class ShipperController {
 
-    @Autowired
-    private ShipperService shipperService;
-    @Autowired
-    private ShipperRepository shipperRepository;
+    private final ShipperService shipperService;
 
     @GetMapping
     @Operation(summary = "Buscar transportadoras",

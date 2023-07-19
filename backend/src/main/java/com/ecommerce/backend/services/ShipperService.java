@@ -6,6 +6,7 @@ import com.ecommerce.backend.models.Shipment;
 import com.ecommerce.backend.models.Shipper;
 import com.ecommerce.backend.payload.ShipperRequestBody;
 import com.ecommerce.backend.repository.ShipperRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -13,13 +14,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class ShipperService {
 
-    @Autowired
-    private ShipperRepository shipperRepository;
+    private final ShipperRepository shipperRepository;
 
-    @Autowired
-    private ShipperMapper shipperMapper;
+    private final ShipperMapper shipperMapper;
 
     public List<Shipper> getShippers() {
         return shipperRepository.findAll();

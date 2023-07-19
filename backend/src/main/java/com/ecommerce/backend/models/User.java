@@ -46,6 +46,9 @@ public class User {
     @Column
     private LocalDate birthDate;
 
+    @Column
+    private LocalDate accountCreationDate;
+
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Orders> userOrders;
 

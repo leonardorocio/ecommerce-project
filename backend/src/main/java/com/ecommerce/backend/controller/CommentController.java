@@ -19,14 +19,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping(path = "/comments")
 @Tag(name = "Comments", description = "Descreve as operações de comentário")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class CommentController {
 
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
 
     @GetMapping
     @Operation(summary = "Buscar todos os comentários",

@@ -9,20 +9,19 @@ import com.ecommerce.backend.repository.OrderDetailsRepository;
 import com.ecommerce.backend.services.OrderDetailsService;
 import com.ecommerce.backend.services.OrderService;
 import com.ecommerce.backend.services.ProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class OrderDetailsMapper {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
     public OrderDetails mapToOrderDetails(OrderDetailsRequestBody orderDetailsRequestBody) {
         Product product = productService.getProductById(orderDetailsRequestBody.getProductId());

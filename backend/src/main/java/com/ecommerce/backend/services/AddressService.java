@@ -9,22 +9,19 @@ import java.util.List;
 import com.ecommerce.backend.payload.AddressRequestBody;
 import com.ecommerce.backend.repository.AddressRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class AddressService {
 
-    @Autowired
-    private AddressRepository addressRepository;
+    private final AddressRepository addressRepository;
 
-    @Autowired
-    private AddressMapper addressMapper;
-
-    @Autowired
-    private UserService userService;
+    private final AddressMapper addressMapper;
 
     public List<Address> getAddresses() {
         return addressRepository.findAll();

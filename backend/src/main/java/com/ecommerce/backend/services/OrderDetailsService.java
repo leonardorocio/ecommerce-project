@@ -10,22 +10,18 @@ import com.ecommerce.backend.repository.OrderDetailsRepository;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class OrderDetailsService {
 
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
+    private final OrderDetailsRepository orderDetailsRepository;
 
-    @Autowired
-    private PatchMapper patchMapper;
-    @Autowired
-    private OrderDetailsMapper orderDetailsMapper;
+    private final OrderDetailsMapper orderDetailsMapper;
 
-    @Autowired
-    private OrderService orderService;
     public List<OrderDetails> getOrdersDetails() {
         return orderDetailsRepository.findAll();
     }

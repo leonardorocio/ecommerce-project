@@ -31,21 +31,15 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "Auth", description = "Descreve as operações de login e de token de usuário")
 public class AuthController {
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    private final JWTGenerator jwtGenerator;
 
-    @Autowired
-    private JWTGenerator jwtGenerator;
-
-    @Autowired
-    private RefreshTokenService refreshTokenService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/login")
     @CrossOrigin(origins = "*", allowedHeaders = "*")

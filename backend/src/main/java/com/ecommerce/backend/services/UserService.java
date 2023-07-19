@@ -3,10 +3,7 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.mapper.PatchMapper;
 import com.ecommerce.backend.mapper.UserMapper;
-import com.ecommerce.backend.models.Favorite;
-import com.ecommerce.backend.models.Product;
-import com.ecommerce.backend.models.RefreshToken;
-import com.ecommerce.backend.models.User;
+import com.ecommerce.backend.models.*;
 import com.ecommerce.backend.repository.UserRepository;
 import com.ecommerce.backend.payload.OrderRequestBody;
 import com.ecommerce.backend.payload.PasswordRequestBody;
@@ -29,16 +26,12 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
     private final UserMapper userMapper;
 
-    @Autowired
     private final PatchMapper patchMapper;
 
     public List<User> getUsers() {
@@ -75,6 +68,16 @@ public class UserService {
     public List<Favorite> getUsersFavorite(Integer id) {
         User user = this.getUserById(id);
         return user.getFavoriteList();
+    }
+
+    public List<Orders> getUsersOrders(int userId) {
+        User user = this.getUserById(userId);
+        return user.getUserOrders();
+    }
+
+    public List<Comment> getCommentsByUser(Integer id) {
+        User user = this.getUserById(id);
+        return user.getComments();
     }
 
     @Transactional(rollbackOn = Exception.class)

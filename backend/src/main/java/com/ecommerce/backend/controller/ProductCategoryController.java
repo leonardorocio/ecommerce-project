@@ -1,6 +1,7 @@
 package com.ecommerce.backend.controller;
 
 
+import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.models.ProductCategory;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.services.ProductCategoryService;
@@ -22,10 +23,10 @@ import java.util.List;
 @RequestMapping("/category")
 @Tag(name = "Category", description = "Descreve as operações de categoria de produto")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class ProductCategoryController {
 
-    @Autowired
-    private ProductCategoryService productCategoryService;
+    private final ProductCategoryService productCategoryService;
 
     @GetMapping
     @Operation(summary = "Buscar categorias",
@@ -36,6 +37,17 @@ public class ProductCategoryController {
     })
     public ResponseEntity<List<ProductCategory>> getProductCategories() {
         return ResponseEntity.ok(productCategoryService.getProductCategories());
+    }
+
+    @GetMapping("/{id}/products")
+    @Operation(summary = "Buscar todos os produtos de uma categoria",
+            description = "Busca todas os produtos de uma categoria do banco de dados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Retorna uma lista de produtos de uma categoria"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
+    })
+    public ResponseEntity<List<Product>> getCategoryProducts(@PathVariable Integer id) {
+        return ResponseEntity.ok(productCategoryService.getCategoryProducts(id));
     }
 
     @PostMapping

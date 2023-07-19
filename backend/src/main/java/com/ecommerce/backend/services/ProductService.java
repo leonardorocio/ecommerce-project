@@ -4,10 +4,12 @@ package com.ecommerce.backend.services;
 import com.ecommerce.backend.exceptions.ResourceNotFoundException;
 import com.ecommerce.backend.mapper.PatchMapper;
 import com.ecommerce.backend.mapper.ProductMapper;
+import com.ecommerce.backend.models.Comment;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.repository.ProductRepository;
 import com.ecommerce.backend.payload.ProductCategoryRequestBody;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +18,12 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class ProductService {
 
-    @Autowired
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-    @Autowired
-    private ProductMapper productMapper;
-
-    @Autowired
-    private PatchMapper patchMapper;
+    private final ProductMapper productMapper;
 
     public List<Product> getProducts() {
         return productRepository.findAll();
@@ -59,12 +57,10 @@ public class ProductService {
         productRepository.delete(toBeDeleted);
     }
 
-//    public Product setProductPrice(ProductPriceRequestBody productPriceRequestBody, Integer id) {
-//        Product originalProduct = getProductById(id);
-//        Product newProductInfo = productMapper.mapToProduct(productPriceRequestBody);
-//        patchMapper.mapToPatchRequest(originalProduct, newProductInfo);
-//        return productRepository.save(originalProduct);
-//    }
+    public List<Comment> getCommentsByProduct(Integer id) {
+        Product product = this.getProductById(id);
+        return product.getComments();
+    }
 
     public List<Product> searchProduct(String name) {
         return productRepository.searchProduct(name).orElseThrow(

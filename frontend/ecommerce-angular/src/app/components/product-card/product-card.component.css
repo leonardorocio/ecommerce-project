@@ -11,6 +11,9 @@
 
 .red-heart-icon {
   color: red;
+}
+
+.pointer {
   cursor: pointer !important;
 }
 

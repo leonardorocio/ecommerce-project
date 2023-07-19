@@ -7,6 +7,7 @@ import com.ecommerce.backend.models.Shipment;
 import com.ecommerce.backend.payload.ShipmentRequestBody;
 import com.ecommerce.backend.repository.ShipmentRepository;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +15,12 @@ import java.util.List;
 
 @Service
 @Log4j2
+@RequiredArgsConstructor
 public class ShipmentService {
 
-    @Autowired
-    private ShipmentRepository shipmentRepository;
+    private final ShipmentRepository shipmentRepository;
 
-    @Autowired
-    private ShipmentMapper shipmentMapper;
+    private final ShipmentMapper shipmentMapper;
 
     public List<Shipment> getShipments() {
         return shipmentRepository.findAll();

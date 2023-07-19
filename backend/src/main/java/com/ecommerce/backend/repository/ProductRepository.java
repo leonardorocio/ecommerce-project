@@ -21,7 +21,8 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
 
     @Query("select product from Product product " +
             "left join product.productCategory category " +
-            "where product.description like CONCAT('%', ?1, '%') " +
-            "or product.name like CONCAT('%', ?1, '%') or category.name like CONCAT('%', ?1, '%')")
+            "where product.shortDescription like CONCAT('%', ?1, '%') " +
+            "or product.name like CONCAT('%', ?1, '%') or category.name like CONCAT('%', ?1, '%')" +
+            "or product.detailedDescription like CONCAT('%', ?1, '%')")
     Optional<List<Product>> searchProduct(String name);
 }

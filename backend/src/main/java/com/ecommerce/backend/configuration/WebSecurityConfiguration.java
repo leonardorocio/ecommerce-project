@@ -1,8 +1,7 @@
 package com.ecommerce.backend.configuration;
 
-import com.ecommerce.backend.repository.CommentRepository;
 import com.ecommerce.backend.services.CustomUserDetailsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -24,15 +23,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfiguration {
 
-    @Autowired
-    private JWTAuthEntryPoint authEntryPoint;
+    private final JWTAuthEntryPoint authEntryPoint;
 
-    @Autowired
-    private CustomUserDetailsService userDetailsService;
-    @Autowired
-    private CommentRepository commentRepository;
+    private final JWTGenerator jwtGenerator;
+
+    private final CustomUserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -107,7 +105,7 @@ public class WebSecurityConfiguration {
 
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter() {
-        return new JWTAuthenticationFilter();
+        return new JWTAuthenticationFilter(userDetailsService, jwtGenerator);
     }
 
     @Bean

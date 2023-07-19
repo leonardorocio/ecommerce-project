@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/shipments")
 @Tag(name = "Shipments", description = "Descreve as operações de entrega")
 @SecurityRequirement(name = "Bearer Authentication")
+@RequiredArgsConstructor
 public class ShipmentController {
 
     @Autowired
-    private ShipmentService shipmentService;
+    private final ShipmentService shipmentService;
 
     @GetMapping
     @Operation(summary = "Buscar entregas",
@@ -90,12 +92,12 @@ public class ShipmentController {
     }
 
     @PutMapping("/{id}/close")
-    @Operation(summary = "Closes a Shipment in database",
-            description = "Takes a shipment's id and closes the shipment")
+    @Operation(summary = "Fechar uma entrega",
+            description = "Recebe o id de uma entrega e então a fecha")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Returns the Shipment closed"),
-            @ApiResponse(responseCode = "404", description = "Shipment not found"),
-            @ApiResponse(responseCode = "401", description = "Authentication failed")
+            @ApiResponse(responseCode = "200", description = "Retorna a entrega finalizada"),
+            @ApiResponse(responseCode = "404", description = "Entrega não encontrada"),
+            @ApiResponse(responseCode = "401", description = "Falha de autenticação")
     })
     public ResponseEntity<Shipment> closeShipment(@PathVariable int id) {
         return ResponseEntity.ok(shipmentService.closeShipment(id));

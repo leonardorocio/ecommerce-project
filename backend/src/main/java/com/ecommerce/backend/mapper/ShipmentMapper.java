@@ -7,6 +7,7 @@ import com.ecommerce.backend.models.Shipper;
 import com.ecommerce.backend.payload.ShipmentRequestBody;
 import com.ecommerce.backend.services.OrderService;
 import com.ecommerce.backend.services.ShipperService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,13 +15,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Component
+@RequiredArgsConstructor
 public class ShipmentMapper {
 
-    @Autowired
-    private OrderService orderService;
 
-    @Autowired
-    private ShipperService shipperService;
+    private final OrderService orderService;
+
+
+    private final ShipperService shipperService;
 
     public Shipment mapToShipment(ShipmentRequestBody shipmentRequestBody) {
         Orders order = orderService.getOrderById(shipmentRequestBody.getOrderId());
