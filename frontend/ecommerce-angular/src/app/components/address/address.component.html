@@ -2,73 +2,90 @@
   *ngIf="!addresses.length || addingAddress"
   class="container-fluid d-flex flex-column border rounded mb-3 p-3"
 >
-  <div class="container-fluid d-flex justify-content-between no-spacing" >
+  <div class="container-fluid d-flex justify-content-between no-spacing">
     <p class="lead mb-4 fw-bold">Adicione um novo endereço!</p>
-    <button *ngIf="addresses.length && addingAddress" class="btn btn-primary" (click)="enableAddressForm(false, 'closing')">Cancelar</button>
+    <button
+      *ngIf="addresses.length && addingAddress"
+      class="btn btn-primary"
+      (click)="enableAddressForm(false, 'closing')"
+    >
+      Cancelar
+    </button>
   </div>
   <form
+    name="form"
+    ngNativeValidate
     #addressForm="ngForm"
     class="form-group d-flex flex-column justify-content-between"
-    id="form1"
   >
-    <label class="fw-bold" for="cep">CEP:</label>
+    <label class="fw-bold form-label mt-2" for="zipCode">CEP:</label>
     <input
       class="form-control"
       type="text"
-      name="CEP"
+      name="zipCode"
       id="cep"
-      placeholder="xxxxx-xxx"
-      [ngModel]="zipCode | zipCode"
-      (ngModelChange)="zipCode = $event"
-      #cep="ngModel"
+      placeholder="_____-___"
+      [ngModel]="cep | zipCode"
+      (ngModelChange)="cep = $event"
+      #zipCode="ngModel"
       required
     />
-    <label class="fw-bold" for="streetWithNumber">Rua e número:</label>
+    <button (click)="fetchAddressFromZipCode(zipCode)" class="btn btn-primary w-25 my-3">Buscar endereço</button>
+    <label class="fw-bold form-label mt-2" for="street">Rua:</label>
     <input
-      name="Rua"
+      name="street"
       type="text"
-      placeholder="Rua dos Teste, 101"
+      id="street"
+      placeholder="Rua dos Teste"
       class="form-control"
-      [(ngModel)]="streetWithNumber"
       #street="ngModel"
+      ngModel
       required
     />
-    <label class="fw-bold" for="UF">Estado:</label>
-    <select
-      [(ngModel)]="selectedState"
-      (ngModelChange)="changeCities()"
-      id="Estado"
-      class="form-select form-select-md"
-      name="UF"
-      #state="ngModel"
+    <label class="fw-bold form-label mt-2" for="number">Número:</label>
+    <input
+      name="number"
+      type="number"
+      placeholder="101"
+      class="form-control"
+      #number="ngModel"
+      ngModel
       required
+    />
+    <label class="fw-bold form-label mt-2" for="complement">Complemento:</label>
+    <input
+      name="complement"
+      type="text"
+      placeholder="Esquina com campo de futebol"
+      class="form-control"
+      #complement="ngModel"
+      ngModel
+      required
+    />
+    <label class="fw-bold form-label mt-2" for="uf">UF:</label>
+    <input
+      name="state"
+      type="text"
+      placeholder="SC"
+      class="form-control"
+      #state="ngModel"
+      ngModel
+      required
+    />
+    <label class="fw-bold form-label mt-2" for="city">Cidade:</label>
+    <input
+      name="city"
+      id="city-input"
+      #city="ngModel"
+      ngModel
+      class="form-control mb-3"
+      placeholder="Joinville"
+    />
+    <button
+      type="button"
+      (click)="verifyAndSendAddressForm()"
+      class="btn btn-primary mt-3 w-25"
     >
-      <option *ngFor="let state of states" [ngValue]="state">
-        {{ state.nome }}
-      </option>
-    </select>
-    <div class="dropdown">
-      <label class="fw-bold" for="city">Cidade:</label>
-      <input
-        [(ngModel)]="selectedCity"
-        name="Cidade"
-        id="city-input"
-        #filter="ngModel"
-        (click)="dropDownShow = !dropDownShow"
-        (ngModelChange)="searchCities(selectedCity)"
-        class="form-control mb-3"
-        list="cities"
-        placeholder="Selecione um estado primeiro"
-        [disabled]="!selectedState"
-      />
-      <div
-        class="container-fluid d-flex flex-column"
-      >
-        <app-dropdown [show]="dropDownShow" [propsToShow]="['nome']" (selectedItemEvent)="selectCity($event)"> </app-dropdown>
-        <app-paginator *ngIf="dropDownShow" [items]="filteredCities" [pageSize]="5"></app-paginator>
-      </div>
-    </div>
-    <button type="button" (click)="verifyAndSendAddressForm(cep, street, state, filter)" class="btn btn-primary mt-3 w-25">
       Salvar
     </button>
   </form>
@@ -88,7 +105,7 @@
   >
     <option *ngFor="let address of addresses" [ngValue]="address">
       {{ address.city }}; {{ address.state }};
-      {{ address.streetWithNumber }}
+      {{ address.street }}
     </option>
   </select>
 
@@ -100,7 +117,10 @@
       <span class="fw-bold">CEP: </span>{{ selectedAddress.zipCode | zipCode }}
     </p>
     <p class="lead">
-      <span class="fw-bold">Rua: </span>{{ selectedAddress.streetWithNumber }}
+      <span class="fw-bold">Rua: </span>{{ selectedAddress.street }}
+    </p>
+    <p class="lead">
+      <span class="fw-bold">Número: </span>{{ selectedAddress.number }}
     </p>
     <p class="lead">
       <span class="fw-bold">Cidade: </span>{{ selectedAddress.city }}
@@ -112,14 +132,24 @@
   <div
     class="address-buttons container-fluid d-flex justify-content-between mt-3"
   >
-    <button class="btn btn-primary" (click)="enableAddressForm(true, 'creating')">
+    <button
+      class="btn btn-primary"
+      (click)="enableAddressForm(true, 'creating')"
+    >
       Adicionar endereço
     </button>
     <div
       class="delete-update-buttons container-fluid d-flex justify-content-end"
     >
-      <button class="btn btn-warning" (click)="enableEditingAddress(address.value)">Editar endereço</button>
-      <button class="btn btn-danger" (click)="deleteAddress(address.value)">Deletar endereço</button>
+      <button
+        class="btn btn-warning"
+        (click)="enableEditingAddress(address.value)"
+      >
+        Editar endereço
+      </button>
+      <button class="btn btn-danger" (click)="deleteAddress(address.value)">
+        Deletar endereço
+      </button>
     </div>
   </div>
 </div>

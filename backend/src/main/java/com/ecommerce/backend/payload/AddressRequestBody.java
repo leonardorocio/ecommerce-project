@@ -29,6 +29,11 @@ public class AddressRequestBody {
     private String street;
 
     @NotNull
+    @NotBlank
+    @Schema(name = "complement", description = "Address's Complement", example = "Próximo à igreja")
+    private String complement;
+
+    @NotNull
     @Schema(name = "number", description = "Address's street's number", example = "130")
     private int number;
 

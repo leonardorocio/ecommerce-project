@@ -21,6 +21,7 @@ public class AddressMapper {
                 .city(addressRequestBody.getCity())
                 .street(addressRequestBody.getStreet())
                 .number(addressRequestBody.getNumber())
+                .complement(addressRequestBody.getComplement())
                 .build();
         return address;
     }

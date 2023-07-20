@@ -1,12 +1,16 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Form, NgForm, NgModel } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
-import { Address, CityResponse, StateResponse } from 'src/app/models/address';
+import { Address } from 'src/app/models/address';
 import { User } from 'src/app/models/user';
 import { AddressService } from 'src/app/services/address.service';
 import { AlertService } from 'src/app/services/alert.service';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-address',
@@ -18,41 +22,39 @@ export class AddressComponent implements OnInit {
     public addressService: AddressService,
     private toastr: ToastrService,
     private alert: AlertService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
   ) {}
 
+  @ViewChild('addressForm', { static: false }) form!: NgForm;
   @Input() user!: User;
   addresses!: Address[];
-  states!: StateResponse[];
-  cities!: CityResponse[];
-  filteredCities!: CityResponse[];
   selectedAddress!: Address;
 
-  zipCode!: string;
-  streetWithNumber!: string;
-  selectedState!: StateResponse;
-  selectedCity: string = '';
+  cep!: string;
   addingAddress: boolean = false;
   editingAddress: boolean = false;
-  dropDownShow: boolean = false;
 
   ngOnInit(): void {
+    console.log(this.user);
     this.addresses = this.user.addressList;
-    // this.addresses = this.user !== undefined && this.user !== null ? this.user.addressList : [];
-    this.selectedAddress = this.addresses[0]
-    ? this.addresses[0]
-    : ({} as Address);
-    this.addressService
-      .getStates()
-      .subscribe((states) => (this.states = states));
+    this.selectedAddress = this.addresses[0] ?? ({} as Address);
+    console.log(this.addresses);
+    console.log(this.selectedAddress);
   }
 
-  changeCities() {
+  fetchAddressFromZipCode(zipCode: NgModel) {
+    const code: string = (zipCode.value as string).replace('-', '');
     this.addressService
-      .getCitiesFromState(this.selectedState.sigla)
-      .subscribe((cities) => {
-        this.cities = cities;
-        this.filteredCities = cities;
+      .fetchAddressFromZipCode(code)
+      .subscribe((queryResult) => {
+        this.form.setValue({
+          street: queryResult.logradouro,
+          city: queryResult.localidade,
+          zipCode: queryResult.cep,
+          state: queryResult.uf,
+          complement: queryResult.complemento,
+          number: null,
+        });
       });
   }
 
@@ -61,92 +63,40 @@ export class AddressComponent implements OnInit {
     operation: 'editing' | 'creating' | 'closing'
   ) {
     this.editingAddress = operation === 'editing';
-    if (operation === 'creating') {
-      ({
-        zipCode: this.zipCode,
-        streetWithNumber: this.streetWithNumber,
-        state: this.selectedState,
-        city: this.selectedCity,
-      } = {
-        zipCode: '',
-        streetWithNumber: '',
-        city: '',
-        state: {} as StateResponse,
-      });
-    }
     this.addingAddress = option;
+    if (operation === 'creating') {
+      this.form.resetForm();
+    }
   }
 
-  createAddress(
-    zipCode: string,
-    streetWithNumber: string,
-    state: StateResponse,
-    city: string
-  ) {
-    const userId: number = this.user.id;
-    const address = {
-      zipCode: zipCode,
-      streetWithNumber: streetWithNumber,
-      state: state.nome,
-      city: city,
-      userId: userId,
-    } as Address;
-    this.addressService.createAddress(address).subscribe((address) => {
+  createAddress() {
+    const addressBody = { ...this.form.value, ...{ userId: this.user.id } };
+    this.addressService.createAddress(addressBody).subscribe((address) => {
+      console.log(address);
       this.addresses.push(address);
       this.selectedAddress = address;
-      this.cookieService.set("user", JSON.stringify(this.user));
-      // sessionStorage['user'] = JSON.stringify(this.user);
+      console.log(this.selectedAddress);
+      this.cookieService.set('user', JSON.stringify(this.user));
+      this.toastr.success('Endereço criado com sucesso!', 'OK');
     });
     this.enableAddressForm(false, 'closing');
   }
 
-  selectCity(city: CityResponse) {
-    this.selectedCity = city.nome;
-    this.searchCities(this.selectedCity);
-    this.dropDownShow = false;
-  }
-
-  searchCities(term: string) {
-    this.filteredCities = this.addressService.filterCities(this.cities, term);
-  }
-
-  verifyAndSendAddressForm(
-    cep: NgModel,
-    street: NgModel,
-    state: NgModel,
-    city: NgModel
-  ) {
-    const fields: NgModel[] = [cep, street, state, city].filter(
-      (field) => field.errors != null
-    );
-    if (fields.length > 0) {
-      fields.forEach((field) => {
-        this.toastr.error(`${field.name} é obrigatório`, 'Erro');
-      });
-    } else {
+  verifyAndSendAddressForm() {
+    if (this.form.errors === null) {
       if (this.editingAddress) {
-        this.editAddress(cep.value, street.value, state.value, city.value);
+        this.editAddress();
       } else {
-        this.createAddress(cep.value, street.value, state.value, city.value);
+        this.createAddress();
       }
     }
   }
 
-  editAddress(
-    zipCode: string,
-    streetWithNumber: string,
-    state: StateResponse,
-    city: string
-  ) {
-    const addressBody: Address = {
-      zipCode: zipCode,
-      streetWithNumber: streetWithNumber,
-      state: state.nome,
-      city: city,
-      userId: this.user.id,
-      id: this.selectedAddress.id,
+  editAddress() {
+    this.selectedAddress = {
+      ...this.form.value,
+      ...{ userId: this.user.id, id: this.selectedAddress.id },
     };
-    this.selectedAddress = { ...addressBody };
     this.addressService
       .updateAddress(this.selectedAddress)
       .subscribe((editedAddress) => {
@@ -155,25 +105,17 @@ export class AddressComponent implements OnInit {
         );
         this.addresses[addressIndex] = editedAddress;
         this.selectedAddress = editedAddress;
-        this.cookieService.set("user", JSON.stringify(this.user));
-        // sessionStorage['user'] = JSON.stringify(this.user);
+        this.cookieService.set('user', JSON.stringify(this.user));
         this.toastr.success('Endereço editado com sucesso!', 'OK');
       });
     this.enableAddressForm(false, 'closing');
   }
 
   enableEditingAddress(address: Address) {
-    let tempState: string;
-    ({
-      zipCode: this.zipCode,
-      streetWithNumber: this.streetWithNumber,
-      state: tempState,
-      city: this.selectedCity,
-    } = address);
-    this.selectedState =
-      this.states.find((state) => state.nome === tempState) ??
-      ({} as StateResponse);
     this.enableAddressForm(true, 'editing');
+    this.form.setValue({
+      ...address,
+    });
   }
 
   async deleteAddress(addressToDelete: Address) {
@@ -182,17 +124,14 @@ export class AddressComponent implements OnInit {
       'Deseja excluir esse endereço?'
     );
     if (result) {
-      this.addressService
-        .deleteAddress(addressToDelete.id)
-        .subscribe(() => {
-          const addressIndex = this.addresses.findIndex(
-            (address) => address.id === addressToDelete.id
-          );
-          this.addresses.splice(addressIndex, 1);
-          this.selectedAddress = this.addresses[0];
-          this.cookieService.set("user", JSON.stringify(this.user));
-          // sessionStorage['user'] = JSON.stringify(this.user);
-        });
+      this.addressService.deleteAddress(addressToDelete.id).subscribe(() => {
+        const addressIndex = this.addresses.findIndex(
+          (address) => address.id === addressToDelete.id
+        );
+        this.addresses.splice(addressIndex, 1);
+        this.selectedAddress = this.addresses[0];
+        this.cookieService.set('user', JSON.stringify(this.user));
+      });
     }
   }
 }

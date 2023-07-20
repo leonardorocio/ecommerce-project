@@ -5,6 +5,7 @@ import com.ecommerce.backend.exceptions.*;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.boot.autoconfigure.web.servlet.error.BasicErrorController;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +22,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -84,6 +86,21 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                         .build(), HttpStatus.BAD_REQUEST
         );
     }
+
+//    @ExceptionHandler(ConstraintViolationException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    public ResponseEntity<BadRequestExceptionDetails> handlerConstraintViolationException(ConstraintViolationException CVE) {
+//        String validationsMessage = CVE.getConstraintViolations().stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(", "));
+//        return new ResponseEntity<>(
+//                BadRequestExceptionDetails.builder()
+//                        .timestamp(LocalDateTime.now())
+//                        .status(HttpStatus.BAD_REQUEST.value())
+//                        .title("Recurso não foi encontrado")
+//                        .details(validationsMessage)
+//                        .developerMessage(CVE.getClass().getName())
+//                        .build(), HttpStatus.BAD_REQUEST
+//        );
+//    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

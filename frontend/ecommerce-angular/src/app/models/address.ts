@@ -3,8 +3,18 @@ export interface Address {
   zipCode: string,
   city: string,
   state: string,
-  streetWithNumber: string,
+  street: string,
+  number: number,
+  complement: string,
   userId: number
+}
+
+export interface CEPQuery {
+  cep: string,
+  uf: string,
+  localidade: string,
+  logradouro: string,
+  complemento: string
 }
 
 export interface CityResponse {

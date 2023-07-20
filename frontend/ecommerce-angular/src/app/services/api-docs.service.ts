@@ -21,6 +21,7 @@ import { UserService } from './user.service';
 import { CategoryService } from './category.service';
 import { ProductService } from './product.service';
 import { FavoriteService } from './favorite.service';
+import { BrandService } from './brand.service';
 
 @Injectable({
   providedIn: 'root',
@@ -90,6 +91,7 @@ export class ApiDocsService {
         service = new ShipmentService(this.errorHandling, this.http);
         break;
       case 'shipper':
+      case 'shippers':
         service = new ShipperService(this.errorHandling, this.http);
         break;
       case 'users':
@@ -104,6 +106,9 @@ export class ApiDocsService {
         break;
       case 'favorites':
         service = new FavoriteService(this.errorHandling, this.http);
+        break;
+      case 'brands':
+        service = new BrandService(this.errorHandling, this.http);
         break;
     }
     return service;

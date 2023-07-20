@@ -3,6 +3,7 @@ package com.ecommerce.backend.mapper;
 import com.ecommerce.backend.exceptions.BadRequestException;
 import com.ecommerce.backend.models.Product;
 import com.ecommerce.backend.payload.ProductPostRequestBody;
+import com.ecommerce.backend.services.BrandService;
 import com.ecommerce.backend.services.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ public class ProductMapper {
 
     private final ProductCategoryService productCategoryService;
 
+    private final BrandService brandService;
+
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
             Product product = Product.builder()
@@ -24,6 +27,7 @@ public class ProductMapper {
                     .name(productPostRequestBody.getName())
                     .stock(productPostRequestBody.getStock())
                     .discount(productPostRequestBody.getDiscount())
+                    .brand(brandService.getBrandById(productPostRequestBody.getCategory_id()))
                     .productCategory(
                             productCategoryService.getCategoryById(productPostRequestBody.getCategory_id())
                     )

@@ -5,14 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class ZipCodePipe implements PipeTransform {
   transform(value: string, ...args: unknown[]): string {
-    if (value) {
-      value = value.trim();
-      if (value.match(/([0-9]{5}-[0-9]{0,3}?)/g)?.[0]) {
-        return value;
-      } else if (value.length >= 5) {
-        return value.substring(0,5) + '-' + value.substring(5);
-      }
+    if (value.trim().length === 8 && value.indexOf('-') === -1) {
+      const newValue = `${value.substring(0,5)}-${value.substring(5)}`;
+      return newValue;
+    } else if (value.trim().length > 8){
+      console.log(value.slice(0,9))
+      return value.slice(0,9);
+    } else {
+      return value;
     }
-    return '';
   }
 }
