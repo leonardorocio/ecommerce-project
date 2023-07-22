@@ -26,10 +26,9 @@ export class AdminInputComponent implements OnInit {
   operationReturnData$!: Observable<any>;
   hasRequestBody!: boolean;
   hasParameters!: boolean;
-  refsMap: Map<string, any[]> = new Map<string, any[]>();
-  paramMap: Map<string, any[]> = new Map<string, any[]>();
+  selectedParamModel!: any;
+  changeParamsRef: boolean = false;
   chosenService!: Function;
-  selectedParamModel?: any;
 
   originalOrder = (
     a: KeyValue<string, any>,
@@ -42,55 +41,16 @@ export class AdminInputComponent implements OnInit {
     this.hasRequestBody = Object.keys(this.method).includes('requestBody');
     this.hasParameters = Object.keys(this.method).includes('parameters');
     this.chosenService = this.apiDocs.chooseServiceToCall(this.tag);
-    this.getParamRefs();
     this.fetchRequestBodyAndRefs();
-  }
-
-  getParamRefs() {
-    if (this.hasParameters) {
-      this.method.parameters.forEach((parameter) => {
-        if (parameter.in === 'path' && parameter.name.includes('id')) {
-          let operation = this.tag.at(0)?.toUpperCase() + this.tag.substring(1);
-          operation = operation.endsWith('s') ? operation : operation + 's';
-          this.apiDocs
-            .executeOperation(
-              this.getFetchOperationNameFromRefOrTag(operation),
-              [],
-              {},
-              this.chosenService
-            )
-            .subscribe((data) => {
-              this.paramMap.set(parameter.name, data);
-            });
-        }
-      });
-    }
   }
 
   setSelectedParamModel(param: any) {
     this.selectedParamModel = param;
   }
 
-  getAttributeFromSelectedParam(attribute: string) {
-    return this.selectedParamModel?.[
-      attribute as keyof typeof this.selectedParamModel
-    ];
-  }
-
-  getParamRef(key: string): any[] {
-    const paramList = this.paramMap.get(key) ?? [];
-    paramList.sort((a, b) => a.id - b.id);
-    return paramList;
-  }
-
-  getRef(key: string): any[] {
-    return this.refsMap.get(key) ?? [];
-  }
-
   fetchRequestBodyAndRefs() {
     if (this.hasRequestBody) {
       this.requestBody = this.apiDocs.getRequestBody(this.docs, this.method);
-      this.getRefs(this.requestBody);
     }
   }
 
@@ -114,30 +74,8 @@ export class AdminInputComponent implements OnInit {
     return 'get' + returnRef;
   }
 
-  getRefs(requestBody: SchemaProperties) {
-    Object.entries(requestBody.properties).forEach((field, index) => {
-      let [key, value] = field;
-      if (value.$ref !== undefined && value.$ref !== null) {
-        value.$ref = value.$ref.split('/').pop() ?? '';
-        value.$ref = value.$ref.endsWith('s') ? value.$ref : value.$ref + 's';
-        const chosenService = this.apiDocs.chooseServiceToCall(
-          value.$ref.toLowerCase()
-        );
-        this.apiDocs
-          .executeOperation(
-            this.getFetchOperationNameFromRefOrTag(value.$ref),
-            [],
-            {},
-            chosenService
-          )
-          .subscribe((data) => {
-            this.refsMap.set(key, data);
-          });
-      }
-    });
-  }
-
   submitForm(operation: string, requestForm: NgForm) {
+    console.log(requestForm.value)
     const parameters = Object.entries(requestForm.value)
       .filter((field) => field[0].includes('param'))
       .map((field) =>
@@ -153,7 +91,10 @@ export class AdminInputComponent implements OnInit {
           return field;
         })
     );
+    console.log(parameters);
+    console.log(requestBody);
     this.executeOperationFromForm(
+      requestForm,
       operation,
       parameters,
       requestBody,
@@ -162,6 +103,7 @@ export class AdminInputComponent implements OnInit {
   }
 
   executeOperationFromForm(
+    form: NgForm,
     operation: string,
     parameters: any[],
     requestBody: {},
@@ -193,10 +135,11 @@ export class AdminInputComponent implements OnInit {
       );
 
     this.operationReturnData$.subscribe((data) => {
-      this.getParamRefs();
       if (Object.keys(data ?? {}).length > 0) {
         this.toastr.success(`${operation} concluída com sucesso`, 'OK');
       }
+      form.resetForm();
+      this.changeParamsRef = true;
     });
   }
 }

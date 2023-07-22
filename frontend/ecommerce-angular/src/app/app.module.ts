@@ -33,12 +33,14 @@ import { CamelCasePipe } from './pipes/camel-case.pipe';
 import { AdminRequestResponseComponent } from './components/admin-request-response/admin-request-response.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ParameterInputComponent } from './components/parameter-input/parameter-input.component';
+import { RequestBodyInputComponent } from './components/request-body-input/request-body-input.component';
 
 registerLocaleData(pt);
 
 
 @NgModule({
-  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent, ProductSearchComponent, ProductCardComponent, CartSummaryComponent, AdminComponent, AdminEntityComponent, AdminInputComponent, CamelCasePipe, AdminRequestResponseComponent, FavoritesComponent],
+  declarations: [AppComponent, UserComponent, AuthComponent, DashboardComponent, ProductDetailComponent, CartComponent, ZipCodePipe, FooterComponent, NavComponent, AddressComponent, PaginatorComponent, CartProductComponent, ShippingComponent, CommentComponent, DropdownComponent, ProductSearchComponent, ProductCardComponent, CartSummaryComponent, AdminComponent, AdminEntityComponent, AdminInputComponent, CamelCasePipe, AdminRequestResponseComponent, FavoritesComponent, ParameterInputComponent, RequestBodyInputComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

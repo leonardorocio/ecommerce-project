@@ -35,11 +35,8 @@ export class AddressComponent implements OnInit {
   editingAddress: boolean = false;
 
   ngOnInit(): void {
-    console.log(this.user);
     this.addresses = this.user.addressList;
     this.selectedAddress = this.addresses[0] ?? ({} as Address);
-    console.log(this.addresses);
-    console.log(this.selectedAddress);
   }
 
   fetchAddressFromZipCode(zipCode: NgModel) {
