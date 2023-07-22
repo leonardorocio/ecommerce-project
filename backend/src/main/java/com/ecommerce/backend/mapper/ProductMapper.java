@@ -20,16 +20,16 @@ public class ProductMapper {
     public Product mapToProduct(ProductPostRequestBody productPostRequestBody) {
         if (validateProduct(productPostRequestBody)) {
             Product product = Product.builder()
-                    .productImage(productPostRequestBody.getImageURL())
+                    .productImage(productPostRequestBody.getProductImage())
                     .price(productPostRequestBody.getPrice())
                     .shortDescription(productPostRequestBody.getShortDescription())
                     .detailedDescription(productPostRequestBody.getDetailedDescription())
                     .name(productPostRequestBody.getName())
                     .stock(productPostRequestBody.getStock())
                     .discount(productPostRequestBody.getDiscount())
-                    .brand(brandService.getBrandById(productPostRequestBody.getCategory_id()))
+                    .brand(brandService.getBrandById(productPostRequestBody.getBrand()))
                     .productCategory(
-                            productCategoryService.getCategoryById(productPostRequestBody.getCategory_id())
+                            productCategoryService.getCategoryById(productPostRequestBody.getProductCategory())
                     )
 
                     .build();

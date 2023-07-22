@@ -36,15 +36,16 @@ public class ProductPostRequestBody {
     private double discount;
 
     @NotNull
-    @Schema(name = "category_id", description = "The ID of the Category related to the Product", example = "1", ref = "ProductCategory")
-    private int category_id;
+    @Schema(name = "productCategory", description = "The ID of the Category related to the Product", example = "1", ref = "ProductCategory")
+    private int productCategory;
 
     @NotNull
-    @Schema(name = "brand_id", description = "The ID of the Brand related to the Product", example = "1", ref = "Brand")
-    private int brand_id;
+    @Schema(name = "brand", description = "The ID of the Brand related to the Product", example = "1", ref = "Brand")
+    private int brand;
 
     @NotNull
-    @Schema(name = "imageURL", description = "The link to access the image",
-            example = "https://firebasestorage.googleapis.com/v0/b/portfolio-project-e9246.appspot.com/o/shutterstock_2082475195.webp?alt=media&token=24595f07-be69-42a6-82c3-0f08e3044d9c&_gl=1*dvce9z*_ga*MTc0OTUwMTQ1OS4xNjg0MDIxMDcw*_ga_CW55HF8NVT*MTY4NTY0MTMwNC4yLjEuMTY4NTY0MTUyMi4wLjAuMA..")
-    private String imageURL;
+    @Schema(name = "productImage", description = "The link to access the image",
+            example = "https://firebasestorage.googleapis.com/v0/b/portfolio-project-e9246.appspot.com/o/shutterstock_2082475195.webp?alt=media&token=24595f07-be69-42a6-82c3-0f08e3044d9c&_gl=1*dvce9z*_ga*MTc0OTUwMTQ1OS4xNjg0MDIxMDcw*_ga_CW55HF8NVT*MTY4NTY0MTMwNC4yLjEuMTY4NTY0MTUyMi4wLjAuMA..",
+            format = "byte")
+    private String productImage;
 }
