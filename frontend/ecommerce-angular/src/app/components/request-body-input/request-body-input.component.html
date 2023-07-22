@@ -1,0 +1,56 @@
+<ng-container *ngIf="fieldValue.$ref">
+  <div class="mt-3">
+    <label [for]="fieldKey" class="form-label">{{
+      fieldKey | camelCase
+    }}</label>
+    <select
+      [id]="fieldKey"
+      class="form-select form-select-md"
+      [name]="fieldKey"
+      [ngModel]="paramModelValue"
+      #param="ngModel"
+      ngModel
+    >
+      <option *ngFor="let ref of bodyRef" [ngValue]="ref">
+        {{ ref.id + ": " + (ref.name ?? "Código") }}
+      </option>
+    </select>
+  </div>
+</ng-container>
+<ng-container
+  *ngIf="fieldValue.type === 'integer' || fieldValue.type === 'number'"
+>
+  <div class="mt-3">
+    <label [for]="fieldKey" class="form-label">{{
+      fieldKey | camelCase
+    }}</label>
+    <input
+      type="number"
+      [name]="fieldKey"
+      [id]="fieldKey"
+      class="form-control"
+      [placeholder]="fieldValue.example"
+      [ngModel]="paramModelValue"
+      #param="ngModel"
+      ngModel
+      required
+    />
+  </div>
+</ng-container>
+<ng-container *ngIf="fieldValue.type === 'string'">
+  <div class="mt-3">
+    <label [for]="fieldKey" class="form-label">{{
+      fieldKey | camelCase
+    }}</label>
+    <input
+      class="form-control"
+      type="text"
+      #param="ngModel"
+      ngModel
+      [ngModel]="paramModelValue"
+      [name]="fieldKey"
+      [id]="fieldKey"
+      required
+    />
+  </div>
+</ng-container>
