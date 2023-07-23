@@ -1,6 +1,16 @@
 package com.ecommerce.backend.payload;
 
+import com.ecommerce.backend.models.Product;
+import com.ecommerce.backend.models.User;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonValue;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -14,7 +24,7 @@ public class CommentPostRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "text", description = "Comment's Text", example = "Produto muito bom, ótima qualidade e desempenho")
+    @Schema(name = "text", description = "Comment's Text", example = "Produto muito bom, ótima qualidade e desempenho", format = "text")
     private String text;
 
     @NotNull
@@ -22,10 +32,11 @@ public class CommentPostRequestBody {
     private Integer rating;
 
     @NotNull
-    @Schema(name = "product_rated", description = "The ID of the Product you are rating", example = "1", ref = "Product")
-    private Integer product_rated;
+    @Schema(name = "productRated", description = "The ID of the Product you are rating",
+            ref = "Product")
+    private Integer productRated;
 
     @NotNull
-    @Schema(name = "user_owner", description = "The ID of the User which owns the comment", example = "1", ref = "User")
-    private Integer user_owner;
+    @Schema(name = "userOwner", description = "The ID of the User", ref = "User")
+    private Integer userOwner;
 }

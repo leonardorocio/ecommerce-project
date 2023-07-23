@@ -14,12 +14,12 @@ public class PasswordRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "email", description = "User's email", example = "test.testing2000@example.com")
+    @Schema(name = "email", description = "User's email", example = "test.testing2000@example.com", format = "email")
     private String email;
 
     @NotNull
     @NotBlank
-    @Schema(name = "password", description = "User's password", example = "example123")
+    @Schema(name = "password", description = "User's password", example = "example123", format = "password")
     private String password;
 
 }

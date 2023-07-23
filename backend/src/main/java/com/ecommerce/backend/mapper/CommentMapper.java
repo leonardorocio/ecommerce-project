@@ -20,8 +20,8 @@ public class CommentMapper {
 
     public Comment mapToComment(CommentPostRequestBody commentPostRequestBody) {
         if (validateComment(commentPostRequestBody)) {
-            User userOwner = userService.getUserById(commentPostRequestBody.getUser_owner());
-            Product productRated = productService.getProductById(commentPostRequestBody.getProduct_rated());
+            User userOwner = userService.getUserById(commentPostRequestBody.getUserOwner());
+            Product productRated = productService.getProductById(commentPostRequestBody.getProductRated());
             Comment comment = Comment.builder()
                     .productRated(productRated)
                     .text(commentPostRequestBody.getText())

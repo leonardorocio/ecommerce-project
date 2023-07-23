@@ -19,6 +19,6 @@ public class BrandRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "brandLogoImage", description = "Brand's logo image", example = "firebase storage link")
+    @Schema(name = "brandLogoImage", description = "Brand's logo image", example = "firebase storage link", format = "binary")
     private String brandLogoImage;
 }
