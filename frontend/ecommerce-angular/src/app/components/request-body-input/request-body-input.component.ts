@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { NgForm, NgModel } from '@angular/forms';
+import { NgForm, NgModel, Validators } from '@angular/forms';
 import {
   APIDocs,
   MethodProperties,
@@ -7,6 +7,7 @@ import {
   SchemaProperties,
 } from 'src/app/models/admin';
 import { ApiDocsService } from 'src/app/services/api-docs.service';
+import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
 @Component({
   selector: 'app-request-body-input',
@@ -15,7 +16,7 @@ import { ApiDocsService } from 'src/app/services/api-docs.service';
 })
 export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
 
-  constructor(private apiDocs: ApiDocsService) {}
+  constructor(private apiDocs: ApiDocsService, private firebase: FirebaseStorageService) {}
   @ViewChild('param', {static: false}) model!: NgModel;
 
   @Input() form!: NgForm;
@@ -35,8 +36,6 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
   }
 
   getAttributeFromSelectedParam() {
-    console.log(this.selectedParamModel);
-    console.log(this.fieldKey);
     this.paramModelValue = this.selectedParamModel?.[
       this.fieldKey as keyof typeof this.selectedParamModel
     ];
@@ -64,6 +63,12 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
 
   setFormControl(model: NgModel) {
     this.form.addControl(model);
+  }
+
+  async handleFileInput(model: NgModel, event: any) {
+    const file: File = event.target.files[0];
+    const url = await this.firebase.uploadFile(file);
+    this.form.getControl(model).setValue(url);
   }
 
   getRef(key: string, value: PropertyAttributes) {

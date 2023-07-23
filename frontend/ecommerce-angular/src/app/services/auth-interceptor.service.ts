@@ -1,28 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-  constructor(private cookieService: CookieService) {}
+  constructor(private authService: AuthService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token: string = this.cookieService.check("accessToken") ? this.cookieService.get("accessToken") : '';
-    const expiryDateTime: string = this.cookieService.check("expiryDate") ? this.cookieService.get("expiryDate") : '';
-    const actualDateTime: string = new Date(Date.now()).toISOString();
-
-    if (!token || actualDateTime > expiryDateTime) {
+    if (req.url.includes("auth")) {
       return next.handle(req);
     }
+    return this.authService.getTokenOrRefreshed().pipe(
+      switchMap(token => {
+        if (!token) {
+          return next.handle(req);
+        }
 
-    const req1 = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${token}`),
-    })
+        const req1 = req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${token}`),
+        })
 
-    return next.handle(req1);
+        return next.handle(req1);
+      })
+    )
+
+
+
   }
 }

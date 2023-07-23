@@ -1,0 +1,8 @@
+.url-text-container {
+  /* white-space: nowrap; */
+  /* word-wrap: break-word; */
+  /* overflow-wrap: normal; */
+  /* text-overflow: ellipsis; */
+  /* overflow: auto; */
+  word-break: break-all;
+}

@@ -4,10 +4,7 @@ import { Observable, catchError, tap } from 'rxjs';
 import { ErrorHandlingService } from './error-handling.service';
 import {
   APIDocs,
-  IMethod,
-  Path,
   Schema,
-  Method,
   MethodProperties,
   SchemaProperties,
 } from '../models/admin';
@@ -64,10 +61,6 @@ export class ApiDocsService {
       .filter((key) => key === requestBodyName)
       .map((key) => docs.components.schemas[key as keyof Schema])[0];
     return requestBodyName.length ? requestBody : ({} as SchemaProperties);
-  }
-
-  getRequestBodyFields(requestBody: SchemaProperties) {
-    return Object.entries(requestBody.properties);
   }
 
   chooseServiceToCall(tagName: string): Function {

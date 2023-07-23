@@ -45,6 +45,7 @@ export interface Schema {
 export interface SchemaProperties {
   properties: PropertyAsKey;
   required: [];
+  anyOf: PropertyAttributes[]
 }
 
 export interface PropertyAsKey {

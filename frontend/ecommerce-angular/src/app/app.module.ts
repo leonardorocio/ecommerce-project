@@ -35,6 +35,9 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ParameterInputComponent } from './components/parameter-input/parameter-input.component';
 import { RequestBodyInputComponent } from './components/request-body-input/request-body-input.component';
+import { firebaseConfig } from './environment';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 registerLocaleData(pt);
 
@@ -51,7 +54,9 @@ registerLocaleData(pt);
       preventDuplicates: true
     }),
     BrowserAnimationsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideStorage(() => getStorage())
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
