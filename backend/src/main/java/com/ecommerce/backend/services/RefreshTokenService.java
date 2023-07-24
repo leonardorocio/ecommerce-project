@@ -32,7 +32,7 @@ public class RefreshTokenService {
     public RefreshToken createRefreshToken(Integer userId) {
         RefreshToken refreshToken = RefreshToken.builder()
                 .userOwner(userService.getUserById(userId))
-                .expiryDate(Instant.now().plusMillis(Instant.MAX.toEpochMilli()))
+                .expiryDate(Instant.now().plusMillis(refreshTokenDuration * 1_000_000L))
                 .token(UUID.randomUUID().toString())
                 .build();
 

@@ -59,6 +59,7 @@ public class WebSecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/category").permitAll()
+                .requestMatchers(HttpMethod.GET, "/brands").permitAll()
                 .requestMatchers( "/products").hasRole("ADMIN")
                 .requestMatchers("/category").hasRole("ADMIN")
                 .requestMatchers("/shipper/**").hasRole("ADMIN")
