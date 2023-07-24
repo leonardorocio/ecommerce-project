@@ -2,17 +2,17 @@
   <div
     class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3 "
   >
-    <span *ngIf="cart.order.orderDetailsList.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
-    <ng-template class="" #noProducts>
+    <span *ngIf="order.orderDetailsList.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
+    <ng-template #noProducts>
       <span class="lead fw-bold no-spacing">Carrinho não tem nenhum produto!</span>
     </ng-template>
-    <button class="btn p-3 btn-outline-danger" *ngIf="enableEditing" (click)="clearCart(cart.order)">
+    <button class="btn p-3 btn-outline-danger" *ngIf="enableEditing" (click)="clearCart(order)">
       Remover todos os produtos
     </button>
   </div>
   <ul class="no-spacing">
     <li
-      *ngFor="let item of cart.order.orderDetailsList; index as i"
+      *ngFor="let item of order.orderDetailsList; index as i"
       class="border rounded no-spacing mb-3 list-group-item"
     >
       <div

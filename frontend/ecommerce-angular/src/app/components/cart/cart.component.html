@@ -8,15 +8,15 @@
     <app-cart-product
       class="container-fluid"
       [user]="user"
-      [cart]="cart"
+      [order]="order"
       [enableEditing]="true"
     ></app-cart-product>
     <app-shipping
       class="container-fluid"
-      [order]="cart.order"
+      [order]="order"
       (selectedShipment)="selectShipment($event)"
     ></app-shipping>
-    <app-cart-summary class="container-fluid" [cart]="cart" [shipment]="shipment"></app-cart-summary>
+    <app-cart-summary class="container-fluid" [order]="order" [shipment]="shipment"></app-cart-summary>
   </div>
 
 

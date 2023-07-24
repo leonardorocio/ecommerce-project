@@ -70,10 +70,10 @@
         <div *ngIf="i === selected" class="container-fluid mb-3">
           <app-cart-product class="mb-3"
           [user]="user"
-          [cart]="cartService.initializeCart(order)"
+          [order]="order"
           [enableEditing]="false"
           ></app-cart-product>
-          <app-cart-summary class="mb-3" [shipment]="order.shipment"  [cart]="cartService.initializeCart(order)"></app-cart-summary>
+          <app-cart-summary class="mb-3" [shipment]="order.shipment"  [order]="order"></app-cart-summary>
         </div>
       </div>
     </ul>

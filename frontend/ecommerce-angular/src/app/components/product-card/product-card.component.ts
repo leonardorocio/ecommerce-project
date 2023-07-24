@@ -48,9 +48,8 @@ export class ProductCardComponent implements DoCheck {
   }
 
   sendToCart(product: Product) {
-    this.router.navigateByUrl(`/carrinho`, {
-      state: product,
-    });
+    this.cookieService.set("product", JSON.stringify(product));
+    this.router.navigateByUrl(`/carrinho`);
   }
 
   favoriteProduct(product: Product) {

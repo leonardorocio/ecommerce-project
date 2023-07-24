@@ -4,10 +4,11 @@ import { OrderDetailsService } from './order-details.service';
 import { User } from '../models/user';
 import { Cart } from '../models/cart';
 import { Order, OrderDetails } from '../models/order';
-import { Observable } from 'rxjs';
+import { Observable, of, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product';
 import { AlertService } from './alert.service';
 import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,110 +18,85 @@ export class CartService {
     private orderService: OrderService,
     private orderDetailsService: OrderDetailsService,
     private alert: AlertService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private userService: UserService
   ) {}
 
-  fetchCart(user: User): Observable<Cart> {
-    return new Observable<Cart>((observer) => {
-      const openOrder: Order = user.userOrders.filter(
-        (order) => !order.closed
-      )[0];
-      if (openOrder != null && openOrder != undefined && Object.keys(openOrder).length > 0) {
-        const cart: Cart = this.initializeCart(openOrder);
-        observer.next(cart);
-        observer.complete();
-      } else {
-        this.createOrder(user).subscribe((order) => {
-          observer.next(this.initializeCart(order));
-          observer.complete();
-        });
-      }
-    });
+  fetchCart(user: User): Observable<Order> {
+    return this.userService.getUsersOrders(user.id).pipe(
+      switchMap((orders) => {
+        const openOrder: Order | undefined = orders.find(order => !order.closed);
+        return openOrder !== undefined
+          ? of(openOrder)
+          : this.orderService.postOrder(user.id);
+      })
+    );
   }
 
-  initializeCart(order: Order): Cart {
-    let cart: Cart = {
-      order: {} as Order,
+  addProductToOrder(order: Order): Observable<Order> {
+    const product: Product = JSON.parse(this.cookieService.get('product'));
+    const orderDetailsFiltered: OrderDetails | undefined =
+      order.orderDetailsList.find((item) => item.product.id === product.id);
+    const body = {
+      orderId: order.id,
+      productId: (product as Product).id,
+      quantity: 1,
     };
-    if (order != null && order != undefined) {
-      cart.order = order;
-    }
-    this.updateLocalCart(cart);
-    return cart;
-  }
-
-  updateLocalCart(cart: Cart) {
-    // this.cookieService.set("user", JSON.stringify(this.user));
-    const user: User = JSON.parse(this.cookieService.get("user"));
-    if (cart.order == null && cart.order == undefined) {
-      user.userOrders.pop();
-    } else {
-      const orderIndex = user.userOrders.findIndex(
-        (o) => o.id === cart.order.id
+    if (orderDetailsFiltered === undefined) {
+      return this.orderDetailsService.postOrderDetails(body).pipe(
+        tap((orderDetails) => order.orderDetailsList.push(orderDetails)),
+        switchMap((orderDetails) => of(order))
       );
-      if (orderIndex != -1) {
-        user.userOrders[orderIndex] = cart.order;
-      } else {
-        user.userOrders.push(cart.order);
-      }
+    } else {
+      return this.updateQuantity(
+        order,
+        orderDetailsFiltered,
+        1,
+        order.orderDetailsList.indexOf(orderDetailsFiltered)
+      );
     }
-    this.cookieService.set("user", JSON.stringify(user));
-    // sessionStorage['user'] = JSON.stringify(user);
-  }
-
-  createOrder(user: User): Observable<Order> {
-    return new Observable<Order>((observer) => {
-      this.orderService.postOrder(user.id).subscribe((order) => {
-        observer.next(order);
-        observer.complete();
-      });
-    });
   }
 
   updateQuantity(
-    cart: Cart,
+    order: Order,
     orderDetails: OrderDetails,
     update: number,
     index: number
-  ): Observable<Cart> {
-    return new Observable<Cart>((observer) => {
-      orderDetails.order = cart.order;
+  ): Observable<Order> {
+    return new Observable<Order>((observer) => {
       const body = {
-        orderId: orderDetails.order.id,
+        orderId: order.id,
         productId: orderDetails.product.id,
-        quantity: orderDetails.quantity + update
-      }
+        quantity: orderDetails.quantity + update,
+      };
       this.orderDetailsService
         .updateOrderDetails(body, orderDetails.id)
         .subscribe((orderDetails) => {
-          cart.order.orderDetailsList[index] = orderDetails;
-          this.updateLocalCart(cart);
-          observer.next(cart);
+          order.orderDetailsList[index] = orderDetails;
+          observer.next(order);
           observer.complete();
         });
     });
   }
 
-  async clearCart(cart: Cart, order: Order): Promise<Cart> {
+  async clearCart(order: Order): Promise<Order> {
     const result = await this.alert.warning(
       'Deseja apagar todos os produtos do carrinho',
       'Essa ação é irreversível'
     );
     if (result) {
-      cart = {} as Cart;
       this.orderService.deleteOrder(order.id).subscribe(() => {
-        this.updateLocalCart(cart);
         history.replaceState({}, '');
         window.location.reload();
       });
     }
-    return cart;
+    return {} as Order;
   }
 
-  removeProduct(cart: Cart, orderDetails: OrderDetails): Observable<Cart> {
-    return new Observable<Cart>((observer) => {
-      if (cart.order.orderDetailsList.length == 1) {
-        this.clearCart(cart, cart.order);
+  removeProduct(order: Order, orderDetails: OrderDetails): Observable<Order> {
+    return new Observable<Order>((observer) => {
+      if (order.orderDetailsList.length == 1) {
+        this.clearCart(order);
       } else {
         this.alert
           .warning(
@@ -132,48 +108,14 @@ export class CartService {
               this.orderDetailsService
                 .deleteOrderDetails(orderDetails.id)
                 .subscribe(() => {
-                  cart.order.orderDetailsList = cart.order.orderDetailsList.filter((o) => o !== orderDetails);
-                  cart.order.orderDetailsList = cart.order.orderDetailsList;
-                  this.updateLocalCart(cart);
-                  observer.next(cart);
+                  order.orderDetailsList = order.orderDetailsList.filter(
+                    (o) => o !== orderDetails
+                  );
+                  observer.next(order);
                   observer.complete();
                 });
             }
           });
-      }
-    });
-  }
-
-  addProductToCart(cart: Cart): Observable<Cart> {
-    return new Observable<Cart>((observer) => {
-      let { navigationId: _, ...product } = history.state;
-      let orderDetailsFiltered = cart.order.orderDetailsList.filter(
-        (item) => JSON.stringify(item.product) === JSON.stringify(product)
-      )[0];
-      if (!cart.order.orderDetailsList.includes(orderDetailsFiltered)) {
-        let body = {
-          orderId: cart.order.id,
-          productId: (product as Product).id,
-          quantity: 1,
-        };
-        this.orderDetailsService
-          .postOrderDetails(body)
-          .subscribe((orderDetails) => {
-            cart.order.orderDetailsList.push(orderDetails);
-            this.updateLocalCart(cart);
-            observer.next(cart);
-            observer.complete();
-          });
-      } else {
-        this.updateQuantity(
-          cart,
-          orderDetailsFiltered,
-          1,
-          cart.order.orderDetailsList.indexOf(orderDetailsFiltered)
-        ).subscribe((cart) => {
-          observer.next(cart);
-          observer.complete();
-        });
       }
     });
   }

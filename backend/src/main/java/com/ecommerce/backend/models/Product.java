@@ -46,6 +46,10 @@ public class Product {
 
     @NotNull
     @Column
+    private double cost;
+
+    @NotNull
+    @Column
     private int stock;
 
     @Column(columnDefinition = "float default 1.0")

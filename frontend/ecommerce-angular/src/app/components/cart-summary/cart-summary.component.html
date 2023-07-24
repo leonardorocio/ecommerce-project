@@ -14,7 +14,7 @@
         {{ shipment.shippingPrice | number : "1.2-2" : "pt" }}
       </p>
     </div>
-    <ng-container *ngIf="cart.order.closed">
+    <ng-container *ngIf="order.closed">
       <p *ngIf="shipment.delivered; else notDelivered" class="lead">
         Entregue em: {{ shipment.expectedDeliveryDate }}
       </p>
@@ -26,7 +26,7 @@
       Total do pedido: R$
       {{ orderTotalPrice() | number : "1.2-2" : "pt" }}
     </p>
-    <div *ngIf="!cart.order.closed" class="d-flex flex-column">
+    <div *ngIf="!order.closed" class="d-flex flex-column">
       <button
         class="btn w-25 btn-primary fw-bold lead mb-3"
         (click)="finishOrder()"

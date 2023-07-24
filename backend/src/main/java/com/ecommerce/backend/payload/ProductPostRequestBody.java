@@ -28,6 +28,10 @@ public class ProductPostRequestBody {
     private double price;
 
     @NotNull
+    @Schema(name = "cost", description = "The price of the Product", example = "1500.00")
+    private double cost;
+
+    @NotNull
     @Schema(name = "stock", description = "The stock of the product", example = "10")
     private int stock;
 

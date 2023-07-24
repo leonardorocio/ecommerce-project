@@ -40,4 +40,9 @@ export class FavoritesComponent implements OnInit {
   goToDashboard() {
     this.router.navigateByUrl('/dashboard#home');
   }
+
+  sendToCart(product: Product) {
+    this.cookieService.set("product", JSON.stringify(product));
+    this.router.navigateByUrl(`/carrinho`);
+  }
 }

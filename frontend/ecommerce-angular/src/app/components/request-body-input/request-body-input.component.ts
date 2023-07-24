@@ -67,7 +67,7 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
 
   async handleFileInput(model: NgModel, event: any) {
     const file: File = event.target.files[0];
-    const url = await this.firebase.uploadFile(file);
+    const url: string = await this.firebase.uploadFile(file);
     this.form.getControl(model).setValue(url);
   }
 

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { switchMap, tap } from 'rxjs';
 import { Cart } from 'src/app/models/cart';
+import { Order } from 'src/app/models/order';
 import { Shipment } from 'src/app/models/shipment';
 import { AlertService } from 'src/app/services/alert.service';
 import { CartService } from 'src/app/services/cart.service';
@@ -19,18 +20,17 @@ export class CartSummaryComponent {
   constructor(
     private router: Router,
     private orderService: OrderService,
-    private cartService: CartService,
     private toastr: ToastrService,
     private shipmentService: ShipmentService,
     private alert: AlertService
   ) {}
 
-  @Input() cart!: Cart;
+  @Input() order!: Order;
   @Input() shipment!: Shipment;
 
   orderTotalPrice(): number {
-    return (this.cart.order.totalPrice =
-      this.cart.order.orderDetailsList.reduce<number>(
+    return (this.order.totalPrice =
+      this.order.orderDetailsList.reduce<number>(
         (acc, orderDetails) =>
           orderDetails.quantity *
             orderDetails.product.price *
@@ -48,7 +48,7 @@ export class CartSummaryComponent {
     const result = await this.alert.question('Deseja finalizar a compra?');
     if (result) {
       const shipmentBody = {
-        orderId: this.cart.order.id,
+        orderId: this.order.id,
         shipperId: this.shipment.shipper.id,
         shippingPrice: this.shipment.shippingPrice,
         expectedDeliveryDate: this.shipment.expectedDeliveryDate,
@@ -56,14 +56,13 @@ export class CartSummaryComponent {
       this.shipmentService
         .postShipment(shipmentBody)
         .pipe(
-          tap((shipment) => (this.cart.order.shipment = shipment)),
+          tap((shipment) => (this.order.shipment = shipment)),
           switchMap((shipment) =>
-            this.orderService.closeOrder(this.cart.order.id)
+            this.orderService.closeOrder(this.order.id)
           )
         )
         .subscribe((order) => {
-          this.cart.order = order;
-          this.cartService.updateLocalCart(this.cart);
+          this.order = order;
           this.toastr
             .success('Voltando ao início...', 'Compra finalizada com sucesso')
             .onShown.subscribe(() => {

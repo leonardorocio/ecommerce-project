@@ -33,7 +33,7 @@
             <div
               class="container-fluid d-flex justify-content-between align-items-center"
             >
-              <button class="w-75 btn btn-primary p-1">Comprar</button>
+              <button (click)="sendToCart(favorite.product)" class="w-75 btn btn-primary p-1">Comprar</button>
               <fa-icon
                 [icon]="faHeart"
                 class="red-heart-icon"

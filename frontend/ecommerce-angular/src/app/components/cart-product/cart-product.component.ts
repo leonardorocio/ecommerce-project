@@ -14,23 +14,23 @@ export class CartProductComponent {
     private cartService: CartService
   ) {}
 
-  @Input() cart!: Cart;
+  @Input() order!: Order;
   @Input() user!: User;
   @Input() enableEditing!: boolean;
 
   updateQuantity(orderDetails: OrderDetails, update: number, index: number) {
-    this.cartService.updateQuantity(this.cart, orderDetails, update, index).subscribe((cart) => {
-      this.cart = cart;
+    this.cartService.updateQuantity(this.order, orderDetails, update, index).subscribe((order) => {
+      this.order = order;
     })
   }
 
   async clearCart(order: Order) {
-    this.cart = await this.cartService.clearCart(this.cart, order);
+    this.order = await this.cartService.clearCart(order);
   }
 
   removeProduct(orderDetails: OrderDetails) {
-    this.cartService.removeProduct(this.cart, orderDetails).subscribe((cart) => {
-      this.cart = cart;
+    this.cartService.removeProduct(this.order, orderDetails).subscribe((cart) => {
+      this.order = cart;
     })
   }
 }
