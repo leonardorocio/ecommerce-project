@@ -2,7 +2,7 @@
   class="container-fluid d-flex justify-content-between mt-3 p-3 screen-height"
 >
   <div class="container-fluid w-25 d-flex flex-column border rounded p-3">
-    <p class="lead fw-bold">Filtre por Categorias</p>
+    <p class="lead fw-bold">Filtre por Categorias:</p>
     <div
       *ngIf="filter.length"
       class="d-flex align-items-center justify-content-between mb-3"
@@ -20,12 +20,23 @@
         {{ category.name }}
       </li>
     </ul>
+    <p class="lead fw-bold mt-2">Filtre por Marcas:</p>
+    <ul class="list-group">
+      <li
+        class="list-group-item pointer"
+        *ngFor="let brand of brands"
+        (click)="selectFilter(brand.name)"
+      >
+        {{ brand.name }}
+      </li>
+    </ul>
   </div>
   <div class="container-fluid d-flex align-items-center justify-content-center">
-    <div *ngIf="!isEmpty; else emptySearch" class="container-fluid d-flex flex-column align-items-center">
-      <div
-        class="container-fluid d-flex justify-content-around flex-wrap"
-      >
+    <div
+      *ngIf="!isEmpty; else emptySearch"
+      class="container-fluid d-flex flex-column align-items-center"
+    >
+      <div class="container-fluid d-flex justify-content-around flex-wrap">
         <div *ngFor="let product of showingItems" class="product mt-3">
           <app-product-card [product]="product"></app-product-card>
         </div>

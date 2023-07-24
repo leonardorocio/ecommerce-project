@@ -10,7 +10,7 @@ public class AddressRequestBody {
 
     @NotNull
     @NotBlank
-    @Schema(name = "zipCode", description = "Address's zipcode", example = "28614160")
+    @Schema(name = "zipCode", description = "Address's zipcode", example = "28614160", maxLength = 9)
     private String zipCode;
 
     @NotNull

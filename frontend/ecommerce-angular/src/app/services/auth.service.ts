@@ -66,6 +66,7 @@ export class AuthService {
       if (token && actualDateTime > expiryDateTime) {
         this.getRefreshToken({ refreshToken: this.cookieService.get("refreshToken")}).subscribe((data) => {
           this.cookieService.set("accessToken", data.accessToken);
+          this.cookieService.set("expiryDate", data.expiryDate);
           observer.next(data.accessToken);
           observer.complete();
         });

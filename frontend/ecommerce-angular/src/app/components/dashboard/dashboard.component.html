@@ -1,19 +1,32 @@
 <body>
 
   <div class="container-fluid w-75 d-flex flex-column justify-content-center align-items-center mt-5">
-    <h6 class="display-5 mt-3 mb-4">Destaques</h6>
+    <h6 class="display-5 my-4">Destaques</h6>
     <div class="container-fluid d-flex justify-content-around align-items-center flex-wrap">
       <div *ngFor="let product of products" class="product mt-3">
         <app-product-card [userFavorite]="isFavorite(product)" [product]="product"></app-product-card>
       </div>
   </div>
 
-  <h6 class="display-5 mt-3 mb-4">Departamentos</h6>
+  <h6 class="display-5 my-4">Departamentos</h6>
   <div class="container-fluid d-flex justify-content-around align-items-center flex-wrap">
     <li *ngFor="let category of categories" class="product my-3">
-      <div class="card">
+      <div class="card" (click)="goToSearchProducts(category.name)" >
+        <img [src]="category.categoryImage" [alt]="category.name" class="card-img-top pointer">
         <div class="card-body">
-          <h5 class="card-title text-center pointer" (click)="goToSearchProducts(category.name)">{{ category.name }}</h5>
+          <h5 class="card-title text-center pointer">{{ category.name }}</h5>
+        </div>
+      </div>
+    </li>
+  </div>
+
+  <h6 class="display-5 my-4">Marcas</h6>
+  <div class="container-fluid d-flex justify-content-around align-items-center flex-wrap">
+    <li *ngFor="let brand of brands" class="product my-3">
+      <div class="card" (click)="goToSearchProducts(brand.name)" >
+        <img [src]="brand.brandLogoImage" [alt]="brand.name" class="card-img-top pointer">
+        <div class="card-body">
+          <h5 class="card-title text-center pointer">{{ brand.name }}</h5>
         </div>
       </div>
     </li>

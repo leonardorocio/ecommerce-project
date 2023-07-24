@@ -9,6 +9,12 @@
   margin: 0;
 }
 
+.product img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 .red-heart-icon {
   color: red;
 }
