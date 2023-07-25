@@ -11,7 +11,7 @@ export class FirebaseStorageService {
   async uploadFile(file: File): Promise<string> {
     if (file) {
       const storageRef = ref(this.storage, file.name);
-      const snapshotCompleted = await uploadBytesResumable(storageRef, file);
+      const snapshotCompleted = uploadBytesResumable(storageRef, file);
       return await getDownloadURL(storageRef);
     }
     return Promise.resolve('');

@@ -58,7 +58,9 @@
         [name]="'file_'+fieldKey"
         [id]="'file_'+fieldKey"
         class="form-control mb-3"
-        (change)="handleFileInput(param, $event)"
+        ngModel
+        #file
+        (change)="handleFileInput(param, file, $event)"
       />
       <input type="hidden" ngModel #param="ngModel" [name]="fieldKey" [id]="fieldKey">
       <p>Link da imagem atual: <a [href]="paramModelValue" class="url-text-container" *ngIf="paramModelValue">{{ paramModelValue }}</a></p>
