@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 })
 export class AuthInterceptorService implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private cookieService: CookieService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes("auth")) {

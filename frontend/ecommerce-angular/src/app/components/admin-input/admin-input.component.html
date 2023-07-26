@@ -33,10 +33,10 @@
           let i = index
         "
       >
-      <app-request-body-input [form]="requestForm" [fieldKey]="field.key" [fieldValue]="field.value" [selectedParamModel]="selectedParamModel"></app-request-body-input>
+      <app-request-body-input (disableSubmitButton)="setDisableSubmitButton($event)" [form]="requestForm" [fieldKey]="field.key" [fieldValue]="field.value" [selectedParamModel]="selectedParamModel"></app-request-body-input>
       </ng-container>
     </ng-container>
-    <button class="btn btn-primary w-25 mt-3" type="submit" form="requestForm">
+    <button class="btn btn-primary w-25 mt-3" type="submit" form="requestForm" [disabled]="disableButton">
       Enviar
     </button>
   </form>

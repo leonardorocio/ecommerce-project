@@ -20,10 +20,12 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
   @Input() fieldValue!: any;
   @Input() fieldKey!: string;
   @Input() selectedParamModel: any;
+  @Output() disableSubmitButton = new EventEmitter<boolean>();
   paramModelValue!: any;
   bodyRef!: any[];
 
   ngOnChanges(): void {
+    console.log(this.selectedParamModel);
     this.getRef(this.fieldKey, this.fieldValue);
     this.getAttributeFromSelectedParam();
   }
@@ -60,13 +62,16 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
 
   handleFileInput(urlModel: NgModel, fileModel: HTMLInputElement, event: any) {
     if (fileModel.files?.length || !urlModel.value) {
-      this.form.form.disable();
       const file: File = event.target.files[0];
+      this.disableSubmitButton.emit(true);
       this.firebase.uploadFile(file).then(url => {
-        this.form.form.enable()
         this.form.getControl(urlModel).setValue(url);
+        this.disableSubmitButton.emit(false);
       });
+    } else {
+      this.form.getControl(urlModel).setValue(this.paramModelValue);
     }
+
   }
 
   getRef(key: string, value: PropertyAttributes) {

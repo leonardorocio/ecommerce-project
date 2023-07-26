@@ -7,8 +7,8 @@ export interface User {
   name: string,
   email: string,
   password: string,
+  accountCreationDate: string,
   birthDate: string,
   addressList: Address[],
-  userOrders: Order[],
   role: string
 }

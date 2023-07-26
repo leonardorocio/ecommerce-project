@@ -29,6 +29,7 @@ export class AdminInputComponent implements OnInit {
   selectedParamModel!: any;
   changeParamsRef: boolean = false;
   chosenService!: Function;
+  disableButton: boolean = false;
 
   originalOrder = (
     a: KeyValue<string, any>,
@@ -46,6 +47,10 @@ export class AdminInputComponent implements OnInit {
 
   setSelectedParamModel(param: any) {
     this.selectedParamModel = param;
+  }
+
+  setDisableSubmitButton(option: boolean) {
+    this.disableButton = option;
   }
 
   fetchRequestBodyAndRefs() {
@@ -75,6 +80,7 @@ export class AdminInputComponent implements OnInit {
   }
 
   submitForm(operation: string, requestForm: NgForm) {
+    console.log(requestForm.value);
     const parameters = Object.entries(requestForm.value)
       .filter((field) => field[0].includes('param'))
       .map((field) =>
@@ -135,7 +141,6 @@ export class AdminInputComponent implements OnInit {
       if (Object.keys(data ?? {}).length > 0) {
         this.toastr.success(`${operation} concluída com sucesso`, 'OK');
       }
-      form.resetForm();
       this.changeParamsRef = true;
     });
   }

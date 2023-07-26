@@ -38,23 +38,6 @@ export class CartComponent implements OnInit {
         })
       }
     });
-    // if (this.cookieService.check('user')) {
-    //   this.user = JSON.parse(this.cookieService.get('user'));
-    //   this.cartService.fetchCart(this.user).subscribe((fetchedCart) => {
-    //     console.log(history.state);
-    //     this.cart = fetchedCart;
-    //     this.hasProducts = this.cart.order.orderDetailsList.length > 0;
-    //     if (history.state['id']) {
-    //       this.cartService
-    //         .addProductToCart(this.cart)
-    //         .subscribe((updatedCart) => {
-    //           this.cart = updatedCart;
-    //           this.hasProducts = this.cart.order.orderDetailsList.length > 0;
-    //           history.replaceState({}, '');
-    //         });
-    //     }
-    //   });
-    // }
   }
 
   goToDashboard() {

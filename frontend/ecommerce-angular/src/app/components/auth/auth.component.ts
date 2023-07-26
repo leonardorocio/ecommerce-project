@@ -29,17 +29,35 @@ export class AuthComponent {
   login(email: string, password: string) {
     const requestBody: AuthRequestBody = {
       email: email,
-      password: password
+      password: password,
     };
     this.authService.login(requestBody).subscribe((data) => {
       if (Object.keys(data).length) {
         Object.keys(data).forEach((e) => {
-          const value = data[e as keyof typeof data];
-          this.cookieService.set(e, typeof value == 'string' ? value : JSON.stringify(value));
-          // sessionStorage.setItem(
-          //   e,
-          //   typeof value == 'string' ? value : JSON.stringify(value)
-          // );
+          const value: any = data[e as keyof typeof data];
+          if (e === 'user') {
+            const wantedKeys = [
+              'id',
+              'name',
+              'email',
+              'birthDate',
+              'accountCreationDate',
+              'addressList',
+              'role',
+            ];
+            const cookieUser: any = {};
+            Object.keys(value)
+            .filter((key) => wantedKeys.includes(key))
+            .forEach((key) => {
+                cookieUser[key] = value[key]
+              });
+            this.cookieService.set('user', JSON.stringify(cookieUser));
+          } else {
+            this.cookieService.set(
+              e,
+              typeof value == 'string' ? value : JSON.stringify(value)
+            );
+          }
         });
         this.toastr.success(
           'Redirecionando...',

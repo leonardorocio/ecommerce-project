@@ -23,15 +23,17 @@ export class UserComponent implements OnInit {
   selected!: number;
 
   ngOnInit(): void {
-    if (this.cookieService.check("user")) {
-      this.user = JSON.parse(this.cookieService.get("user"));
+    if (this.cookieService.check('user')) {
+      this.user = JSON.parse(this.cookieService.get('user'));
       ({
         name: this.name,
         email: this.email,
         birthDate: this.birthDate,
         role: this.role,
-        userOrders: this.userOrders,
       } = this.user);
+      this.userService
+        .getUsersOrders(this.user.id)
+        .subscribe((orders) => (this.userOrders = orders));
       this.role = this.role.replace('ROLE_', '');
     }
   }
@@ -62,8 +64,7 @@ export class UserComponent implements OnInit {
         .updateUser(requestBody, this.user.id)
         .subscribe((user) => {
           this.user = user;
-          this.cookieService.set("user", JSON.stringify(this.user));
-          // sessionStorage['user'] = JSON.stringify(this.user);
+          this.cookieService.set('user', JSON.stringify(this.user));
         });
     }
   }

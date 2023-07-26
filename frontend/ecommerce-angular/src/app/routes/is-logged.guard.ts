@@ -3,6 +3,7 @@ import { User } from '../models/user';
 import { inject } from '@angular/core';
 import { AlertService } from '../services/alert.service';
 import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from '../services/auth.service';
 
 const redirectToLoginOrDashboard = async () => {
   const router = inject(Router);
@@ -19,13 +20,17 @@ const redirectToLoginOrDashboard = async () => {
 export const isLoggedGuard: CanActivateFn = (route, state) => {
   var user: User = {} as User;
   const cookieService = inject(CookieService);
+  const authService = inject(AuthService);
   if (cookieService.check("user")) {
     user = JSON.parse(cookieService.get("user"));
     const token: string = cookieService.check("accessToken") ? cookieService.get("accessToken") : '';
     const expiryDateTime: string = cookieService.check("expiryDate") ? cookieService.get("expiryDate") : '';
     const actualDateTime: string = new Date(Date.now()).toISOString();
 
-    if (!token || actualDateTime > expiryDateTime) {
+    if (!token) {
+      return redirectToLoginOrDashboard();
+    } else if (actualDateTime > expiryDateTime) {
+      authService.getTokenOrRefreshed().subscribe();
       return redirectToLoginOrDashboard();
     }
   }

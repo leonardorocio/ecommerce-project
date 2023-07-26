@@ -8,11 +8,15 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements DoCheck {
+export class AppComponent implements OnInit, DoCheck {
   constructor(private cookieService: CookieService) {}
 
   title = 'ecommerce-angular';
   userId!: number;
+
+  ngOnInit(): void {
+    this.cookieService.deleteAll();
+  }
 
   ngDoCheck(): void {
     const sessionStorageData = this.cookieService.check('user')
