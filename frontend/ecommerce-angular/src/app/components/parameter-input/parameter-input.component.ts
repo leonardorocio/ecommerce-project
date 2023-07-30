@@ -80,6 +80,5 @@ export class ParameterInputComponent implements OnChanges {
     const paramList = this.paramMap.get(this.parameter.name) ?? [];
     paramList.sort((a, b) => a.id - b.id);
     this.paramList = paramList;
-    console.log(paramList);
   }
 }

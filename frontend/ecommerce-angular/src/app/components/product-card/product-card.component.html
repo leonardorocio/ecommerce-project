@@ -1,5 +1,5 @@
-<div class="card product">
-  <img (click)="goToDetail(product)" [src]="product.productImage" [alt]="product.name" class="card-img-top pointer">
+<div class="card">
+  <img (click)="goToDetail(product)" [src]="product.productImage" [alt]="product.name" class="card-img-top product-img img-fluid">
   <div class="card-body d-flex flex-column">
     <h5 class="card-title text-container">{{ product.name }}</h5>
     <p class="card-text text-container">Preço: R$ {{ product.price | number:'1.2-2' }}</p>

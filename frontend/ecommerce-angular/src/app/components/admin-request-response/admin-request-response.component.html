@@ -1,48 +1,56 @@
-<p class="lead fw-bold">Resposta: </p>
+<p class="lead fw-bold">Resposta:</p>
 <ul class="list-group">
   <ng-container
-    *ngFor="
-      let property of operationReturnData$ | async | keyvalue : originalOrder;
-      let i = index
-    "
+    *ngIf="isObject(operationReturnData$ | async); else stringResponse"
   >
-    <ng-container *ngIf="property.value !== null">
-      <ng-container *ngIf="isObject(property.value); else simpleValue">
-        <li class="list-group-item d-flex align-items-center flex-wrap">
-          <div
-            class="container-fluid d-flex justify-content-between no-spacing"
-          >
-            <span class="lead mr-3"
-              >{{ isString(property.key) ?? "" | camelCase }}:</span
+    <ng-container
+      *ngFor="
+        let property of operationReturnData$ | async | keyvalue : originalOrder;
+        let i = index
+      "
+    >
+      <ng-container *ngIf="property.value !== null">
+        <ng-container *ngIf="isObject(property.value); else simpleValue">
+          <li class="list-group-item d-flex align-items-center flex-wrap">
+            <div
+              class="container-fluid d-flex justify-content-between no-spacing"
             >
-            <span
-              class="lead"
-              *ngIf="!dropDownShow || !(selected === i)"
-              (click)="selectObjectToShow(i)"
-              >&#9660;</span
-            >
-            <span
-              class="lead"
-              *ngIf="dropDownShow && selected === i"
-              (click)="selectObjectToShow(i)"
-              >&#9650;</span
-            >
-          </div>
-        </li>
-        <app-dropdown
-          [show]="dropDownShow && selected === i"
-          [propsToShow]="['key', 'value']"
-          [staticItems]="isObject(property.value) | keyvalue : originalOrder"
-        ></app-dropdown>
+              <span class="lead mr-3"
+                >{{ isString(property.key) ?? "" | camelCase }}:</span
+              >
+              <span
+                class="lead"
+                *ngIf="!dropDownShow || !(selected === i)"
+                (click)="selectObjectToShow(i)"
+                >&#9660;</span
+              >
+              <span
+                class="lead"
+                *ngIf="dropDownShow && selected === i"
+                (click)="selectObjectToShow(i)"
+                >&#9650;</span
+              >
+            </div>
+          </li>
+          <app-dropdown
+            [show]="dropDownShow && selected === i"
+            [propsToShow]="['key', 'value']"
+            [staticItems]="isObject(property.value) | keyvalue : originalOrder"
+          ></app-dropdown>
+        </ng-container>
+        <ng-template #simpleValue>
+          <li class="list-group-item d-flex align-items-center flex-wrap">
+            <p class="lead no-spacing" style="word-break: break-all">
+              {{ isString(property.key) ?? "" | camelCase }}:
+              {{ property.value }}
+            </p>
+          </li>
+        </ng-template>
       </ng-container>
-      <ng-template #simpleValue>
-        <li class="list-group-item d-flex align-items-center flex-wrap">
-          <p class="lead no-spacing" style="word-break: break-all">
-            {{ isString(property.key) ?? "" | camelCase }}:
-            {{ property.value }}
-          </p>
-        </li>
-      </ng-template>
     </ng-container>
   </ng-container>
 </ul>
+
+<ng-template #stringResponse>
+  <p class="lead">{{ operationReturnData$ | async }}</p></ng-template
+>

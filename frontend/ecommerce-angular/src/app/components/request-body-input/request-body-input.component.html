@@ -4,13 +4,17 @@
       fieldKey | camelCase
     }}</label>
     <select
+      type="number"
       [id]="fieldKey"
       class="form-select form-select-md"
       [name]="fieldKey"
-      [ngModel]="paramModelValue"
       #param="ngModel"
+      #select
+      [ngModel]="paramInsideRef"
+      [compareWith]="compareFn"
       ngModel
     >
+      <!-- <option selected value="">Selecione um valor</option> -->
       <option *ngFor="let ref of bodyRef" [ngValue]="ref">
         {{ ref.id + ": " + (ref.name ?? "Código") }}
       </option>
@@ -64,6 +68,23 @@
       />
       <input type="hidden" [(ngModel)]="paramModelValue" #param="ngModel" [name]="fieldKey" [id]="fieldKey">
       <p>Link da imagem atual: <a [href]="paramModelValue" class="url-text-container" *ngIf="paramModelValue">{{ paramModelValue }}</a></p>
+    </div>
+  </ng-container>
+  <ng-container *ngSwitchCase="'password'">
+    <div class="mt-3">
+      <label [for]="fieldKey" class="form-label">{{
+        fieldKey | camelCase
+      }}</label>
+      <input
+        class="form-control"
+        type="password"
+        #param="ngModel"
+        ngModel
+        [ngModel]="paramModelValue"
+        [name]="fieldKey"
+        [id]="fieldKey"
+        required
+      />
     </div>
   </ng-container>
   <ng-container *ngSwitchDefault>

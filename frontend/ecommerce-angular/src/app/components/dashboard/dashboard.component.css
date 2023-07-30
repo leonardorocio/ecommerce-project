@@ -3,10 +3,10 @@
   list-style-type: none;
 }
 
-.product img {
-  height: 100%;
+.product-img {
+  height: 15em;
   width: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .pointer {

@@ -79,15 +79,17 @@ export class AdminInputComponent implements OnInit {
     return 'get' + returnRef;
   }
 
-  submitForm(operation: string, requestForm: NgForm) {
-    console.log(requestForm.value);
-    const parameters = Object.entries(requestForm.value)
+  getParamFromForm(form: object) {
+    return Object.entries(form)
       .filter((field) => field[0].includes('param'))
       .map((field) =>
         typeof field[1] === 'object' ? (field[1] as any)?.id : field[1]
       );
-    const requestBody = Object.fromEntries(
-      Object.entries(requestForm.value)
+  }
+
+  getRequestBodyFromForm(form: object) {
+    return Object.fromEntries(
+      Object.entries(form)
         .filter((field) => !field[0].includes('param'))
         .map((field) => {
           if (typeof field[1] === 'object') {
@@ -96,6 +98,11 @@ export class AdminInputComponent implements OnInit {
           return field;
         })
     );
+  }
+
+  submitForm(operation: string, requestForm: NgForm) {
+    const parameters = this.getParamFromForm(requestForm.value);
+    const requestBody = this.getRequestBodyFromForm(requestForm.value);
     this.executeOperationFromForm(
       requestForm,
       operation,
@@ -118,7 +125,10 @@ export class AdminInputComponent implements OnInit {
         share(),
         switchMap((data) => {
           return new Observable<any>((observer) => {
-            if (data === null || data === undefined) {
+            if (
+              ['null', 'undefined', '[]', '{}'].includes(JSON.stringify(data))
+            ) {
+              data = 'Resposta para requisição não foi encontrada';
               this.toastr.success(`${operation} concluída com sucesso`, 'OK');
               observer.next(data);
               observer.complete();

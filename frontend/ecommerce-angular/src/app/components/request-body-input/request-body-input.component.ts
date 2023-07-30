@@ -1,8 +1,23 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { NgForm, NgModel, Validators } from '@angular/forms';
 import {
-  PropertyAttributes,
-} from 'src/app/models/admin';
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import {
+  NgForm,
+  NgModel,
+  SelectControlValueAccessor,
+  Validators,
+  ɵNgSelectMultipleOption,
+} from '@angular/forms';
+import { Observable } from 'rxjs';
+import { PropertyAttributes } from 'src/app/models/admin';
 import { ApiDocsService } from 'src/app/services/api-docs.service';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
 
@@ -12,9 +27,12 @@ import { FirebaseStorageService } from 'src/app/services/firebase-storage.servic
   styleUrls: ['./request-body-input.component.css'],
 })
 export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
-
-  constructor(private apiDocs: ApiDocsService, private firebase: FirebaseStorageService) {}
-  @ViewChild('param', {static: false}) model!: NgModel;
+  constructor(
+    private apiDocs: ApiDocsService,
+    private firebase: FirebaseStorageService
+  ) {}
+  @ViewChild('param', { static: false }) model!: NgModel;
+  @ViewChild('select', { static: false }) select!: HTMLSelectElement;
 
   @Input() form!: NgForm;
   @Input() fieldValue!: any;
@@ -22,10 +40,10 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
   @Input() selectedParamModel: any;
   @Output() disableSubmitButton = new EventEmitter<boolean>();
   paramModelValue!: any;
+  paramInsideRef?: any;
   bodyRef!: any[];
 
-  ngOnChanges(): void {
-    console.log(this.selectedParamModel);
+  ngOnChanges(changes: SimpleChanges): void {
     this.getRef(this.fieldKey, this.fieldValue);
     this.getAttributeFromSelectedParam();
   }
@@ -34,10 +52,20 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
     this.form.addControl(this.model);
   }
 
+  compareFn(obj1: any, obj2: any) {
+    return obj1.id === obj2.id;
+  }
+
   getAttributeFromSelectedParam() {
-    this.paramModelValue = this.selectedParamModel?.[
-      this.fieldKey as keyof typeof this.selectedParamModel
-    ];
+    this.paramModelValue =
+      this.selectedParamModel?.[
+        this.fieldKey as keyof typeof this.selectedParamModel
+      ];
+    if (typeof this.paramModelValue === 'object') {
+      this.paramInsideRef = this.bodyRef.find(
+        (ref) => JSON.stringify(ref) === JSON.stringify(this.paramModelValue)
+      );
+    }
   }
 
   getFetchOperationNameFromRefOrTag(ref: string): string {
@@ -64,14 +92,13 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
     if (fileModel.files?.length || !urlModel.value) {
       const file: File = event.target.files[0];
       this.disableSubmitButton.emit(true);
-      this.firebase.uploadFile(file).then(url => {
+      this.firebase.uploadFile(file).then((url) => {
         this.form.getControl(urlModel).setValue(url);
         this.disableSubmitButton.emit(false);
       });
     } else {
       this.form.getControl(urlModel).setValue(this.paramModelValue);
     }
-
   }
 
   getRef(key: string, value: PropertyAttributes) {

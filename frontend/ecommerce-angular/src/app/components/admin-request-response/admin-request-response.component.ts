@@ -1,14 +1,20 @@
 import { KeyValue } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { Observable, tap } from 'rxjs';
 
 @Component({
   selector: 'app-admin-request-response',
   templateUrl: './admin-request-response.component.html',
-  styleUrls: ['./admin-request-response.component.css']
+  styleUrls: ['./admin-request-response.component.css'],
 })
 export class AdminRequestResponseComponent {
-
   @Input() operationReturnData$!: Observable<any>;
   dropDownShow: boolean = false;
   selected: number = -1;
@@ -18,7 +24,7 @@ export class AdminRequestResponseComponent {
   }
 
   isObject(value: unknown): object | null {
-    return typeof value === 'object' ? value: null;
+    return typeof value === 'object' ? value : null;
   }
 
   selectObjectToShow(objectIndex: number) {
@@ -31,7 +37,10 @@ export class AdminRequestResponseComponent {
     }
   }
 
-  originalOrder = (a: KeyValue<string,any>, b: KeyValue<string,any>): number => {
+  originalOrder = (
+    a: KeyValue<string, any>,
+    b: KeyValue<string, any>
+  ): number => {
     return 0;
-  }
+  };
 }
