@@ -1,0 +1,1 @@
+create table if not exists users (id integer primary key auto_increment, account_creation_date date, birth_date date, email varchar(255) unique, name varchar(255) not null, password varchar(255) not null, role varchar(255) default 'ROLE_USER', refresh_token integer);

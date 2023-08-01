@@ -42,7 +42,7 @@ public class Address {
     private String complement;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user", referencedColumnName = "id")
+    @JoinColumn(name = "userOwner", referencedColumnName = "id")
     @JsonIgnore
     @NotNull
     private User user;
