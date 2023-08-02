@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, tap } from 'rxjs';
+import { Observable, catchError, share, tap } from 'rxjs';
 import { ErrorHandlingService } from './error-handling.service';
 import {
   APIDocs,
@@ -115,7 +115,7 @@ export class ApiDocsService {
   ): Observable<any> {
     const objectIsEmpty = (object: {}): boolean =>
       Object.keys(object).length === 0;
-    let operationReturn: Observable<any> = new Observable<any>();
+    let operationReturn: Observable<any>;
     if (!objectIsEmpty(parameters) && objectIsEmpty(requestBody)) {
       operationReturn = service.constructor.prototype[operationId].call(
         service,
@@ -138,4 +138,5 @@ export class ApiDocsService {
     }
     return operationReturn;
   }
+
 }

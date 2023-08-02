@@ -15,7 +15,7 @@
       ngModel
     >
       <!-- <option selected value="">Selecione um valor</option> -->
-      <option *ngFor="let ref of bodyRef" [ngValue]="ref">
+      <option [selected]="compareFn(paramInsideRef, ref)" *ngFor="let ref of bodyRef" [ngValue]="ref">
         {{ ref.id + ": " + (ref.name ?? "Código") }}
       </option>
     </select>

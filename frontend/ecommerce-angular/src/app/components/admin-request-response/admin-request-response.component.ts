@@ -14,10 +14,16 @@ import { Observable, tap } from 'rxjs';
   templateUrl: './admin-request-response.component.html',
   styleUrls: ['./admin-request-response.component.css'],
 })
-export class AdminRequestResponseComponent {
-  @Input() operationReturnData$!: Observable<any>;
+export class AdminRequestResponseComponent implements OnChanges {
+  @Input() operationReturnData!: any;
   dropDownShow: boolean = false;
   selected: number = -1;
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['operationReturnData'].previousValue !== changes['operationReturnData'].currentValue) {
+      this.operationReturnData = changes['operationReturnData'].currentValue;
+    }
+  }
 
   isString(property: unknown): string | undefined {
     return typeof property === 'string' ? property : undefined;

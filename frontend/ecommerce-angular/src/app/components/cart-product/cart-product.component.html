@@ -2,7 +2,7 @@
   <div
     class="container-fluid d-flex align-items-center justify-content-between mb-3 mt-3 "
   >
-    <span *ngIf="order.orderDetailsList.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
+    <span *ngIf="order.orderDetailsList?.length; else noProducts" class="lead fw-bold no-spacing">Produtos:</span>
     <ng-template #noProducts>
       <span class="lead fw-bold no-spacing">Carrinho não tem nenhum produto!</span>
     </ng-template>

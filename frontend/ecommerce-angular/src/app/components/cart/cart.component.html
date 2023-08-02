@@ -10,6 +10,7 @@
       [user]="user"
       [order]="order"
       [enableEditing]="true"
+      (clearedCart)="isClear($event)"
     ></app-cart-product>
     <app-shipping
       class="container-fluid"

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { OrderService } from './order.service';
 import { OrderDetailsService } from './order-details.service';
 import { User } from '../models/user';
-import { Cart } from '../models/cart';
 import { Order, OrderDetails } from '../models/order';
 import { Observable, of, switchMap, tap } from 'rxjs';
 import { Product } from '../models/product';
@@ -25,7 +24,9 @@ export class CartService {
   fetchCart(user: User): Observable<Order> {
     return this.userService.getUsersOrders(user.id).pipe(
       switchMap((orders) => {
-        const openOrder: Order | undefined = orders.find(order => !order.closed);
+        const openOrder: Order | undefined = orders.find(
+          (order) => !order.closed
+        );
         return openOrder !== undefined
           ? of(openOrder)
           : this.orderService.postOrder(user.id);
@@ -87,7 +88,6 @@ export class CartService {
     if (result) {
       this.orderService.deleteOrder(order.id).subscribe(() => {
         history.replaceState({}, '');
-        window.location.reload();
       });
     }
     return {} as Order;
@@ -95,28 +95,24 @@ export class CartService {
 
   removeProduct(order: Order, orderDetails: OrderDetails): Observable<Order> {
     return new Observable<Order>((observer) => {
-      if (order.orderDetailsList.length == 1) {
-        this.clearCart(order);
-      } else {
-        this.alert
-          .warning(
-            'Deseja apagar esse produto do carrinho?',
-            'Essa ação é irreversível!'
-          )
-          .then((result) => {
-            if (result) {
-              this.orderDetailsService
-                .deleteOrderDetails(orderDetails.id)
-                .subscribe(() => {
-                  order.orderDetailsList = order.orderDetailsList.filter(
-                    (o) => o !== orderDetails
-                  );
-                  observer.next(order);
-                  observer.complete();
-                });
-            }
-          });
-      }
+      this.alert
+        .warning(
+          'Deseja apagar esse produto do carrinho?',
+          'Essa ação é irreversível!'
+        )
+        .then((result) => {
+          if (result) {
+            this.orderDetailsService
+              .deleteOrderDetails(orderDetails.id)
+              .subscribe(() => {
+                order.orderDetailsList = order.orderDetailsList.filter(
+                  (o) => o !== orderDetails
+                );
+                observer.next(order);
+                observer.complete();
+              });
+          }
+        });
     });
   }
 }

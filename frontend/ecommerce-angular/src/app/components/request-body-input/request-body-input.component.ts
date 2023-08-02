@@ -16,7 +16,7 @@ import {
   Validators,
   ɵNgSelectMultipleOption,
 } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, share } from 'rxjs';
 import { PropertyAttributes } from 'src/app/models/admin';
 import { ApiDocsService } from 'src/app/services/api-docs.service';
 import { FirebaseStorageService } from 'src/app/services/firebase-storage.service';
@@ -52,8 +52,8 @@ export class RequestBodyInputComponent implements OnChanges, AfterViewInit {
     this.form.addControl(this.model);
   }
 
-  compareFn(obj1: any, obj2: any) {
-    return obj1.id === obj2.id;
+  compareFn(obj1?: any, obj2?: any) {
+    return obj1?.id === obj2?.id;
   }
 
   getAttributeFromSelectedParam() {

@@ -28,10 +28,10 @@ public class ProductMapper {
                     .stock(productPostRequestBody.getStock())
                     .discount(productPostRequestBody.getDiscount())
                     .brand(brandService.getBrandById(productPostRequestBody.getBrand()))
+                    .cost(productPostRequestBody.getCost())
                     .productCategory(
                             productCategoryService.getCategoryById(productPostRequestBody.getProductCategory())
                     )
-
                     .build();
             return product;
         }

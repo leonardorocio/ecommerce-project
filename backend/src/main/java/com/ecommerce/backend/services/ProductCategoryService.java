@@ -45,6 +45,7 @@ public class ProductCategoryService {
         ProductCategory productCategory = getCategoryById(id);
         ProductCategory newCategory = ProductCategory.builder()
                 .name(productCategoryRequestBody.getName())
+                .categoryImage(productCategory.getCategoryImage())
                 .build();
         newCategory.setId(productCategory.getId());
         return productCategoryRepository.save(newCategory);

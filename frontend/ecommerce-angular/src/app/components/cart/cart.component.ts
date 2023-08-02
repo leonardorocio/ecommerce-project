@@ -40,6 +40,10 @@ export class CartComponent implements OnInit {
     });
   }
 
+  isClear(order: Order) {
+    this.hasProducts = order.orderDetailsList?.length > 0;
+  }
+
   goToDashboard() {
     this.router.navigateByUrl('/dashboard#home');
   }

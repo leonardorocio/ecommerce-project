@@ -2,7 +2,7 @@ import { KeyValue } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { Observable, filter, share, switchMap } from 'rxjs';
+import { Observable, filter, share, map } from 'rxjs';
 import {
   APIDocs,
   MethodProperties,
@@ -23,7 +23,7 @@ export class AdminInputComponent implements OnInit {
   @Input() docs!: APIDocs;
   @Input() tag!: string;
   requestBody!: SchemaProperties;
-  operationReturnData$!: Observable<any>;
+  operationReturnData!: any;
   hasRequestBody!: boolean;
   hasParameters!: boolean;
   selectedParamModel!: any;
@@ -119,39 +119,26 @@ export class AdminInputComponent implements OnInit {
     requestBody: {},
     chosenService: Function
   ) {
-    this.operationReturnData$ = this.apiDocs
+    this.apiDocs
       .executeOperation(operation, parameters, requestBody, chosenService)
       .pipe(
         share(),
-        switchMap((data) => {
-          return new Observable<any>((observer) => {
-            if (
-              ['null', 'undefined', '[]', '{}'].includes(JSON.stringify(data))
-            ) {
-              data = 'Resposta para requisição não foi encontrada';
-              this.toastr.success(`${operation} concluída com sucesso`, 'OK');
-              observer.next(data);
-              observer.complete();
-            }
-            const dataTreated: any = Object.fromEntries(
-              Object.entries(data).map((prop) => {
-                if (prop[1] === null) {
-                  prop[1] = '';
-                }
-                return prop;
-              })
-            );
-            observer.next(dataTreated);
-            observer.complete();
-          });
+        map((data) => {
+          if (
+            ['null', 'undefined', '[]', '{}'].includes(JSON.stringify(data))
+          ) {
+            this.toastr.success(`${operation} concluída com sucesso`, 'OK');
+            return 'Resposta para requisição não foi encontrada';
+          }
+          return data;
         })
-      );
-
-    this.operationReturnData$.subscribe((data) => {
-      if (Object.keys(data ?? {}).length > 0) {
-        this.toastr.success(`${operation} concluída com sucesso`, 'OK');
-      }
-      this.changeParamsRef = true;
-    });
+      )
+      .subscribe((data) => {
+        this.operationReturnData = data;
+        if (Object.keys(data ?? {}).length > 0) {
+          this.toastr.success(`${operation} concluída com sucesso`, 'OK');
+        }
+        this.changeParamsRef = !this.changeParamsRef;
+      });
   }
 }

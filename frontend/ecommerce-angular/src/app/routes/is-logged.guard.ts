@@ -21,6 +21,7 @@ export const isLoggedGuard: CanActivateFn = (route, state) => {
   var user: User = {} as User;
   const cookieService = inject(CookieService);
   const authService = inject(AuthService);
+  console.log(cookieService.getAll());
   if (cookieService.check("user")) {
     user = JSON.parse(cookieService.get("user"));
     const token: string = cookieService.check("accessToken") ? cookieService.get("accessToken") : '';

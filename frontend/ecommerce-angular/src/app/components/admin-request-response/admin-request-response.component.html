@@ -1,11 +1,11 @@
 <p class="lead fw-bold">Resposta:</p>
 <ul class="list-group">
   <ng-container
-    *ngIf="isObject(operationReturnData$ | async); else stringResponse"
+    *ngIf="isObject(operationReturnData); else stringResponse"
   >
     <ng-container
       *ngFor="
-        let property of operationReturnData$ | async | keyvalue : originalOrder;
+        let property of operationReturnData | keyvalue : originalOrder;
         let i = index
       "
     >
@@ -52,5 +52,5 @@
 </ul>
 
 <ng-template #stringResponse>
-  <p class="lead">{{ operationReturnData$ | async }}</p></ng-template
+  <p class="lead">{{ operationReturnData }}</p></ng-template
 >

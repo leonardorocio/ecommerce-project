@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Order, OrderDetails } from 'src/app/models/order';
 import { User } from 'src/app/models/user';
 import { CartService } from 'src/app/services/cart.service';
@@ -17,6 +17,7 @@ export class CartProductComponent {
   @Input() order!: Order;
   @Input() user!: User;
   @Input() enableEditing!: boolean;
+  @Output() clearedCart = new EventEmitter<Order>();
 
   updateQuantity(orderDetails: OrderDetails, update: number, index: number) {
     this.cartService.updateQuantity(this.order, orderDetails, update, index).subscribe((order) => {
@@ -26,11 +27,16 @@ export class CartProductComponent {
 
   async clearCart(order: Order) {
     this.order = await this.cartService.clearCart(order);
+    this.clearedCart.emit(this.order);
   }
 
   removeProduct(orderDetails: OrderDetails) {
-    this.cartService.removeProduct(this.order, orderDetails).subscribe((cart) => {
-      this.order = cart;
-    })
+    if (this.order.orderDetailsList.length === 1) {
+      this.clearCart(this.order);
+    } else {
+      this.cartService.removeProduct(this.order, orderDetails).subscribe((cart) => {
+        this.order = cart;
+      })
+    }
   }
 }
