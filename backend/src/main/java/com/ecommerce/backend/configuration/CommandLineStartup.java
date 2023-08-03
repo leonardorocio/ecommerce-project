@@ -24,9 +24,6 @@ public class CommandLineStartup implements ApplicationListener<ApplicationReadyE
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        boolean created = false;
-        while (!created) {
-            try {
                 if (userRepository.count() == 0) {
                     User user = User.builder()
                             .name("Admin")
@@ -36,11 +33,7 @@ public class CommandLineStartup implements ApplicationListener<ApplicationReadyE
                             .role(Role.ROLE_ADMIN)
                             .build();
                     userRepository.save(user);
-                    created = true;
                 }
-            } catch (Exception e) {
-                log.info("Entidade ainda não foi criada, tentando novamente...");
-            }
         }
     }
-}
+
